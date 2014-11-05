@@ -10,7 +10,7 @@ DB_PATH = "db/music.db"
 DIGITAL_TABLE = "digital"
 
 def printUsages():
-    print "Valid arguments: create, destroy, update, status"
+    print "Valid arguments: create [all|digital|ads], destroy [all|digital|ads], update [digital|ads] [location], status [digital|ads]"
 
 def statusDatabase():
     conn = sqlite3.connect(os.getcwd()+"/db/music.db")
@@ -27,7 +27,7 @@ def statusDatabase():
     conn.close()
 
 def updateDatabase():
-    #grab all mp3 in the specified file
+    #grab all mp3 in the specified folder
     path = raw_input("Please enter the absolute path to the top level music folder to add to the db:")
     matches = []
     for root, dirnames, filenames in os.walk(path):
@@ -68,7 +68,7 @@ def updateDatabase():
     conn.close()
     #print query   
 
-def destroyDatabase():
+def destroyAllDatabase():
     print "WHY WOULD YOU WANT TO DO THIS!?"
     answer = raw_input("Are you sure?(y/n):")
     if answer != "y":
@@ -93,12 +93,16 @@ def createDatabase():
 def main():
     #This program assumes it is running in the AutoDJ folder that already has the 
     #proper folder stucture. If not then clone the git repository and run it from there.
-    if len(sys.argv) != 2:
+    if len(sys.argv) <= 2:
         printUsages()
         exit()
     command = sys.argv[1];
     if command == "create":
-        print "Creating new sqlite database..."
+        #check if there is a music.db file in the proper location
+        if (!os.path.exists(file_path)):
+            print "Creating new sqlite database..."
+        else 
+        ## read arg 2 for which tables to create
         createDatabase()
     elif command == "destroy":
         temp = raw_input("Database will be destroyed, continue?(y/n)")
@@ -106,19 +110,21 @@ def main():
             destroyDatabase()
         elif temp=="n":
             print "Database perserved, exiting."
-            exit()
         else:
             print "Bad Input, exiting"
-            exit()
+        exit()
     elif command == "update":
+        
         print "Searching file system for new music..."
         updateDatabase()
+        exit()
     elif command == "status":
         print "---Current database---"
         statusDatabase()
-    else:
-        printUsages()
         exit()
+
+    printUsages()
+    exit()
 
 if __name__ =="__main__":
     main()
