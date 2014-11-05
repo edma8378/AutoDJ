@@ -8,4 +8,7 @@ tar xvzf eyed3-<version>.tgz
 cd eyed3-<version>/
 python setup.py install
 
+If this installs with no errors, go back to the dependencies folder and delete the eyed3-<version>
+folder.
+
 After that, your done. You can now run the database tools to create the local sqlite database.
