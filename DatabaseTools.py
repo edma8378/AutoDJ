@@ -8,9 +8,10 @@ import re
 
 DB_PATH = "db/music.db"
 DIGITAL_TABLE = "digital"
+ADS_TABLE = "advertisments"
 
 def printUsages():
-    print "Valid arguments: create [all|digital|ads], destroy [all|digital|ads], update [digital|ads] [location], status [digital|ads]"
+    print "Valid arguments: create [all|"+DIGITAL_TABLE+"|"+ADS_TABLE+"], destroy [all|"+DIGITAL_TABLE+"|"+ADS_TABLE+"], update ["+DIGITAL_TABLE+"|"+ADS_TABLE+"] [location], status ["+DIGITAL_TABLE+"|"+ADS_TABLE+"]"
 
 def statusDatabase():
     conn = sqlite3.connect(os.getcwd()+"/db/music.db")
@@ -26,7 +27,7 @@ def statusDatabase():
         #print row[0]
     conn.close()
 
-def updateDatabase():
+def updateDigitalTable():
     #grab all mp3 in the specified folder
     path = raw_input("Please enter the absolute path to the top level music folder to add to the db:")
     matches = []
@@ -48,7 +49,7 @@ def updateDatabase():
         title = audiofile.tag.title if audiofile.tag.title else "UNKOWN"
         length = audiofile.info.time_secs #if this is 0 we may consider not allowing it to the db
         info = [title,artist,album]
-        #query = 'SELECT * FROM '+DIGITAL_TABLE+' WHERE title=\''+escaped_title+'\' AND artist=\''+escaped_artist+'\' AND album=\''+escaped_album+'\'';
+        #query = 'SELECT * FROM '+DIGITAL_TABLE+' WHERE title=\''+escaped_cd Detitle+'\' AND artist=\''+escaped_artist+'\' AND album=\''+escaped_album+'\'';
         #print query
         c.execute('SELECT * FROM '+DIGITAL_TABLE+' WHERE title=? AND artist=? AND album=?',info)
         result = c.fetchone()
@@ -68,46 +69,79 @@ def updateDatabase():
     conn.close()
     #print query   
 
-def destroyAllDatabase():
+def destroyTable(table):
     print "WHY WOULD YOU WANT TO DO THIS!?"
     answer = raw_input("Are you sure?(y/n):")
     if answer != "y":
         exit()    
     conn=sqlite3.connect(os.getcwd()+"/db/music.db")
     c = conn.cursor()
-    c.execute('Drop TABLE '+DIGITAL_TABLE)
+    if ( table == DIGITAL_TABLE || table == "all" ):
+        c.execute('Drop TABLE '+DIGITAL_TABLE)
+        print "destroyed tables: "+DIGITAL_TABLE
+
+    if ( table == DIGITAL_TABLE || table == "all" ):
+        c.execute('Drop TABLE '+ADS_TABLE)
+        print "destroyed tables: "+ADS_TABLE
+    
     conn.commit()
     conn.close()
-    print "destroyed tables: "+DIGITAL_TABLE
-
-def createDatabase():
+    
+def createTable(table):
     #path of database should be in a folder named db 
     print "db is located in " + os.getcwd()+"/db/music.db"
     conn=sqlite3.connect(os.getcwd()+"/db/music.db")
     c = conn.cursor()
-    c.execute('CREATE TABLE '+DIGITAL_TABLE+' (path text, artist text, album text, title text, length text)')
+
+    if ( table == DIGITAL_TABLE || table == "all" ):
+        c.execute('CREATE TABLE '+DIGITAL_TABLE+' (path text, artist text, album text, title text, length text)')
+        print "New table created in db: "+DIGITAL_TABLE    
+
+    if ( table == ADS_TABLE || table == "all" ):
+        c.execute('CREATE TABLE '+ADS_TABLE+' (path text, title text, length text)')
+        print "New table created in db: "+ADS_TABLE
+
     conn.commit()
     conn.close()
-    print "New table created in db: "+DIGITAL_TABLE
-
+ 
 def main():
     #This program assumes it is running in the AutoDJ folder that already has the 
     #proper folder stucture. If not then clone the git repository and run it from there.
-    if len(sys.argv) <= 2:
+    if len(sys.argv) <= 3:
         printUsages()
         exit()
     command = sys.argv[1];
+    table = sys.argv[2];
     if command == "create":
         #check if there is a music.db file in the proper location
-        if (!os.path.exists(file_path)):
+        if (not os.path.exists(os.getcwd()+"/db/music.db")):
             print "Creating new sqlite database..."
-        else 
+        
         ## read arg 2 for which tables to create
-        createDatabase()
+        if table == "all":
+            createTable("all")
+        elif table == DIGITAL_TABLE:
+            createTable(DIGITAL_TABLE)
+        elif table == ADS_TABLE:
+            createTable(ADS_TABLE)
+        else:
+            printUsages()
+            
+        exit()                 
+        
     elif command == "destroy":
-        temp = raw_input("Database will be destroyed, continue?(y/n)")
+        temp = raw_input("Tables will be destroyed, continue?(y/n)")
         if temp=="y":
-            destroyDatabase()
+                   
+            if table == "all":
+                destroyTable("all")
+            elif table == DIGITAL_TABLE:
+                destroyTable(DIGITAL_TABLE)
+            elif table == ADS_TABLE:
+                destroyTable(ADS_TABLE)
+            else:
+                printUsages()
+            
         elif temp=="n":
             print "Database perserved, exiting."
         else:
