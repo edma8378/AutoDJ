@@ -7,29 +7,35 @@ import eyed3
 import re
 
 DB_PATH = "db/music.db"
+
 DIGITAL_TABLE = "digital"
 ADS_TABLE = "advertisments"
+approved_tables = ["all",DIGITAL_TABLE,ADS_TABLE]
 
 def printUsages():
     print "Valid arguments: create [all|"+DIGITAL_TABLE+"|"+ADS_TABLE+"], destroy [all|"+DIGITAL_TABLE+"|"+ADS_TABLE+"], update ["+DIGITAL_TABLE+"|"+ADS_TABLE+"] [location], status ["+DIGITAL_TABLE+"|"+ADS_TABLE+"]"
 
-def statusDatabase():
+def statusDatabase(table):
     conn = sqlite3.connect(os.getcwd()+"/db/music.db")
     c = conn.cursor() 
-    #TODO catch exception for no table
-    print "Artist \t\t Album \t Song \t Length"
-    for row in c.execute('SELECT * FROM '+DIGITAL_TABLE):
-        artist = str(row[1].encode('utf-8')) if row[1] else "unknown"
-        album = str(row[2].encode('utf-8')) if row[2] else "unknown"
-        song = str(row[3].encode('utf-8'))if row[3] else "unknown"
-        length = str(row[4].encode('utf-8'))
-        print artist+"\t\t"+album+"\t"+song+"\t"+length
-        #print row[0]
+    data = ['table',table]
+    c.execute('SELECT name FROM sqlite_master WHERE type=? AND name=?',data)
+    result = c.fetchone()
+    if( not result):
+        print "Table not present. Please run create "+table
+        exit()
+    
+    print "Artist \t\t Album \t Title \t Length"
+    for row in c.execute('SELECT * FROM '+table):
+        print ""
+        for column in row[1:len(row)]:
+           print (str(column.encode('utf-8')) if row[1] else "unknown")+"\t\t",
     conn.close()
 
-def updateDigitalTable():
+
+def updateTable(table,path):
     #grab all mp3 in the specified folder
-    path = raw_input("Please enter the absolute path to the top level music folder to add to the db:")
+    #path = raw_input("Please enter the absolute path to the top level music folder to add to the db:")
     matches = []
     for root, dirnames, filenames in os.walk(path):
         for filename in fnmatch.filter(filenames, '*.mp3'):
@@ -38,7 +44,12 @@ def updateDigitalTable():
     
     conn = sqlite3.connect(os.getcwd()+"/db/music.db")
     c = conn.cursor() 
-    
+    data = ['table',DIGITAL_TABLE]
+    c.execute('SELECT name FROM sqlite_master WHERE type=? AND name=?',data)
+    result = c.fetchone()
+    if( not result):
+        print "Table not present. Please run create "+DIGITAL_TABLE
+        exit()
     #check if any of them are already in the db   
     insertions = []
     skipped = 0;
@@ -49,9 +60,7 @@ def updateDigitalTable():
         title = audiofile.tag.title if audiofile.tag.title else "UNKOWN"
         length = audiofile.info.time_secs #if this is 0 we may consider not allowing it to the db
         info = [title,artist,album]
-        #query = 'SELECT * FROM '+DIGITAL_TABLE+' WHERE title=\''+escaped_cd Detitle+'\' AND artist=\''+escaped_artist+'\' AND album=\''+escaped_album+'\'';
-        #print query
-        c.execute('SELECT * FROM '+DIGITAL_TABLE+' WHERE title=? AND artist=? AND album=?',info)
+        c.execute('SELECT * FROM '+table+' WHERE title=? AND artist=? AND album=?',info)
         result = c.fetchone()
 
         if result:
@@ -61,10 +70,10 @@ def updateDigitalTable():
         else:
             #this is a new song so we add it to a list of lists that will all be inserted at once
             add = [file.decode('utf8'),artist,album,title,length]
-            print add
+            #print add
             insertions.append(add)
         
-    c.executemany('INSERT INTO digital VALUES (?,?,?,?,?)', insertions)
+    c.executemany('INSERT INTO '+table+' VALUES (?,?,?,?,?)', insertions)
     conn.commit()
     conn.close()
     #print query   
@@ -76,11 +85,18 @@ def destroyTable(table):
         exit()    
     conn=sqlite3.connect(os.getcwd()+"/db/music.db")
     c = conn.cursor()
-    if ( table == DIGITAL_TABLE || table == "all" ):
+    data = ['table',table]
+    c.execute('SELECT name FROM sqlite_master WHERE type=? AND name=?',data)
+    result = c.fetchone()
+    if(not result and not table == "all"):
+        print "Table not in database, ignoring"
+        exit()
+
+    if ( table == DIGITAL_TABLE or table == "all" ):
         c.execute('Drop TABLE '+DIGITAL_TABLE)
         print "destroyed tables: "+DIGITAL_TABLE
 
-    if ( table == DIGITAL_TABLE || table == "all" ):
+    if ( table == ADS_TABLE or table == "all" ):
         c.execute('Drop TABLE '+ADS_TABLE)
         print "destroyed tables: "+ADS_TABLE
     
@@ -92,14 +108,28 @@ def createTable(table):
     print "db is located in " + os.getcwd()+"/db/music.db"
     conn=sqlite3.connect(os.getcwd()+"/db/music.db")
     c = conn.cursor()
-
-    if ( table == DIGITAL_TABLE || table == "all" ):
-        c.execute('CREATE TABLE '+DIGITAL_TABLE+' (path text, artist text, album text, title text, length text)')
-        print "New table created in db: "+DIGITAL_TABLE    
-
-    if ( table == ADS_TABLE || table == "all" ):
-        c.execute('CREATE TABLE '+ADS_TABLE+' (path text, title text, length text)')
-        print "New table created in db: "+ADS_TABLE
+    if table != "all":
+        data = ['table',table]
+        c.execute('SELECT name FROM sqlite_master WHERE type=? AND name=?',data)
+        result = c.fetchone()
+        if(result):
+            print "Table "+table+" already in database"
+            exit()
+        else:
+            c.execute('CREATE TABLE '+table+' (path text, artist text, album text, title text, length text)')
+            print "New table created in db: "+table
+    else:
+        tables = [ table for table in approved_tables if table != "all"]
+        for table in tables:
+            data = ['table',table]
+            c.execute('SELECT name FROM sqlite_master WHERE type=? AND name=?',data)
+            result = c.fetchone()
+            if(result):
+                print "Table "+table+" already in database"
+                exit()
+            else:
+                c.execute('CREATE TABLE '+table+' (path text, artist text, album text, title text, length text)')
+                print "New table created in db: "+table
 
     conn.commit()
     conn.close()
@@ -107,23 +137,21 @@ def createTable(table):
 def main():
     #This program assumes it is running in the AutoDJ folder that already has the 
     #proper folder stucture. If not then clone the git repository and run it from there.
-    if len(sys.argv) <= 3:
+    if len(sys.argv) < 3:
+        print len(sys.argv)
         printUsages()
         exit()
     command = sys.argv[1];
     table = sys.argv[2];
-    if command == "create":
-        #check if there is a music.db file in the proper location
-        if (not os.path.exists(os.getcwd()+"/db/music.db")):
+    #check if there is a music.db file in the proper location
+    if (not os.path.exists(os.getcwd()+"/db/music.db")):
             print "Creating new sqlite database..."
+            open(os.getcwd()+"/db/music.db", 'a').close()
         
+    if command == "create":
         ## read arg 2 for which tables to create
-        if table == "all":
-            createTable("all")
-        elif table == DIGITAL_TABLE:
-            createTable(DIGITAL_TABLE)
-        elif table == ADS_TABLE:
-            createTable(ADS_TABLE)
+        if table in approved_tables:
+            createTable(table)
         else:
             printUsages()
             
@@ -133,12 +161,8 @@ def main():
         temp = raw_input("Tables will be destroyed, continue?(y/n)")
         if temp=="y":
                    
-            if table == "all":
-                destroyTable("all")
-            elif table == DIGITAL_TABLE:
-                destroyTable(DIGITAL_TABLE)
-            elif table == ADS_TABLE:
-                destroyTable(ADS_TABLE)
+            if table in approved_tables:
+                destroyTable(table)
             else:
                 printUsages()
             
@@ -147,14 +171,31 @@ def main():
         else:
             print "Bad Input, exiting"
         exit()
+
     elif command == "update":
-        
-        print "Searching file system for new music..."
-        updateDatabase()
+        if(len(sys.argv) != 4):
+            print "missing location to update from"
+            exit()
+        location = sys.argv[3]
+        if(not os.path.isdir(location)):
+            print "[location] must be a folder"
+            exit()
+        if(table == DIGITAL_TABLE):
+            print "Searching "+location+" for new music..."
+            updateTable(table,location)
+        elif( table == ADS_TABLE ):
+            print "Searching "+location+" for new ads"
+            updateTable(table,location)
         exit()
+
     elif command == "status":
         print "---Current database---"
-        statusDatabase()
+        statusDatabase(table)
+        exit()
+
+    elif command == "clean":
+        print "Cleaning database"
+        print "<This will check that the path entry in the given table still points to a valid file>"
         exit()
 
     printUsages()
