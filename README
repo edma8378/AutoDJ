@@ -25,4 +25,7 @@ For npm, now do
 npm install 
 and we will probably need bower later
 sudo npm install -g bower
+
+maybe protractor for webpage testing
+npm install -g protractor
 bower install
