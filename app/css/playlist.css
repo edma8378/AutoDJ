@@ -1,0 +1,29 @@
+body {
+	background-color: #white;
+	padding: 10px;	
+}
+
+#logo {
+	position: relative;
+	width: 300px;
+}
+
+#playheader {
+
+}
+
+#playlist {
+	font-size: 24px;
+	position: relative;
+}
+
+#autoDJButton {
+	color: black;
+	border: solid 5px black;
+	font-size: 25px;
+	border-radius: 30px;
+	width: 100px;
+	height: 50px;
+	position: relative; 
+	background-color: red;
+}

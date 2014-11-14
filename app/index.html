@@ -6,13 +6,18 @@
   <script>document.write("<base href=\"" + document.location + "\" />");</script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.js"></script>
   <script src="js/controllers.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/playlist.css"
 </head>
 <body ng-controller="PlaylistCtrl">
-  <ul>
-    <li ng-repeat="playlist in playlists">
-      {{playlist.artist}} - <em>{{playlist.album}}</em>
-    </li>
-  </ul>
-  <button id="autoDJButton" style="position: absolute; right:200px; top:20px; background-color:green">AutoDJ</button>
+  <img id="logo" src="images/logo.jpg">
+  <div id="playlist"> 
+    <h1 id="playHeader"> Playlist: </h1>
+    <ul>
+      <li ng-repeat="playlist in playlists">
+        {{playlist.artist}} - <em>{{playlist.album}}</em>
+      </li>
+    </ul>
+  </div>
+  <button id="autoDJButton">AutoDJ</button>
 </body>
 </html>
