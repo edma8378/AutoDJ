@@ -21,3 +21,8 @@ sudo add-apt-repository ppa:chris-lea/node.js
 sudo apt-get update
 sudo apt-get install nodejs
 Now nodejs --version and SEE IT
+For npm, now do 
+npm install 
+and we will probably need bower later
+sudo npm install -g bower
+bower install
