@@ -6,11 +6,12 @@
   <script>document.write("<base href=\"" + document.location + "\" />");</script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.js"></script>
   <script src="js/controllers.js"></script>
+  <script src="js/libraries/soundmanager2-jsmin.js"></script>
   <link rel="stylesheet" type="text/css" href="css/playlist.css"
 </head>
-<body ng-controller="PlaylistCtrl">
+<body>
   <img id="logo" src="images/logo.jpg">
-  <div id="playlist"> 
+  <div id="playlist" ng-controller="PlaylistCtrl"> 
     <h1 id="playHeader"> Playlist: </h1>
     <ul>
       <li ng-repeat="playlist in playlists">
@@ -19,5 +20,8 @@
     </ul>
   </div>
   <button id="autoDJButton">AutoDJ</button>
+  <div ng-controller="musicPlayer">
+    <button id="playbutton" ng-click="soundManager.stop('swing')">
+  </div>
 </body>
 </html>
