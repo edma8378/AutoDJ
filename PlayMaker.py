@@ -7,6 +7,7 @@ import eyed3
 import json
 
 PLAYLIST_DIR = "playlists/"
+DIGITAL_TABLE = "digital"
 
 def outputPlaylists(day,listOfPlaylists):
     #writes each playlist to a seperate file in the playlists folder
@@ -49,7 +50,7 @@ def randomSong():
     #Connect to database, grab the random line and return it
     conn = sqlite3.connect(os.getcwd()+"/db/music.db")
     c = conn.cursor() 
-    c.execute('SELECT * FROM sqlite_master ORDER BY RANDOM() LIMIT 1')
+    c.execute('SELECT * FROM '+DIGITAL_TABLE+' ORDER BY RANDOM() LIMIT 1')
     song = c.fetchone()
     if( not song):
         print "Table not present. Please run create "+table
