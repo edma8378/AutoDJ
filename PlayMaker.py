@@ -4,10 +4,32 @@ import sqlite3
 import os
 import fnmatch
 import eyed3
+import json
+
+PLAYLIST_DIR = "playlists/"
 
 def outputPlaylists(day,listOfPlaylists):
     #writes each playlist to a seperate file in the playlists folder
     #with the day and hour it will be representing. 
+    timeOfDay = "am"
+    curHour = 0
+    #make folder for the day
+    if not os.path.isdir(PLAYLIST_DIR+day):
+        os.mkdir(PLAYLIST_DIR+day)  
+    keys = ["path","song","artist","album","length"]  
+    for hour in listOfPlaylists:        
+        #touch the new file, should be in playlist folder
+        with open(PLAYLIST_DIR+day+"/"+str(curHour)+timeOfDay+".playlist",'w') as outfile:
+            pl = []    
+            for song in hour:
+                dict1 = dict(zip(keys,song))
+                pl.append(dict1)
+            json.dump(pl, outfile)
+            curHour += 1
+            if curHour == 12:
+                timeOfDay = "pm" 
+            outfile.close()           
+
     return;
 
 def generatePlaylist():
@@ -27,7 +49,7 @@ def randomSong():
     return song
 
 def main():
-    
+    print "hello"
 
 if __name__ =="__main__":
     main()
