@@ -8,6 +8,7 @@ import json
 
 PLAYLIST_DIR = "playlists/"
 DIGITAL_TABLE = "digital"
+AD_TABLE = "advertisments"
 
 def outputPlaylists(day,listOfPlaylists):
     #writes each playlist to a seperate file in the playlists folder
@@ -43,6 +44,13 @@ def generatePlaylist():
 
 def randomAD():
     #returns a random entry from the ads table
+    conn = sqlite3.connect(os.getcwd()+"/db/music.db")
+    c = conn.cursor() 
+    c.execute('SELECT * FROM '+AD_TABLE+' ORDER BY RANDOM() LIMIT 1')
+    ad = c.fetchone()
+    if( not ad):
+        print "Table not present. Please run create "+table
+        return None;
     return ad    
 
 def randomSong():
