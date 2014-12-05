@@ -40,6 +40,13 @@ class TestSequenceFunctions(unittest.TestCase):
 	self.assertNotEqual(rand3, None)
 	self.assertNotEqual(rand3 == rand2 == rand1, True)
 
+    def random_ad_test(self):
+        rand1 = randomAd()
+        rand2 = randomAd()
+        self.assertNotEqual(rand1, None)
+        self.assertNotEqual(rand2, None)
+        self.assertNotEqual(rand2 == rand1, True)
+
     def test_steps(self):
         self.file_create()
         self.file_correct()
