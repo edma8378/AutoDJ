@@ -46,6 +46,15 @@ def randomAD():
 
 def randomSong():
     #should be a random song from the digital music table of the db
+    #Connect to database, grab the random line and return it
+    conn = sqlite3.connect(os.getcwd()+"/db/music.db")
+    c = conn.cursor() 
+    c.execute('SELECT * FROM sqlite_master ORDER BY RANDOM() LIMIT 1')
+    song = c.fetchone()
+    if( not song):
+        print "Table not present. Please run create "+table
+        return None;
+
     return song
 
 def main():
