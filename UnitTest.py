@@ -1,10 +1,13 @@
 #!/usr/bin/python
 from PlayMaker import outputPlaylists
+from PlayMaker import randomSong
 from datetime import datetime
+from DatabaseTools import createTable
 import unittest
 import os
 import random
 import json
+
 
 class TestSequenceFunctions(unittest.TestCase):
 
@@ -27,9 +30,22 @@ class TestSequenceFunctions(unittest.TestCase):
             json_data = json.load(json_file)
             self.assertNotEqual(len(json_data),0)
 
+	
+    def random_song_test(self):
+        rand1 = randomSong()
+        rand2 = randomSong()
+        rand3 = randomSong()
+	self.assertNotEqual(rand1, None)
+	self.assertNotEqual(rand2, None)
+	self.assertNotEqual(rand3, None)
+	self.assertNotEqual(rand3 == rand2 == rand1, True)
+
     def test_steps(self):
         self.file_create()
         self.file_correct()
+	self.random_song_test()
+
+
     
 if __name__ == '__main__':
     unittest.main()
