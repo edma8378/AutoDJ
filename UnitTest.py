@@ -1,6 +1,8 @@
 #!/usr/bin/python
 from PlayMaker import outputPlaylists
 from PlayMaker import randomSong
+from PlayMaker import randomAD
+from PlayMaker import generatePlaylist
 from datetime import datetime
 from DatabaseTools import createTable
 import unittest
@@ -35,24 +37,31 @@ class TestSequenceFunctions(unittest.TestCase):
         rand1 = randomSong()
         rand2 = randomSong()
         rand3 = randomSong()
-	self.assertNotEqual(rand1, None)
-	self.assertNotEqual(rand2, None)
-	self.assertNotEqual(rand3, None)
-	self.assertNotEqual(rand3 == rand2 == rand1, True)
+        self.assertNotEqual(rand1, None)
+        self.assertNotEqual(rand2, None)
+        self.assertNotEqual(rand3, None)
+        self.assertNotEqual(rand3 == rand2 == rand1, True)
 
     def random_ad_test(self):
-        rand1 = randomAd()
-        rand2 = randomAd()
+        rand1 = randomAD()
+        rand2 = randomAD()
         self.assertNotEqual(rand1, None)
         self.assertNotEqual(rand2, None)
         self.assertNotEqual(rand2 == rand1, True)
 
+    def gen_playlist(self):
+        playlist = generatePlaylist()
+        self.assertNotEqual(playlist, None)
+        for i in range(len(playlist)):
+            if i != 0:
+                self.assertNotEqual(playlist[i], playlist[i-1])
+
     def test_steps(self):
         self.file_create()
         self.file_correct()
-	self.random_song_test()
-
-
+        self.random_song_test()
+        self.random_ad_test()
+        self.gen_playlist()
     
 if __name__ == '__main__':
     unittest.main()
