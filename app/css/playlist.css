@@ -35,3 +35,8 @@ body {
 	position: relative;
 	background: green;
 }
+
+.sm2-bar-ui {
+ font-size: 16px;
+ background-color: black;
+}

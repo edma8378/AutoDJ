@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <title>Playlists $http</title>
   <script>document.write("<base href=\"" + document.location + "\" />");</script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> 
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.js"></script>
   <script src="js/controllers.js"></script>
   <script src="js/libraries/soundmanager2-jsmin.js"></script>
@@ -18,10 +19,12 @@
         {{playlist.artist}} - <em>{{playlist.album}}</em>
       </li>
     </ul>
+    <p> {{playlist.length}} </p>
   </div>
-  <button id="autoDJButton">AutoDJ</button>
+  <!-- <button id="autoDJButton">AutoDJ</button> -->
   <div ng-controller="musicPlayer">
-    <button id="playbutton" ng-click="soundManager.stop('swing')">
+    <button id="playbutton" onclick="soundManager.togglePause('swing')"> Click me </button>
+    <p id ="timeLeft"> </p>
   </div>
 </body>
 </html>
