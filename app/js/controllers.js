@@ -5,7 +5,6 @@ myApp.controller('PlaylistCtrl', function($scope, $http) {
        .then(function(res){
           $scope.playlists = res.data;
         });
-        console.log(playlist.length);
 });
 
 myApp.controller('musicPlayer', function() {
@@ -20,6 +19,7 @@ myApp.controller('musicPlayer', function() {
 				stream: true,
 				whileplaying: function() {
       				var timeLeft = this.duration - this.position;
+      				document.getElementById("timeLeft").innerHTML = timeLeft;
      			},
 			});
 			soundManager.play('swing', {volume:50});
