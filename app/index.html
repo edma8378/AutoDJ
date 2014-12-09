@@ -8,23 +8,36 @@
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.js"></script>
   <script src="js/controllers.js"></script>
   <script src="js/libraries/soundmanager2-jsmin.js"></script>
-  <link rel="stylesheet" type="text/css" href="css/playlist.css"
+  <link rel="stylesheet" type="text/css" href="css/reset.css">
+  <link rel="stylesheet" type="text/css" href="css/playlist.css">
 </head>
 <body>
-  <img id="logo" src="images/logo.jpg">
-  <div id="playlist" ng-controller="PlaylistCtrl"> 
-    <h1 id="playHeader"> Playlist: </h1>
-    <ul>
-      <li ng-repeat="playlist in playlists">
-        {{playlist.artist}} - <em>{{playlist.album}}</em>
-      </li>
-    </ul>
-    <p> {{playlist.length}} </p>
-  </div>
-  <!-- <button id="autoDJButton">AutoDJ</button> -->
-  <div ng-controller="musicPlayer">
-    <button id="playbutton" onclick="soundManager.togglePause('swing')"> Click me </button>
-    <p id ="timeLeft"> </p>
-  </div>
+  <div id="header">
+
+  </div><!-- Close id header-->
+
+  <div id="content">
+
+    <img id="logo" src="images/logo.jpg">
+
+        <!-- <button id="autoDJButton">AutoDJ</button> -->
+    <div ng-controller="musicPlayer" id="currentlyPlaying">
+      <h2> Insert Current Song Name Here </h2>
+      <h3>Artist Name - Album Name</h3>
+      <button id="playbutton" class="orange" onclick="soundManager.togglePause('swing')"> &#9654; / &#10074;&#10074;  </button>
+      <p id ="timeLeft">Loading...</p>
+    </div>
+
+    <div id="playlist" ng-controller="PlaylistCtrl"> 
+      <h2 id="playHeader"> Playlist: </h2>
+      <ol>
+        <li ng-repeat="playlist in playlists">
+          {{playlist.artist}} - <em>{{playlist.album}}</em>
+        </li>
+      </ol>
+      <p> {{playlist.length}} </p>
+    </div>
+
+  </div><!-- Close id content-->
 </body>
 </html>

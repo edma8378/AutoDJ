@@ -7,7 +7,7 @@ myApp.controller('PlaylistCtrl', function($scope, $http) {
         });
 });
 
-myApp.controller('musicPlayer', function() {
+myApp.controller('musicPlayer', function($filter) {
 	soundManager.setup({
 		url:'swf/',
 		preferFlash: 'false',
@@ -19,7 +19,8 @@ myApp.controller('musicPlayer', function() {
 				stream: true,
 				whileplaying: function() {
       				var timeLeft = this.duration - this.position;
-      				document.getElementById("timeLeft").innerHTML = timeLeft;
+      				var timeLeftFormatted = $filter('date')(new Date(timeLeft), 'mm:ss');
+      				document.getElementById("timeLeft").innerHTML = timeLeftFormatted;
      			},
 			});
 			soundManager.play('swing', {volume:50});
