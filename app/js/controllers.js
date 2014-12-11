@@ -1,6 +1,6 @@
 var myApp = angular.module('myApp', []);
 
-myApp.controller('PlaylistCtrl', function($scope, $http) {
+myApp.controller('musicPlayer', function($filter, $scope, $http) {
 	soundManager.setup({
 		url:'swf/',
 		preferFlash: 'false',
@@ -22,7 +22,7 @@ myApp.controller('PlaylistCtrl', function($scope, $http) {
     makePlaylist();
   });
   var makePlaylist = function() {
-    $http.get('../playlists/2014-12-19/11am.playlist')
+    $http.get('../playlists/2014-12-19/9am.playlist')
        .then(function(res){
           $scope.playlists = res.data;
           $scope.makeMusic(0);
@@ -34,6 +34,8 @@ myApp.controller('PlaylistCtrl', function($scope, $http) {
     console.log(json[$scope.numSong].path);
     console.log(json.length);
     path = "../" + json[songId].path;
+    document.getElementById("songName").innerHTML = json[songId].song;
+    document.getElementById("artistAlbum").innerHTML = json[songId].artist + "-" + json[songId].album;
   	soundManager.createSound({
 				id: $scope.numSong,
 				url: path,
@@ -42,7 +44,8 @@ myApp.controller('PlaylistCtrl', function($scope, $http) {
         autoPlay: true,
 				whileplaying: function() {
       				var timeLeft = this.duration - this.position;
-      				document.getElementById("timeLeft").innerHTML = timeLeft;
+      				var timeLeftFormatted = $filter('date')(new Date(timeLeft), 'mm:ss');
+      				document.getElementById("timeLeft").innerHTML = timeLeftFormatted;
      			},
         onfinish: function() {
               songId++;

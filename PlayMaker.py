@@ -11,7 +11,7 @@ import random
 PLAYLIST_DIR = "playlists/"
 DIGITAL_TABLE = "digital"
 AD_TABLE = "advertisments"
-#keys = ["path","song","artist","album","length"]  
+#keys = ["path","artist","album","song","length"]  
 LENGTH_INDEX = 4
 
 def outputPlaylists(day,listOfPlaylists):
@@ -22,7 +22,7 @@ def outputPlaylists(day,listOfPlaylists):
     #make folder for the day
     if not os.path.isdir(PLAYLIST_DIR+day):
         os.mkdir(PLAYLIST_DIR+day)  
-    keys = ["path","song","artist","album","length"]  
+    keys = ["path","artist","album","song","length"]  
     for hour in listOfPlaylists:        
         #touch the new file, should be in playlist folder
         with open(PLAYLIST_DIR+day+"/"+str(curHour)+timeOfDay+".playlist",'w') as outfile:

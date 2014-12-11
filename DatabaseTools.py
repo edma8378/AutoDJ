@@ -56,8 +56,8 @@ def updateTable(table,path):
     for file in matches:
         audiofile = eyed3.load(file)            
         artist = audiofile.tag.artist if audiofile.tag.artist else "UNKNOWN"
-        album = audiofile.tag.album if audiofile.tag.album else "UNKOWN"
-        title = audiofile.tag.title if audiofile.tag.title else "UNKOWN"
+        album = audiofile.tag.album if audiofile.tag.album else "UNKNOWN"
+        title = audiofile.tag.title if audiofile.tag.title else "UNKNOWN"
         length = audiofile.info.time_secs #if this is 0 we may consider not allowing it to the db
         info = [title,artist,album]
         c.execute('SELECT * FROM '+table+' WHERE title=? AND artist=? AND album=?',info)
