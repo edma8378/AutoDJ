@@ -16,15 +16,15 @@
     <h1 id="playHeader"> Playlist: </h1>
     <ul>
       <li ng-repeat="playlist in playlists">
-        {{playlist.artist}} - <em>{{playlist.album}}</em>
+        {{playlist.artist}} - <em>{{playlist.song}}</em>
       </li>
     </ul>
     <p> {{playlist.length}} </p>
+        <button id="playbutton" ng-click="pauseMusic()"> Click me </button>
+    <p id ="timeLeft"> </p>
   </div>
   <!-- <button id="autoDJButton">AutoDJ</button> -->
-  <div ng-controller="musicPlayer">
-    <button id="playbutton" onclick="soundManager.togglePause('swing')"> Click me </button>
-    <p id ="timeLeft"> </p>
+  <div>
   </div>
 </body>
 </html>
