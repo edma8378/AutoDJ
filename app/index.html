@@ -21,21 +21,23 @@
     <img id="logo" src="images/logo.jpg">
 
         <!-- <button id="autoDJButton">AutoDJ</button> -->
-    <div ng-controller="musicPlayer" id="currentlyPlaying">
-      <h2> Insert Current Song Name Here </h2>
-      <h3>Artist Name - Album Name</h3>
-      <button id="playbutton" class="orange" onclick="soundManager.togglePause('swing')"> &#9654; / &#10074;&#10074;  </button>
-      <p id ="timeLeft">Loading...</p>
-    </div>
+    <div ng-controller="musicPlayer">
+      <div id="currentlyPlaying">
+        <h2 id="songName"> Insert Current Song Name Here </h2>
+        <h3 id="artistAlbum">Artist Name - Album Name</h3>
+        <button id="playbutton" class="orange" ng-click="pauseMusic()"> &#9654; / &#10074;&#10074;  </button>
+        <p id ="timeLeft">Loading...</p>
+      </div>
 
-    <div id="playlist" ng-controller="PlaylistCtrl"> 
-      <h2 id="playHeader"> Playlist: </h2>
-      <ol>
-        <li ng-repeat="playlist in playlists">
-          {{playlist.artist}} - <em>{{playlist.album}}</em>
-        </li>
-      </ol>
-      <p> {{playlist.length}} </p>
+      <div id="playlist"> 
+        <h2 id="playHeader"> Playlist: </h2>
+        <ol>
+          <li ng-repeat="playlist in playlists">
+            {{playlist.artist}} - <em>{{playlist.song}}</em>
+          </li>
+        </ol>
+        <p> {{playlist.length}} </p>
+      </div>
     </div>
 
   </div><!-- Close id content-->
