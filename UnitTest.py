@@ -10,6 +10,7 @@ import os
 import random
 import json
 
+playlist_dir = "app/playlists/"
 
 class TestSequenceFunctions(unittest.TestCase):
 
@@ -19,16 +20,16 @@ class TestSequenceFunctions(unittest.TestCase):
 
     def file_create(self):
         outputPlaylists(self.day,self.playlistList)
-        self.assertTrue(os.path.isdir("playlists/"+self.day))
-        path, dirs, files = os.walk("playlists/"+self.day).next()
+        self.assertTrue(os.path.isdir(playlist_dir+self.day))
+        path, dirs, files = os.walk(playlist_dir+self.day).next()
         self.assertEqual(len(dirs),0)
         self.assertEqual(len(files),24)
 
     def file_correct(self):
-        self.assertTrue(os.path.isdir("playlists/"+self.day))
-        path, dirs, files = os.walk("playlists/"+self.day).next()       
+        self.assertTrue(os.path.isdir(playlist_dir+self.day))
+        path, dirs, files = os.walk(playlist_dir+self.day).next()       
         sampleOutput = files[random.randint(0,len(files)-1)]
-        with open("playlists/"+self.day+"/"+sampleOutput) as json_file:
+        with open(playlist_dir+self.day+"/"+sampleOutput) as json_file:
             json_data = json.load(json_file)
             self.assertNotEqual(len(json_data),0)
 
