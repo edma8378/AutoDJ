@@ -118,13 +118,53 @@ h2#currentlyPlaying{
 	background: -ms-linear-gradient(top,  #d8422b 0%,#630b00 46%,#262626 100%); /* IE10+ */
 	background: linear-gradient(to bottom,  #d8422b 0%,#630b00 46%,#262626 100%); /* W3C */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d8422b', endColorstr='#262626',GradientType=0 ); /* IE6-9 */
-
-
 }
-
-
 
 .sm2-bar-ui {
 	font-size: 16px;
 	background-color: black;
+}
+.progress-bar {
+    background-color: #1a1a1a;
+    height: 10px;
+    padding: 2px;
+    margin: 5px 0 0 0;         
+    border-radius: 5px;
+    box-shadow: 0 1px 5px #000 inset, 0 1px 0 #444;    
+    text-align: center;       
+}
+
+.progress-bar span {
+    display: inline-block;
+    height: 100%;
+    border-radius: 3px;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, .5) inset;
+    transition: width .4s ease-in-out;    
+    float: left;
+}
+.blue span {
+    background-color: #34c2e3;   
+}
+
+.orange span {
+      background-color: #fecf23;
+      background-image: linear-gradient(top, #fecf23, #fd9215);  
+}   
+
+.green span {
+      background-color: #a5df41;
+      background-image: linear-gradient(top, #a5df41, #4ca916);  
+}
+
+.stripes span {
+    background-size: 30px 30px;
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, .15) 25%, transparent 25%,
+                        transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%,
+                        transparent 75%, transparent);            
+    
+    animation: animate-stripes 3s linear infinite;             
+}
+
+@keyframes animate-stripes {
+    0% {background-position: 0 0;} 100% {background-position: 60px 0;}
 }

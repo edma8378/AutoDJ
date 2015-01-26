@@ -2,10 +2,10 @@
 <html ng-app="myApp" >
 <head>
   <meta charset="utf-8">
-  <title>Playlists $http</title>
+  <title>AutoDJ</title>
   <script>document.write("<base href=\"" + document.location + "\" />");</script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> 
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.js"></script>
   <script src="js/controllers.js"></script>
   <script src="js/libraries/soundmanager2-jsmin.js"></script>
   <link rel="stylesheet" type="text/css" href="css/reset.css">
@@ -26,6 +26,9 @@
         <h2 id="songName"> Insert Current Song Name Here </h2>
         <h3 id="artistAlbum">Artist Name - Album Name</h3>
         <button id="playbutton" class="orange" ng-click="pauseMusic()"> &#9654; / &#10074;&#10074;  </button>
+        <div class="progress-bar green stripes">
+          <span id="progBar"></span>
+        </div>
         <p id ="timeLeft">Loading...</p>
       </div>
 
