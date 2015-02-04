@@ -1,5 +1,5 @@
 <!doctype html>
-<html ng-app="myApp" >
+<html ng-app="myApp">
 <head>
   <meta charset="utf-8">
   <title>AutoDJ</title>
@@ -15,34 +15,8 @@
   <div id="header">
 
   </div><!-- Close id header-->
-
-  <div id="content">
-
-    <img id="logo" src="images/logo.jpg">
-
-        <!-- <button id="autoDJButton">AutoDJ</button> -->
-    <div ng-controller="musicPlayer">
-      <div id="currentlyPlaying">
-        <h2 id="songName"> Insert Current Song Name Here </h2>
-        <h3 id="artistAlbum">Artist Name - Album Name</h3>
-        <button id="playbutton" class="orange" ng-click="pauseMusic()"> &#9654; / &#10074;&#10074;  </button>
-        <div class="progress-bar green stripes">
-          <span id="progBar"></span>
-        </div>
-        <p id ="timeLeft">Loading...</p>
-      </div>
-
-      <div id="playlist"> 
-        <h2 id="playHeader"> Playlist ({{pl}}): </h2>
-        <ol>
-          <li ng-repeat="playlist in playlists">
-            {{playlist.artist}} - <em>{{playlist.song}}</em>
-          </li>
-        </ol>
-        <p> {{playlist.length}} </p>
-      </div>
-    </div>
-
-  </div><!-- Close id content-->
+  <div id="content" ng-controller="musicPlayer">
+  <div ng-include="'blah.html'"></div>
+  </div>
 </body>
 </html>
