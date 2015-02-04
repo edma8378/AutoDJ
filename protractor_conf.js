@@ -224,7 +224,7 @@ exports.config = {
   // See the full list at https://github.com/juliemr/minijasminenode/tree/jasmine1
   jasmineNodeOpts: {
     // If true, display spec names.
-    isVerbose: false,
+    isVerbose: true,
     // If true, print colors to the terminal.
     showColors: true,
     // If true, include stack traces in failures.
