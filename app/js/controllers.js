@@ -4,6 +4,7 @@ myApp.controller('musicPlayer', function($filter, $scope, $http) {
   soundManager.setup({
     url:'swf/',
     preferFlash: 'false',
+    html5Test: /^(probably|maybe)$/i,
 
     // onready: function() {
     //  soundManager.createSound({
