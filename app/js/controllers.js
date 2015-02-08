@@ -106,6 +106,9 @@ myApp.controller('musicPlayer', function($filter, $scope, $http) {
     console.log($scope.numSong);
     soundManager.togglePause($scope.numSong);
   }
+  $scope.submitLogin = function() {
+    console.log("Fire");
+  }
   Date.prototype.addHours = function (h) {
     this.setHours(this.getHours()+h);
     return this;
@@ -113,12 +116,14 @@ myApp.controller('musicPlayer', function($filter, $scope, $http) {
   }
 
 });
-
-myApp.controller('loginService', ['$scope', function($scope) {
-      $scope.submitLogin = function() {
-        console.log("Fire");
+var submitExample = angular.module('submitExample', []);
+  submitExample.controller('ExampleController', function($scope) {
+      $scope.list = [];
+      $scope.text = 'hello';
+      $scope.submit = function() {
+        console.log("Clciked");
       };
-    }]);
+    });
 // for(var i = 0; i < json.length; i++)
 //           {
 //             $scope.flag = true
