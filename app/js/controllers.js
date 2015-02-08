@@ -113,6 +113,12 @@ myApp.controller('musicPlayer', function($filter, $scope, $http) {
   }
 
 });
+
+myApp.controller('loginService', ['$scope', function($scope) {
+      $scope.submitLogin = function() {
+        console.log("Fire");
+      };
+    }]);
 // for(var i = 0; i < json.length; i++)
 //           {
 //             $scope.flag = true
