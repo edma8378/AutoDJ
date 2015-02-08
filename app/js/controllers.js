@@ -22,7 +22,7 @@ myApp.controller('musicPlayer', function($filter, $scope, $http) {
   soundManager.onready(function(){
     $scope.date = new Date();
     console.log($scope.date);
-    $scope.filt = $filter('date')($scope.date, "yyyy-MM-dd/Ha");
+    $scope.filt = $filter('date')($scope.date, "yyyy-MM-dd/H");
     makePlaylist($scope.filt, 0);
   });
   var makePlaylist = function(date, st) {
@@ -52,7 +52,7 @@ myApp.controller('musicPlayer', function($filter, $scope, $http) {
               };
               if($scope.songNum > $scope.playlists.length - 1){
                 $scope.date.addHours(1);
-                $scope.filt = $filter('date')($scope.date, "yyyy-MM-dd/Ha");
+                $scope.filt = $filter('date')($scope.date, "yyyy-MM-dd/H");
                 console.log($scope.filt);
                 makePlaylist($scope.filt, 1);
               }
@@ -91,7 +91,7 @@ myApp.controller('musicPlayer', function($filter, $scope, $http) {
           if(songId >= $scope.playlists.length - 1)
           {
             $scope.date.addHours(1);
-            $scope.filt = $filter('date')($scope.date, "yyyy-MM-dd/Ha");
+            $scope.filt = $filter('date')($scope.date, "yyyy-MM-dd/H");
             console.log($scope.filt);
             makePlaylist($scope.filt, 1);
           }
