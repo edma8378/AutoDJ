@@ -32,14 +32,12 @@ angular.module('Home')
     $scope.makeMusic = function(songId) {
     $scope.numSong = songId.toString();
     var json = $scope.playlists;
-    console.log(json[$scope.numSong].path);
-    console.log(json.length);
-    path = json[songId].path;
+    $scope.path = json[songId].path;
     document.getElementById("songName").innerHTML = json[songId].song;
     document.getElementById("artistAlbum").innerHTML = json[songId].artist + "-" + json[songId].album;
     soundManager.createSound({
         id: $scope.numSong,
-        url: path,
+        url: $scope.path,
         stream: true,
         autoLoad: true,
         autoPlay: true,
