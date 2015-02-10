@@ -2,38 +2,48 @@
 import sys                
 import sqlite3
 import os
-import fnmatch
-import eyed3
-import json
+import fnmatch #Unix file name matching
+import eyed3 #Works w/ Audio Files
+import json 
 import datetime
 import random
 
-PLAYLIST_DIR = "app/playlists"
-DIGITAL_TABLE = "digital"
-AD_TABLE = "advertisments"
+#--Global Variables
+PLAYLIST_DIR = "app/playlists" #path for playlist objects
+DIGITAL_TABLE = "digital" #name of digital table name in database
+AD_TABLE = "advertisments" #name of advertisements table name in database
+##CHECK - should keys be a global variable or declared inline (line 30)?
 #keys = ["path","artist","album","song","length"]  
-LENGTH_INDEX = 4
+LENGTH_INDEX = 4 #length of song object (keys describes these items)
+#--
 
+
+#--Definitions
+
+#writes each playlist to a seperate file in the playlists folder
+#with the day and hour it will be representing. 
 def outputPlaylists(day,listOfPlaylists):
-    #writes each playlist to a seperate file in the playlists folder
-    #with the day and hour it will be representing. 
-    timeOfDay = "am"
-    curHour = 0
-    #make folder for the day
+
+    #Variables
+    curHour = 0 #default to 12am (military time)
+    keys = ["path","artist","album","song","length"] #names of columns in the database
+
+    #make folder for the day if it doesn't already exist
     if not os.path.isdir(PLAYLIST_DIR+"/"+day):
-        os.mkdir(PLAYLIST_DIR+"/"+day)  
-    keys = ["path","artist","album","song","length"]  
-    for hour in listOfPlaylists:        
+        os.mkdir(PLAYLIST_DIR+"/"+day)   
+
+    #go through each hour of a day's worth of playlists
+    for hour in listOfPlaylists:
         #touch the new file, should be in playlist folder
-        with open(PLAYLIST_DIR+"/"+day+"/"+str(curHour)+timeOfDay+".playlist",'w') as outfile:
-            pl = []    
+        with open(PLAYLIST_DIR+"/"+day+"/"+str(curHour)+".playlist",'w') as outfile:
+            pl = [] 
+
+            #for every song in the hour   
             for song in hour:
                 dict1 = dict(zip(keys,song))
                 pl.append(dict1)
             json.dump(pl, outfile)
-            curHour += 1
-            if curHour == 12:
-                timeOfDay = "pm" 
+            curHour += 1 
             outfile.close()           
 
     return;
@@ -137,8 +147,11 @@ def randomSong():
 
     return song
 
+#--
+
+#--Main
 def main():
-    nextWeekPlaylists()
+    nextWeekPlaylists() #Make 7 days worth of playlists, Sunday - Saturday
 
 if __name__ =="__main__":
     main()
