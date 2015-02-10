@@ -196,6 +196,7 @@ def main():
     elif command == "clean":
         print "Cleaning database"
         print "<This will check that the path entry in the given table still points to a valid file>"
+        print "Not yet developed"
         exit()
 
     printUsages()

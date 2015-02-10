@@ -1,8 +1,9 @@
 #!/usr/bin/python
-from PlayMaker import outputPlaylists
-from PlayMaker import randomSong
-from PlayMaker import randomAD
-from PlayMaker import generatePlaylist
+#from PlayMaker import outputPlaylists
+#from PlayMaker import randomSong
+#from PlayMaker import randomAD
+#from PlayMaker import generatePlaylist
+from PlayMaker import *
 from datetime import datetime
 from DatabaseTools import createTable
 import unittest

@@ -10,11 +10,15 @@ import random
 
 #--Global Variables
 PLAYLIST_DIR = "app/playlists" #path for playlist objects
+PROXIMITY_DIR = "proximity"
 DIGITAL_TABLE = "digital" #name of digital table name in database
 AD_TABLE = "advertisments" #name of advertisements table name in database
-##CHECK - should keys be a global variable or declared inline (line 30)?
-#keys = ["path","artist","album","song","length"]  
-LENGTH_INDEX = 4 #length of song object (keys describes these items)
+keys = ["path","artist","album","song","length"]  
+LENGTH_INDEX = 4 #index into a song that give the time length of the song
+ARTIST_INDEX = 1
+mostRecentArtists = [] # list of the most recent artist put into the playlist
+percentage = 0.6
+proximity = 0 #to be set based of the total number of artists and desired percentage
 #--
 
 
@@ -23,10 +27,8 @@ LENGTH_INDEX = 4 #length of song object (keys describes these items)
 #writes each playlist to a seperate file in the playlists folder
 #with the day and hour it will be representing. 
 def outputPlaylists(day,listOfPlaylists):
-
     #Variables
     curHour = 0 #default to 12am (military time)
-    keys = ["path","artist","album","song","length"] #names of columns in the database
 
     #make folder for the day if it doesn't already exist
     if not os.path.isdir(PLAYLIST_DIR+"/"+day):
@@ -37,39 +39,55 @@ def outputPlaylists(day,listOfPlaylists):
         #touch the new file, should be in playlist folder
         with open(PLAYLIST_DIR+"/"+day+"/"+str(curHour)+".playlist",'w') as outfile:
             pl = [] 
-
-            #for every song in the hour   
+            #for every song in the hour add the key,value to the dictionary which will become the 
+            # output jason file
             for song in hour:
                 dict1 = dict(zip(keys,song))
                 pl.append(dict1)
             json.dump(pl, outfile)
             curHour += 1 
             outfile.close()           
-
     return;
 
-def nextWeekPlaylists():
-    day = datetime.date.today()
-    while day.weekday() != 6:
-        day += datetime.timedelta(1)
+#generates a set of 24 playlists per day for the next calander week (Sun to Sat)
+def nextWeekPlaylists(day):
+    #CHANGE NEEDED:next 7 days instead of next calendar week
+    #day = datetime.date.today()
+    #day += datetime.timedelta(1)    
+    #while day.weekday() != 6:
+    #    day += datetime.timedelta(1)
+    print "for 7 days from "+str(day)+"\n"
     for i in range(7):
         dayOfPls = []
         for j in range(24):
             pl = generatePlaylist()
             dayOfPls.append(pl)
         outputPlaylists(day.strftime('%Y-%m-%d'),dayOfPls)
+        outputProximity(day)
         day += datetime.timedelta(1)
         #print day
     return;
 
+#generates a set of 24 playlists for the given day
+def Playlist(day):
+    dayOfPls = []
+    for j in range(24):
+        pl = generatePlaylist()
+        dayOfPls.append(pl)
+    outputPlaylists(day.strftime('%Y-%m-%d'),dayOfPls)
+    outputProximity(day)
+    return;
+
+
+#formating of playist is a jason file.
+#Returns a single hour long playlist according to the radio 1190
+#standards for when ads and other things need to be there.
+#This is where the algoritm will live that checks is the song is allowed
+#into the playlist.
 def generatePlaylist():
-    #formating of playist is TBD.
-    #Returns a single hour long playlist according to the radio 1190
-    #standards for when ads and other things need.
-    #This is where the algoritm will live that checks is the song is allowed
-    #into the playlist.
-    timeTotal = 3600
-    marginError = 100
+    #Variables    
+    timeTotal = 3600 #target length of the playlist in seconds
+    marginError = 100 
     maxSongMisses = 20
     addedTime = 0
     songsPerAd = random.randint(2,4)
@@ -79,6 +97,10 @@ def generatePlaylist():
     prevAd = []    
     misses  = 0
 
+
+    global proximity
+    proximity = int(countArtists() * percentage)
+    
     song = randomAD()#PLACEHODLER for top of the hour legal ID
     length = int(song[LENGTH_INDEX])
     addedTime+=length
@@ -86,20 +108,30 @@ def generatePlaylist():
     while addedTime < (timeTotal - marginError) :
         song = []    
         length = 0    
-        if songsAdded < songsPerAd : 
+        if songsAdded < songsPerAd : #a song needs to be added to the playlist
             song = randomSong()
-            #print song
+            #check if its artist has been played recently
+            artist = song[ARTIST_INDEX]
+            valid = checkArtist(artist)
             length = int(song[LENGTH_INDEX])
-            if song[1] == prevSong or (length + addedTime) > timeTotal:
+            if not valid:
+                continue
+            else:
+                if len(mostRecentArtists) >= proximity:
+                    mostRecentArtists.pop()
+                mostRecentArtists.insert(0,artist)
+            if (length + addedTime) > timeTotal:
                 misses+=1                
                 if misses < maxSongMisses:                
                     continue
                 else:
                     break
+           
+                
             misses = 0
             songsAdded+=1
             prevSong = song[1]
-        else:
+        else:   #it is time to place an ad in the playlist
             song = randomAD()
             length = int(song[LENGTH_INDEX])
             if (length + addedTime) > timeTotal:
@@ -117,11 +149,21 @@ def generatePlaylist():
             
         addedTime += int(song[LENGTH_INDEX])
         playlist.append(list(song))
+        #print song
 
-
-    #print addedTime
-    #print playlist
     return playlist
+
+def checkArtist(artist):
+    if mostRecentArtists.count(artist) > 0:
+        return False
+    else:
+        return True
+
+def outputProximity(day):
+    with open(PROXIMITY_DIR+"/"+str(day),'w') as outfile:
+        outfile.write("\n".join(mostRecentArtists))
+        outfile.close()
+    return
 
 def randomAD():
     #returns a random entry from the ads table
@@ -129,8 +171,9 @@ def randomAD():
     c = conn.cursor() 
     c.execute('SELECT * FROM '+AD_TABLE+' ORDER BY RANDOM() LIMIT 1')
     ad = c.fetchone()
+    conn.close()
     if( not ad):
-        print "Table not present. Please run create "+table
+        print "Table not present. Please run \"./DatabaseTools.py create "+AD_TABLE+"\"\n"
         return None;
     return ad    
 
@@ -141,17 +184,64 @@ def randomSong():
     c = conn.cursor() 
     c.execute('SELECT * FROM '+DIGITAL_TABLE+' ORDER BY RANDOM() LIMIT 1')
     song = c.fetchone()
+    conn.close() 
     if( not song):
-        print "Table not present. Please run create "+table
+        print "Table not present. Please run \"./DatabaseTools.py create "+DIGITAL_TABLE+"\"\n"
         return None;
 
     return song
+
+def printUsages():
+    print "Valid Arguments: today, tomorrow, week"
+    return;
+
+def countArtists():
+    conn = sqlite3.connect(os.getcwd()+"/db/music.db")
+    c = conn.cursor() 
+    total = 0
+    for row in c.execute('SELECT DISTINCT artist FROM '+DIGITAL_TABLE):
+        total+=1
+    #print "Number of artists:"+str(total)+"\n"
+    conn.close()
+    return total
 
 #--
 
 #--Main
 def main():
-    nextWeekPlaylists() #Make 7 days worth of playlists, Sunday - Saturday
+    if len(sys.argv) != 2:
+        printUsages()
+        exit()
+    command = sys.argv[1];
+    
+    today = datetime.date.today()
+    yesterday = today - datetime.timedelta(1)
+    tomorrow = today + datetime.timedelta(1)
+    filename = ""
+
+    if command == "today":
+        filename = os.getcwd()+"/proximity/"+str(yesterday)
+    else:
+        filename = os.getcwd()+"/proximity/"+str(today)
+
+    if (os.path.exists(filename)):
+        mostRecentArtists = [line.rstrip('\n') for line in open(filename)]
+        while(len(mostRecentArtists) > proximity):
+            mostRecentArtists.pop()
+        print mostRecentArtists
+
+    if command == "tomorrow":
+        print "Creating playlist for tomorrow"
+        Playlist(tomorrow)
+    elif command == "today":
+        print "Creating playlist for today"
+        Playlist(today)
+    elif command == "week":
+        print "Creating next week's playlists"
+        nextWeekPlaylists(tomorrow) #Make 7 days worth of playlists
+    else:
+        printUsages()
+        exit
 
 if __name__ =="__main__":
     main()
