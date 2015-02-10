@@ -25,7 +25,6 @@ LENGTH_INDEX = 4 #length of song object (keys describes these items)
 def outputPlaylists(day,listOfPlaylists):
 
     #Variables
-    timeOfDay = "am" #default to morning
     curHour = 0 #default to 12am (military time)
     keys = ["path","artist","album","song","length"] #names of columns in the database
 
@@ -36,7 +35,7 @@ def outputPlaylists(day,listOfPlaylists):
     #go through each hour of a day's worth of playlists
     for hour in listOfPlaylists:
         #touch the new file, should be in playlist folder
-        with open(PLAYLIST_DIR+"/"+day+"/"+str(curHour)+timeOfDay+".playlist",'w') as outfile:
+        with open(PLAYLIST_DIR+"/"+day+"/"+str(curHour)+".playlist",'w') as outfile:
             pl = [] 
 
             #for every song in the hour   
@@ -45,8 +44,6 @@ def outputPlaylists(day,listOfPlaylists):
                 pl.append(dict1)
             json.dump(pl, outfile)
             curHour += 1 
-            if curHour == 12:
-                timeOfDay = "pm" #change to afternoon if military hour is 12
             outfile.close()           
 
     return;
