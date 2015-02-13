@@ -1,13 +1,13 @@
-#!/usr/bin/python
-#from PlayMaker import outputPlaylists
-#from PlayMaker import randomSong
-#from PlayMaker import randomAD
-#from PlayMaker import generatePlaylist
-from PlayMaker import *
-from datetime import datetime
-from DatabaseTools import createTable
-import unittest
+##!/usr/bin/python
+import sys
 import os
+#Path to Main AutoDJ folder
+sys.path.append(os.getcwd()+"/../")
+#print sys.path
+from backend.PlayMaker import outputPlaylists, randomSong, randomAD, generatePlaylist, generatePlaylist
+from datetime import datetime
+import backend.DatabaseTools 
+import unittest
 import random
 import json
 
@@ -29,7 +29,7 @@ class TestSequenceFunctions(unittest.TestCase):
     def file_correct(self):
         self.assertTrue(os.path.isdir(playlist_dir+self.day))
         path, dirs, files = os.walk(playlist_dir+self.day).next()       
-        sampleOutput = files[random.randint(0,len(files)-1)]
+        sampleOutput = files[r1111andom.randint(0,len(files)-1)]
         with open(playlist_dir+self.day+"/"+sampleOutput) as json_file:
             json_data = json.load(json_file)
             self.assertNotEqual(len(json_data),0)
@@ -65,5 +65,5 @@ class TestSequenceFunctions(unittest.TestCase):
         self.random_ad_test()
         self.gen_playlist()
     
-if __name__ == '__main__':
+if __name__ =="__main__":
     unittest.main()

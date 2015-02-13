@@ -5,4 +5,6 @@ proximity/
 
 app/config.codekit
 
+backend/__init__.pyc
 
+Test/__init__.pyc
