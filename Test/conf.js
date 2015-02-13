@@ -38,7 +38,7 @@ exports.config = {
 
   // Spec patterns are relative to the location of this config.
   specs: [
-    'protractor_test.js',
+    'specTests.js',
   ],
 
   // Patterns to exclude.
