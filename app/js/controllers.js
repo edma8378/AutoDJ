@@ -19,7 +19,14 @@ myApp.controller('musicPlayer', function($filter, $scope, $http) {
     // },
   });
   soundManager.onready(function(){
+<<<<<<< HEAD
+    $scope.date = new Date();
+    console.log($scope.date);
+    $scope.filt = $filter('date')($scope.date, "yyyy-MM-dd/H");
+    makePlaylist($scope.filt, 0);
+=======
     makePlaylist();
+>>>>>>> dev
   });
   var makePlaylist = function() {
       $scope.date = new Date();
@@ -31,6 +38,32 @@ myApp.controller('musicPlayer', function($filter, $scope, $http) {
       $http.get('playlists/' + pl + '.playlist')
          .then(function(res){
             $scope.playlists = res.data;
+<<<<<<< HEAD
+            if(!st)
+            {
+              $scope.minute = parseInt($filter('date')(new Date(), "mm"));
+              console.log($scope.minute);
+              $scope.second = parseInt($filter('date')(new Date(), "ss"));
+              console.log($scope.second);
+              $scope.curTime = ($scope.minute * 60) + $scope.second;
+              console.log($scope.curTime);
+              $scope.songTime = 0;
+              $scope.songNum;
+              for (var i = 0; i <= $scope.playlists.length - 1; i++) {
+                $scope.songTime = $scope.songTime + parseInt($scope.playlists[i].length);
+                console.log($scope.songTime);
+                if($scope.songTime > $scope.curTime)
+                {
+                  $scope.songNum = i + 1;
+                  break;
+                }
+              };
+              if($scope.songNum > $scope.playlists.length - 1){
+                $scope.date.addHours(1);
+                $scope.filt = $filter('date')($scope.date, "yyyy-MM-dd/H");
+                console.log($scope.filt);
+                makePlaylist($scope.filt, 1);
+=======
             $scope.minute = parseInt($filter('date')(new Date(), "mm"));
             console.log($scope.minute);
             $scope.second = parseInt($filter('date')(new Date(), "ss"));
@@ -46,6 +79,7 @@ myApp.controller('musicPlayer', function($filter, $scope, $http) {
               {
                 $scope.songNum = i + 1;
                 break;
+>>>>>>> dev
               }
             };
             $scope.makeMusic($scope.songNum);
@@ -73,6 +107,18 @@ myApp.controller('musicPlayer', function($filter, $scope, $http) {
               document.getElementById("progBar").style.width = $scope.timeProg +"%";
           },
         onfinish: function() {
+<<<<<<< HEAD
+          if(songId >= $scope.playlists.length - 1)
+          {
+            $scope.date.addHours(1);
+            $scope.filt = $filter('date')($scope.date, "yyyy-MM-dd/H");
+            console.log($scope.filt);
+            makePlaylist($scope.filt, 1);
+          }
+          else{
+              console.log($scope.playlists.length);
+=======
+>>>>>>> dev
               songId++;
               $scope.makeMusic(songId)
         }
