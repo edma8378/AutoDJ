@@ -1,8 +1,5 @@
 *.pyc
-
 app/playlists
 proximity/
-
 app/config.codekit
-
 
