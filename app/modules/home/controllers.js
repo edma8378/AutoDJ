@@ -29,7 +29,7 @@ angular.module('Home')
     return this;
     // body...
   }
-    $scope.makeMusic = function(songId) {
+  $scope.makeMusic = function(songId) {
     $scope.numSong = songId.toString();
     var json = $scope.playlists;
     $scope.path = json[songId].path;
@@ -54,7 +54,7 @@ angular.module('Home')
             $scope.date.addHours(1);
             $scope.filt = $filter('date')($scope.date, "yyyy-MM-dd/H");
             console.log($scope.filt);
-            makePlaylist($scope.filt, 1);
+            $scope.makePlaylist($scope.filt, 1);
           }
           else{
               console.log($scope.playlists.length);
@@ -94,7 +94,7 @@ angular.module('Home')
                 $scope.date.addHours(1);
                 $scope.filt = $filter('date')($scope.date, "yyyy-MM-dd/H");
                 console.log($scope.filt);
-                makePlaylist($scope.filt, 1);
+                $scope.makePlaylist($scope.filt, 1);
               }
 
               else{
@@ -106,7 +106,7 @@ angular.module('Home')
               $scope.makeMusic($scope.songNum);
             }
           });
-    }
+  }
   soundManager.onready(function (){
     $scope.date = new Date();
     console.log($scope.date);
