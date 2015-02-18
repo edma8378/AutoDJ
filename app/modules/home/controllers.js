@@ -67,6 +67,7 @@ angular.module('Home')
   $scope.makePlaylist = function(date, st) {
       $scope.pl = angular.lowercase(date).toString();
       console.log($scope.pl);
+      name = "2014-12-19/8am";
       $http.get('playlists/' + $scope.pl + '.playlist')
          .then(function(res){
             $scope.playlists = res.data;
@@ -95,8 +96,9 @@ angular.module('Home')
                 console.log($scope.filt);
                 makePlaylist($scope.filt, 1);
               }
+
               else{
-                $scope.makeMusic($scope.songNum);   
+                $scope.makeMusic($scope.songNum);
               }
             }
             else{

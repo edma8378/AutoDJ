@@ -9,8 +9,8 @@ import datetime
 import random
 
 #--Global Variables
-PLAYLIST_DIR = "app/playlists" #path for playlist objects
-PROXIMITY_DIR = "proximity"
+PLAYLIST_DIR = "../app/playlists" #path for playlist objects
+PROXIMITY_DIR = "../proximity"
 DIGITAL_TABLE = "digital" #name of digital table name in database
 AD_TABLE = "advertisments" #name of advertisements table name in database
 keys = ["path","artist","album","song","length"]  
@@ -32,6 +32,8 @@ def outputPlaylists(day,listOfPlaylists):
 
     #make folder for the day if it doesn't already exist
     if not os.path.isdir(PLAYLIST_DIR+"/"+day):
+        if not os.path.isdir(PLAYLIST_DIR):
+            os.mkdir(PLAYLIST_DIR) 
         os.mkdir(PLAYLIST_DIR+"/"+day)   
 
     #go through each hour of a day's worth of playlists
@@ -167,7 +169,7 @@ def outputProximity(day):
 
 def randomAD():
     #returns a random entry from the ads table
-    conn = sqlite3.connect(os.getcwd()+"/db/music.db")
+    conn = sqlite3.connect(os.getcwd()+"/../db/music.db")
     c = conn.cursor() 
     c.execute('SELECT * FROM '+AD_TABLE+' ORDER BY RANDOM() LIMIT 1')
     ad = c.fetchone()
@@ -180,7 +182,7 @@ def randomAD():
 def randomSong():
     #should be a random song from the digital music table of the db
     #Connect to database, grab the random line and return it
-    conn = sqlite3.connect(os.getcwd()+"/db/music.db")
+    conn = sqlite3.connect(os.getcwd()+"/../db/music.db")
     c = conn.cursor() 
     c.execute('SELECT * FROM '+DIGITAL_TABLE+' ORDER BY RANDOM() LIMIT 1')
     song = c.fetchone()
@@ -196,7 +198,7 @@ def printUsages():
     return;
 
 def countArtists():
-    conn = sqlite3.connect(os.getcwd()+"/db/music.db")
+    conn = sqlite3.connect(os.getcwd()+"/../db/music.db")
     c = conn.cursor() 
     total = 0
     for row in c.execute('SELECT DISTINCT artist FROM '+DIGITAL_TABLE):
@@ -220,9 +222,9 @@ def main():
     filename = ""
 
     if command == "today":
-        filename = os.getcwd()+"/proximity/"+str(yesterday)
+        filename = os.getcwd()+"/../proximity/"+str(yesterday)
     else:
-        filename = os.getcwd()+"/proximity/"+str(today)
+        filename = os.getcwd()+"/../proximity/"+str(today)
 
     if (os.path.exists(filename)):
         mostRecentArtists = [line.rstrip('\n') for line in open(filename)]
