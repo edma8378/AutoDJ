@@ -2,4 +2,5 @@
 app/playlists
 proximity/
 app/config.codekit
-
+app/music/ambient
+*.db
