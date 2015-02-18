@@ -52,7 +52,7 @@ angular.module('Home')
           if(songId >= $scope.playlists.length - 1)
           {
             $scope.date.addHours(1);
-            $scope.filt = $filter('date')($scope.date, "yyyy-MM-dd/Ha");
+            $scope.filt = $filter('date')($scope.date, "yyyy-MM-dd/H");
             console.log($scope.filt);
             makePlaylist($scope.filt, 1);
           }
@@ -91,7 +91,7 @@ angular.module('Home')
               };
               if($scope.songNum > $scope.playlists.length - 1){
                 $scope.date.addHours(1);
-                $scope.filt = $filter('date')($scope.date, "yyyy-MM-dd/Ha");
+                $scope.filt = $filter('date')($scope.date, "yyyy-MM-dd/H");
                 console.log($scope.filt);
                 makePlaylist($scope.filt, 1);
               }
@@ -108,7 +108,7 @@ angular.module('Home')
   soundManager.onready(function (){
     $scope.date = new Date();
     console.log($scope.date);
-    $scope.filt = $filter('date')($scope.date, "yyyy-MM-dd/Ha");
+    $scope.filt = $filter('date')($scope.date, "yyyy-MM-dd/H");
     $scope.makePlaylist($scope.filt, 0);
   });
 }]);
