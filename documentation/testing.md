@@ -1,0 +1,63 @@
+###To Run Tests:  
+	RUN SERVER:   $ webdriver-manager start
+	RUN TESTS:    $ protractor conf.js
+
+###Common Errors
+  - python module problems
+    - export PYTHONPATH=$PYTHONPATH:/my/other/path
+
+###Dependencies:
+ - node.js          
+ - java jdk
+ - webdriver/selenium ~~OR chromedriver~~
+
+###Install Protractor
+	$ npm install -g protractor
+Guide: http://angular.github.io/protractor/#/tutorial
+
+###Install Test Server (Webdriver/Selenium)
+
+	$ sudo npm-install selenium-webdriver
+	$ sudo webdriver-manager update --standalone
+
+###To run the combo:
+1. Start server and leave it running
+        $ webdriver-manager start  
+2. View session in browser to know it's working http://localhost:4444/wd/hub/
+  3. This is the default selenium gives you, if it doesn't work check the protractor_conf.js file and look at the selenium address, match that to your filesystem's selenium path address.
+3. Run the written tests
+        $ protractor conf.js
+
+	This should open another browser directing to your local server's version 
+	of the app. It 	should pop up, maybe not even load all the way cause its
+	 supafast, and close. The command line will spit out the results, the one
+	 assertion should pass in green.
+	 
+	 NOTE: If your address is not 'localhost' this will not work, go into 
+	protractor_conf.js and 	protractor_test.js and change the baseURL and 
+	browser.get()  respectively.
+
+>Leave this bullshit below here in case Alex or Mitchell can't use the selenium server or something and need to make chromedriver bullshit to work.
+
+###To install chromedriver: 
+####Dependencies
+ - Have chrome in /usr/bin/google-chrome
+ - Guide: https://code.google.com/p/selenium/wiki/ChromeDriver
+
+####Download and install: 
+ - https://sites.google.com/a/chromium.org/chromedriver/downloads
+ - executable is in the zip file
+
+####To run the tests with chromedriver:
+	$ protractor protractor_conf.js
+
+
+##Architecture
+ - http://www.thoughtworks.com/insights/blog/testing-angularjs-apps-protractor
+ - Conclusion:  use combo of seleniumdriver and webdriver
+ - No longer supporting chromedriver because I can't get the path to recognize it unles it's 	in node_modules in your app directly and that's fucking bullshit fuck that.
+
+###More:
+ - http://angular.github.io/protractor/#/browser-setup
+ - https://code.google.com/p/selenium/wiki/DesiredCapabilities
+ - in the end you need to be running the server, and have a conf.js and spec.js
