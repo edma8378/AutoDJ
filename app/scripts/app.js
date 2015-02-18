@@ -4,7 +4,7 @@
 angular.module('Authentication', []);
 angular.module('Home', []);
 
-angular.module('BasicHttpAuthExample', [
+angular.module('myApp', [
     'Authentication',
     'Home',
     'ngRoute',
