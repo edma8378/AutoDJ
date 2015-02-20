@@ -13,12 +13,22 @@ PLAYLIST_DIR = "../app/playlists" #path for playlist objects
 PROXIMITY_DIR = "../proximity"
 DIGITAL_TABLE = "digital" #name of digital table name in database
 AD_TABLE = "advertisments" #name of advertisements table name in database
-keys = ["path","artist","album","song","length"]  
-LENGTH_INDEX = 4 #index into a song that give the time length of the song
+keys = ["path","artist","album","song","genre","length","typeName"]  
+LENGTH_INDEX = 5 #index into a song that give the time length of the song
 ARTIST_INDEX = 1
+TYPE_INDEX = 6
 mostRecentArtists = [] # list of the most recent artist put into the playlist
 percentage = 0.6
 proximity = 0 #to be set based of the total number of artists and desired percentage
+playlistType = [[1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0], #monday
+                [0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0], #tuesday
+                [0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0], #wednesday
+                [0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0], #thursday
+                [0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1], #friday
+                [1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1], #saturday
+                [1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1]] #sunday
+                #KEY: 0 = ambient overnight, 1 = blues overnight, 2 = rotation
+playlistTypeKeys = ["ambient","blues","rotation"]
 #--
 
 
@@ -51,9 +61,8 @@ def outputPlaylists(day,listOfPlaylists):
             outfile.close()           
     return;
 
-#generates a set of 24 playlists per day for the next calander week (Sun to Sat)
+#generates a set of 24 playlists per day for the next 7 days
 def nextWeekPlaylists(day):
-    #CHANGE NEEDED:next 7 days instead of next calendar week
     #day = datetime.date.today()
     #day += datetime.timedelta(1)    
     #while day.weekday() != 6:
@@ -61,8 +70,8 @@ def nextWeekPlaylists(day):
     print "for 7 days from "+str(day)+"\n"
     for i in range(7):
         dayOfPls = []
-        for j in range(24):
-            pl = generatePlaylist()
+        for hour in range(24):
+            pl = generatePlaylist(hour,day)
             dayOfPls.append(pl)
         outputPlaylists(day.strftime('%Y-%m-%d'),dayOfPls)
         outputProximity(day)
@@ -73,8 +82,8 @@ def nextWeekPlaylists(day):
 #generates a set of 24 playlists for the given day
 def Playlist(day):
     dayOfPls = []
-    for j in range(24):
-        pl = generatePlaylist()
+    for hour in range(24):
+        pl = generatePlaylist(hour,day)
         dayOfPls.append(pl)
     outputPlaylists(day.strftime('%Y-%m-%d'),dayOfPls)
     outputProximity(day)
@@ -86,8 +95,9 @@ def Playlist(day):
 #standards for when ads and other things need to be there.
 #This is where the algoritm will live that checks is the song is allowed
 #into the playlist.
-def generatePlaylist():
+def generatePlaylist(hour,day):
     #Variables    
+    type = playlistTypeKeys[int(playlistType[int(day.weekday())][hour])]
     timeTotal = 3600 #target length of the playlist in seconds
     marginError = 100 
     maxSongMisses = 20
@@ -111,8 +121,9 @@ def generatePlaylist():
         song = []    
         length = 0    
         if songsAdded < songsPerAd : #a song needs to be added to the playlist
-            song = randomSong()
+            song = randomSong(type)
             #check if its artist has been played recently
+            #print song
             artist = song[ARTIST_INDEX]
             valid = checkArtist(artist)
             length = int(song[LENGTH_INDEX])
@@ -179,12 +190,14 @@ def randomAD():
         return None;
     return ad    
 
-def randomSong():
+def randomSong(type):
     #should be a random song from the digital music table of the db
     #Connect to database, grab the random line and return it
+    #type refers to wether it is a rotation song, ambient overnight
+    #or blues overnight song
     conn = sqlite3.connect(os.getcwd()+"/../db/music.db")
     c = conn.cursor() 
-    c.execute('SELECT * FROM '+DIGITAL_TABLE+' ORDER BY RANDOM() LIMIT 1')
+    c.execute('SELECT * FROM '+DIGITAL_TABLE+' WHERE typeName=? ORDER BY RANDOM() LIMIT 1',(type,))
     song = c.fetchone()
     conn.close() 
     if( not song):
