@@ -33,7 +33,7 @@ ADS_TABLE = "advertisments"
 approved_tables = ["all",DIGITAL_TABLE,ADS_TABLE]
 
 def printUsages():
-    print "Valid arguments: create [all|"+DIGITAL_TABLE+"|"+ADS_TABLE+"], destroy [all|"+DIGITAL_TABLE+"|"+ADS_TABLE+"], update ["+DIGITAL_TABLE+"|"+ADS_TABLE+"] [rotation|ambient|blues|ad] [location], status ["+DIGITAL_TABLE+"|"+ADS_TABLE+"]"
+    print "Valid arguments: create [all|"+DIGITAL_TABLE+"|"+ADS_TABLE+"], destroy [all|"+DIGITAL_TABLE+"|"+ADS_TABLE+"], update ["+DIGITAL_TABLE+"|"+ADS_TABLE+"] [rotation|ambient|blues|ad|legalID] [location], status ["+DIGITAL_TABLE+"|"+ADS_TABLE+"]"
 
 def statusDatabase(table):
     conn = sqlite3.connect(os.getcwd()+DB_PATH)
