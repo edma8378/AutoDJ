@@ -19,7 +19,6 @@ ARTIST_INDEX = 1
 TYPE_INDEX = 6
 mostRecentArtists = [] # list of the most recent artist put into the playlist
 percentage = 0.6
-proximity = 0 #to be set based of the total number of artists and desired percentage
 playlistType = [[1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0], #monday
                 [0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0], #tuesday
                 [0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0], #wednesday
@@ -29,6 +28,7 @@ playlistType = [[1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0], #monday
                 [1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1]] #sunday
                 #KEY: 0 = ambient overnight, 1 = blues overnight, 2 = rotation
 playlistTypeKeys = ["ambient","blues","rotation"]
+proximityTypes = []
 #--
 
 
@@ -110,9 +110,11 @@ def generatePlaylist(hour,day):
     misses  = 0
 
 
-    global proximity
-    proximity = int(countArtists() * percentage)
-    
+    #global proximity
+    proximity = proximityTypes[int(playlistType[int(day.weekday())][hour])]
+    while(len(mostRecentArtists) > proximity):
+            mostRecentArtists.pop()    
+
     song = randomAD()#PLACEHODLER for top of the hour legal ID
     length = int(song[LENGTH_INDEX])
     addedTime+=length
@@ -130,7 +132,7 @@ def generatePlaylist(hour,day):
             if not valid:
                 continue
             else:
-                if len(mostRecentArtists) >= proximity:
+                if len(mostRecentArtists) > proximity:
                     mostRecentArtists.pop()
                 mostRecentArtists.insert(0,artist)
             if (length + addedTime) > timeTotal:
@@ -199,22 +201,28 @@ def randomSong(type):
     c = conn.cursor() 
     c.execute('SELECT * FROM '+DIGITAL_TABLE+' WHERE typeName=? ORDER BY RANDOM() LIMIT 1',(type,))
     song = c.fetchone()
-    conn.close() 
+     
     if( not song):
+        #grabbing the type might have failed, try again without type
+        c.execute('SELECT * FROM '+DIGITAL_TABLE+' ORDER BY RANDOM() LIMIT 1')
+        song = c.fetchone()
+        conn.close()
+        if song:
+            return song
         print "Table not present. Please run \"./DatabaseTools.py create "+DIGITAL_TABLE+"\"\n"
         return None;
-
+    conn.close()
     return song
 
 def printUsages():
     print "Valid Arguments: today, tomorrow, week"
     return;
 
-def countArtists():
+def countArtists(type):
     conn = sqlite3.connect(os.getcwd()+"/../db/music.db")
     c = conn.cursor() 
     total = 0
-    for row in c.execute('SELECT DISTINCT artist FROM '+DIGITAL_TABLE):
+    for row in c.execute('SELECT DISTINCT artist FROM '+DIGITAL_TABLE+' WHERE typeName=?',(type,)):
         total+=1
     #print "Number of artists:"+str(total)+"\n"
     conn.close()
@@ -228,22 +236,29 @@ def main():
         printUsages()
         exit()
     command = sys.argv[1];
-    
+    i = 0
+    for t in playlistTypeKeys:
+        proximityTypes.append(int(countArtists(t) * percentage))
+        i+=1
+
     today = datetime.date.today()
     yesterday = today - datetime.timedelta(1)
     tomorrow = today + datetime.timedelta(1)
     filename = ""
-
+    temp = 0
     if command == "today":
         filename = os.getcwd()+"/../proximity/"+str(yesterday)
+        temp = countArtists(playlistTypeKeys[playlistType[int(yesterday.weekday())][0]])
+        #print temp
     else:
         filename = os.getcwd()+"/../proximity/"+str(today)
+        temp = countArtists(playlistTypeKeys[playlistType[int(today.weekday())][0]])
 
     if (os.path.exists(filename)):
         mostRecentArtists = [line.rstrip('\n') for line in open(filename)]
-        while(len(mostRecentArtists) > proximity):
+        while(len(mostRecentArtists) > temp):
             mostRecentArtists.pop()
-        print mostRecentArtists
+        
 
     if command == "tomorrow":
         print "Creating playlist for tomorrow"
