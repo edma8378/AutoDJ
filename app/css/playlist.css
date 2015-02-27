@@ -1,22 +1,84 @@
-body {
-	background-color: #ddd;
+/* overall styles */
+* {
+	padding: 0px;
+	margin: 0px;
 }
 
-#header{
-	width: 100%;
-	background-color: black;
-	font-color: #efe;
-	height: 30px;
-	padding: 5px;
+body {
+	background-color: #fff;
 }
+
+/* Top Bar */
+#header {
+	width: 100%;
+	position: relative;
+	top: 0px;
+	left: 0px;
+	background-color: black;
+	font-color: #fff;
+	height: 30px;
+}
+#logout {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+}
+
+a:link, visited, over, active {
+	font-size: 24px;
+    color: white;
+    text-decoration: none;
+}
+
+/* Full Page Container */
 
 #content{
 	margin: 0 auto;
-	width: 80%;
+	width: 100%;
+	height: 100%;
 	min-height: 500px;
-	padding: 10px;
 	background-color: white;
 }
+
+/* left in hour block */
+#left_in_hour {
+	background-color: #c04931;
+	color: black;
+	position: relative;
+	right: 0px;
+	float: right;
+	width: 200px;
+	height: 200px;
+}
+
+/* current box */
+#currentlyPlaying {
+	background-color: black;
+	color: white;
+	position: relative;
+	right: 0px;
+	float: right;
+}
+
+/* hot buttons */
+#hot_buttons {
+	background-color: white;
+	outline-style: solid;
+	outline-color: black;
+	outline-width: 2px;
+	position: relative;
+	right:0px;
+	float: right;
+	width: 200px;
+	height: 200px;
+}
+
+/* Notifications */
+
+/* Playlist */
+
+
+
 
 #logo {
 	position: relative;
@@ -83,41 +145,6 @@ h2#currentlyPlaying{
 #playbutton :active {
 	position: relative;
 	top: 1px;
-}
-
-.orange{
-	color: #FEF4E9;
-	border: 3px solid #191919;
-	background: #d8422b; /* Old browsers */
-	background: -moz-linear-gradient(top,  #d8422b 0%, #db2000 46%, #262626 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#d8422b), color-stop(46%,#db2000), color-stop(100%,#262626)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top,  #d8422b 0%,#db2000 46%,#262626 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top,  #d8422b 0%,#db2000 46%,#262626 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top,  #d8422b 0%,#db2000 46%,#262626 100%); /* IE10+ */
-	background: linear-gradient(to bottom,  #d8422b 0%,#db2000 46%,#262626 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d8422b', endColorstr='#262626',GradientType=0 ); /* IE6-9 */
-}
-
-.orange:hover {
-	background: #d8422b; /* Old browsers */
-	background: -moz-linear-gradient(top,  #d8422b 0%, #961b00 46%, #262626 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#d8422b), color-stop(46%,#961b00), color-stop(100%,#262626)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top,  #d8422b 0%,#961b00 46%,#262626 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top,  #d8422b 0%,#961b00 46%,#262626 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top,  #d8422b 0%,#961b00 46%,#262626 100%); /* IE10+ */
-	background: linear-gradient(to bottom,  #d8422b 0%,#961b00 46%,#262626 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d8422b', endColorstr='#262626',GradientType=0 ); /* IE6-9 */
-}
-
-.orange:active {
-	background: #d8422b; /* Old browsers */
-	background: -moz-linear-gradient(top,  #d8422b 0%, #630b00 46%, #262626 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#d8422b), color-stop(46%,#630b00), color-stop(100%,#262626)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top,  #d8422b 0%,#630b00 46%,#262626 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top,  #d8422b 0%,#630b00 46%,#262626 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top,  #d8422b 0%,#630b00 46%,#262626 100%); /* IE10+ */
-	background: linear-gradient(to bottom,  #d8422b 0%,#630b00 46%,#262626 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d8422b', endColorstr='#262626',GradientType=0 ); /* IE6-9 */
 }
 
 .sm2-bar-ui {
