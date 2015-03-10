@@ -11,7 +11,7 @@ import unittest
 import random
 import json
 
-playlist_dir = "../app/playlists/"
+playlist_dir = "../app/playlists/test/"
 
 class TestSequenceFunctions(unittest.TestCase):
 
@@ -47,8 +47,9 @@ class TestSequenceFunctions(unittest.TestCase):
         self.assertEqual(rand1[6] == type, True)
 
     def random_ad_test(self):
-        rand1 = randomAD()
-        rand2 = randomAD()
+        type = ""
+        rand1 = randomAD(type)
+        rand2 = randomAD(type)
         self.assertNotEqual(rand1, None)
         self.assertNotEqual(rand2, None)
         #self.assertNotEqual(rand2 == rand1, True)
