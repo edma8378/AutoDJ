@@ -115,7 +115,7 @@ def generatePlaylist(hour,day):
     while(len(mostRecentArtists) > proximity):
             mostRecentArtists.pop()    
 
-    song = randomAD()#PLACEHODLER for top of the hour legal ID
+    song = randomAD("legalID")
     length = int(song[LENGTH_INDEX])
     addedTime+=length
     playlist.append(list(song))
@@ -147,7 +147,7 @@ def generatePlaylist(hour,day):
             songsAdded+=1
             prevSong = song[1]
         else:   #it is time to place an ad in the playlist
-            song = randomAD()
+            song = randomAD("sweeper")
             length = int(song[LENGTH_INDEX])
             if (length + addedTime) > timeTotal:
                 break #selected Ad too long
@@ -180,16 +180,24 @@ def outputProximity(day):
         outfile.close()
     return
 
-def randomAD():
+def randomAD(type):
     #returns a random entry from the ads table
     conn = sqlite3.connect(os.getcwd()+"/../db/music.db")
     c = conn.cursor() 
-    c.execute('SELECT * FROM '+AD_TABLE+' ORDER BY RANDOM() LIMIT 1')
+    c.execute('SELECT * FROM '+AD_TABLE+' WHERE typeName=? ORDER BY RANDOM() LIMIT 1',(type,))
     ad = c.fetchone()
-    conn.close()
+    
     if( not ad):
+        #grabbing the type might have failed, try again without type
+        c.execute('SELECT * FROM '+AD_TABLE+' ORDER BY RANDOM() LIMIT 1')
+        song = c.fetchone()
+        conn.close()
+        if song:
+            return song
         print "Table not present. Please run \"./DatabaseTools.py create "+AD_TABLE+"\"\n"
         return None;
+
+    conn.close()
     return ad    
 
 def randomSong(type):

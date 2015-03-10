@@ -33,7 +33,7 @@ ADS_TABLE = "advertisments"
 approved_tables = ["all",DIGITAL_TABLE,ADS_TABLE]
 
 def printUsages():
-    print "Valid arguments: create [all|"+DIGITAL_TABLE+"|"+ADS_TABLE+"], destroy [all|"+DIGITAL_TABLE+"|"+ADS_TABLE+"], update ["+DIGITAL_TABLE+"|"+ADS_TABLE+"] [rotation|ambient|blues|ad|legalID] [location], status ["+DIGITAL_TABLE+"|"+ADS_TABLE+"]"
+    print "Valid arguments: create [all|"+DIGITAL_TABLE+"|"+ADS_TABLE+"], destroy [all|"+DIGITAL_TABLE+"|"+ADS_TABLE+"], update ["+DIGITAL_TABLE+"|"+ADS_TABLE+"] [rotation|ambient|blues|ad|legalID|sweeper] [location], status ["+DIGITAL_TABLE+"|"+ADS_TABLE+"]"
 
 def statusDatabase(table):
     conn = sqlite3.connect(os.getcwd()+DB_PATH)
@@ -81,7 +81,14 @@ def updateTable(table,path,type):
     insertions = []
     skipped = 0;
     for path in matches:
-        audiofile = eyed3.load(path)            
+        try:
+            audiofile = eyed3.load(path)            
+        except:
+            print "Failed to load song: "+path
+            continue;
+        if not audiofile.tag or not audiofile.info:
+            print "Invalid tag or info"
+            continue;        
         artist = audiofile.tag.artist if audiofile.tag.artist else "UNKNOWN"
         album = audiofile.tag.album if audiofile.tag.album else "UNKNOWN"
         title = audiofile.tag.title if audiofile.tag.title else "UNKNOWN"
@@ -239,7 +246,6 @@ def main():
     elif command == "clean":
         print "Cleaning database"
         print "<This will check that the path entry in the given table still points to a valid file>"
-        print "In development"
         cleanTable(table)
         
         exit()
