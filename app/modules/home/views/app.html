@@ -3,26 +3,29 @@
     <p id="logout"><a href="#/login">Sign Out</a></p>
   
       <!-- <button id="autoDJButton">AutoDJ</button> -->
-    <div id="left_in_hour">
-      <p> Left In Hour </p>
-    </div>
-    <div id="currentlyPlaying">
-      <h2 id="songName"> Insert Current Song Name Here </h2>
-      <h3 id="artistAlbum">Artist Name - Album Name</h3>
-      <div class="progress-bar green stripes">
-        <span id="progBar"></span>
+    
+    <div id="right_bar">
+      <div id="left_in_hour">
+        <p> Left In Hour </p>
       </div>
-      <p id ="timeLeft">Loading...</p>
-    </div>
-    <div id="hot_buttons">
-    </div>
-    <div id="notification">
+      <div id="currentlyPlaying">
+        <h2 id="songName"> Insert Current Song Name Here </h2>
+        <h3 id="artistAlbum"> Artist Name - Album Name </h3>
+        <div class="progress-bar green stripes">
+          <span id="progBar"></span>
+        </div>
+        <p id ="timeLeft">Loading...</p>
+      </div>
+      <div id="hot_buttons">
+      </div>
+      <div id="notification">
+      </div>
     </div>
     <div id="playlist"> 
-      <h2 id="playHeader"> Playlist ({{pl}}): </h2>
       <ol>
         <li ng-repeat="playlist in playlists">
-          {{playlist.artist}} - <em>{{playlist.song}}</em>
+          <em>{{playlist.song}}</em>
+          By <span> {{playlist.artist}} </span> on <span> {{playlist.album}} </span> 
         </li>
       </ol>
       <p> {{playlist.length}} </p>
