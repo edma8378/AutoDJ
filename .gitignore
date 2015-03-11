@@ -1,8 +1,6 @@
 *.pyc
-
 app/playlists
 proximity/
-
 app/config.codekit
 prepros.cfg
 *.sublime-workspace
