@@ -66,7 +66,7 @@ exports.config = {
   //
   // In addition, you may specify count, shardTestFiles, and maxInstances.
   capabilities: {
-    browserName: 'chrome',
+    browserName: 'firefox',  //firefox for the raspberry pi. 
 
     // Number of times to run this set of capabilities (in parallel, unless
     // limited by maxSessions). Default is 1.

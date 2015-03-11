@@ -2,5 +2,8 @@
 app/playlists
 proximity/
 app/config.codekit
-app/music/ambient
+prepros.cfg
+*.sublime-workspace
+app/music/overnight
+app/music/rotation
 *.db
