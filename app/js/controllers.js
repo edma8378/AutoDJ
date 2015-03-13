@@ -1,7 +1,5 @@
-'use strict';
- 
-angular.module('Home')
- 
+
+angular.module('AutoDJ', [])
 .controller('musicPlayer', ['$scope', '$filter', '$http', function ($scope, $filter, $http) {
   soundManager.setup({
     url:'swf/',
