@@ -29,14 +29,15 @@ angular.module('Home')
     return this;
     // body...
   }
-  $scope.makeMusic = function(songId) {
-    $scope.numSong = songId.toString();
+  $scope.makeMusic = function(songNum) {
+    $scope.numSong = songNum.toString();
     var json = $scope.playlists;
-    $scope.path = json[songId].path;
-    document.getElementById("songName").innerHTML = json[songId].song;
-    document.getElementById("artistAlbum").innerHTML = json[songId].artist + "-" + json[songId].album;
+    $scope.path = json[songNum].path;
+    $scope.songId = json[songNum].song;
+    document.getElementById("songName").innerHTML = json[songNum].song;
+    document.getElementById("artistAlbum").innerHTML = json[songNum].artist + "-" + json[songNum].album;
     soundManager.createSound({
-        id: $scope.numSong,
+        id: $scope.songNum + "-" + $scope.pl,
         url: $scope.path,
         stream: true,
         autoLoad: true,
@@ -49,7 +50,7 @@ angular.module('Home')
               document.getElementById("progBar").style.width = $scope.timeProg +"%";
           },
         onfinish: function() {
-          if(songId >= $scope.playlists.length - 1)
+          if(songNum >= $scope.playlists.length - 1)
           {
             $scope.date.addHours(1);
             $scope.filt = $filter('date')($scope.date, "yyyy-MM-dd/H");
@@ -58,8 +59,8 @@ angular.module('Home')
           }
           else{
               console.log($scope.playlists.length);
-              songId++;
-              $scope.makeMusic(songId)
+              songNum++;
+              $scope.makeMusic(songNum)
           }
         }
       });
