@@ -7,3 +7,4 @@ prepros.cfg
 app/music/overnight
 app/music/rotation
 *.db
+dependencies/eyeD3-*/
