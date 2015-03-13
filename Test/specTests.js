@@ -8,6 +8,9 @@ describe('AutoDJ', function() {
 
 
 	beforeEach(function() {
+		// Change this to the address you're using
+ 		// This much match protractor_conf.js baseURL
+		browser.get('http://localhost:8000/app');
 	});
 	
 	it('should have the correct title', function() {
