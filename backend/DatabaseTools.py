@@ -123,7 +123,8 @@ def cleanTable(table):
             print "File missing:"+song[0]
             deletions.append(song)
     for entry in deletions:
-        c.execute('DELETE FROM '+table+ 'WHERE path=?',entry[0])
+        c.execute('DELETE FROM '+table+ ' WHERE path=?',(entry[0],))
+	print entry[0]
     conn.close() 
     return;
 

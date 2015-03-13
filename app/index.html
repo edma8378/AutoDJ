@@ -1,23 +1,17 @@
 <!DOCTYPE html>
-<html ng-app="myApp">
-
+<html>
   <head>
     <meta charset="utf-8" />
     <title>AutoDJ</title>
     <script src="//code.jquery.com/jquery-2.0.3.min.js"></script>
     <script src="//code.angularjs.org/1.2.20/angular.js"></script>
-    <script src="//code.angularjs.org/1.2.20/angular-route.js"></script>
-    <script src="//code.angularjs.org/1.2.13/angular-cookies.js"></script>
     <script src="js/libraries/soundmanager2-jsmin.js"></script>
-    <script src="scripts/app.js"></script>
-    <script src="modules/authentication/services.js"></script>
-    <script src="modules/authentication/controllers.js"></script>
-    <script src="modules/home/controllers.js"></script>
+    <script src="js/controllers.js"></script>>
+    <link rel="stylesheet" type="text/css" href="css/reset.css" />
     <link rel="stylesheet" type="text/css" href="css/playlist.css" />
   </head>
-  <body>
+  <body ng-app="AutoDJ" ng-controller="musicPlayer">
     <div id="header">
-
     </div><!-- Close id header-->
 
     <div id="content">
@@ -25,6 +19,7 @@
             <div ng-view></div>
         </div>
     </div>
+    
   </body>
 
 </html>

@@ -147,6 +147,9 @@ def generatePlaylist(hour,day):
             songsAdded+=1
             prevSong = song[1]
         else:   #it is time to place an ad in the playlist
+	    songsAdded = 0
+	    continue
+
             song = randomAD("sweeper")
             length = int(song[LENGTH_INDEX])
             if (length + addedTime) > timeTotal:
