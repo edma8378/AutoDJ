@@ -1,12 +1,34 @@
+UPDATE: Protractor tests can be run on the raspberry pi! EVERYONE CAN TEST
+	Follow the instructions below with these added caveats:
+	ssh into the raspberry pi with ssh -X to enable graphics
+	start the webdriver manager on the raspberry pi, I use two terminals 		to do this. I ssh -X in twice. That's probably bad practice, but meh
+	Go to where the app server is located in /var/www/AutoDJ
+	Even further, go into the test directory. RUN THE TESTS. DO IT.	
+	They are very slow. Wait.
 
-BASIC TEST RUN:  
-	RUN SERVER:   $ webdriver-manager start
-	RUN TESTS:    $ protractor conf.js
+Common problem #1: Make sure the path to the server is correct. 
+	CHANGE THE SPEC FILE LINE browser.get('http://localhost');
+	TO: browser.get('http://localhost/AutoDJ/app');
+	We might have to edit the spec file every time now because the 		filestructure on the raspberry pi.
+Common problem #2: Change the conf.s file. The browsername should be firefox 		instead of chrome because the pi has firefox. 
 
-python module problems
-export PYTHONPATH=$PYTHONPATH:/my/other/path
+BASIC TEST RUN:
+        RUN SERVER:   $ webdriver-manager start
+        RUN TESTS:    $ protractor conf.js
 
-If that doesn't work keep reading
+PYTHON TESTS:
+        python UnitTest.py
+
+Python common problem:
+	python module problems, can't see modules. solution below
+export PYTHONPATH=$PYTHONPATH:/my/other/path    <-path to root folder of app
+
+Protractor common problem:
+        Make sure the path to the server hosting the app is correct in the spec
+        file. browser.get('your server'); And matches the baseUrl In the 	conf.js file. Make sure webdriver server is 	running.
+
+If protractor tests don't work keep reading
+
 
 Dependencies:
 	 node.js          

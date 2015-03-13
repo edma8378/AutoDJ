@@ -127,6 +127,7 @@ h2#currentlyPlaying{
 .progress-bar {
     background-color: #1a1a1a;
     height: 10px;
+    width: 100%;
     padding: 2px;
     margin: 5px 0 0 0;         
     border-radius: 5px;
@@ -167,4 +168,51 @@ h2#currentlyPlaying{
 
 @keyframes animate-stripes {
     0% {background-position: 0 0;} 100% {background-position: 60px 0;}
+}
+
+.av-login {
+  border-radius: 3px;
+  border: 1px solid $grayShiny;
+  background-color: white;
+
+  h3 {
+    width: 500px;
+    background-color: $grayDark;
+    color: $brand1190;
+    font-weight: bold;
+    margin: 0;
+    padding: 14px 20px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+  }
+  .username,
+  .password {
+    margin: 15px;
+  }
+  .username {
+    width: 470px;
+  }
+  .password {
+    width: 387px;
+    margin-top: 0;
+    margin-right: 10px;
+    display: inline;
+  }
+  .submit {
+    position: relative;
+    bottom: 7px;
+  }
+}
+.av-fill-viewport {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+}
+
+.av-center-contents {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
