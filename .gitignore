@@ -6,5 +6,5 @@ prepros.cfg
 *.sublime-workspace
 app/music/overnight
 app/music/rotation
-*.db
+db/*.db
 dependencies/eyeD3-*/
