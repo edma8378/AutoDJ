@@ -9,10 +9,8 @@ describe('AutoDJ', function() {
 
 	beforeEach(function() {
 		// Change this to the address you're using
-		// This much match or be a subdirectory of the
-		// protractor_conf.js baseURL
-		// Raspberry pi: browser.get('http://localhost/AutoDJ/app');
-		  browser.get('http://localhost');
+ 		// This much match protractor_conf.js baseURL
+		browser.get('http://localhost:8000/app');
 	});
 	
 	it('should have the correct title', function() {
