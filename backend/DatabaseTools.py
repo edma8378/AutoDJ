@@ -124,7 +124,7 @@ def cleanTable(table):
             deletions.append(song)
     for entry in deletions:
         c.execute('DELETE FROM '+table+ ' WHERE path=?',(entry[0],))
-	print entry[0]
+	conn.commit()
     conn.close() 
     return;
 
@@ -246,9 +246,7 @@ def main():
 
     elif command == "clean":
         print "Cleaning database"
-        print "<This will check that the path entry in the given table still points to a valid file>"
         cleanTable(table)
-        
         exit()
 
     printUsages()

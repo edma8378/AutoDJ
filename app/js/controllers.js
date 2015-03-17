@@ -35,7 +35,7 @@ angular.module('AutoDJ', [])
     document.getElementById("songName").innerHTML = json[songNum].song;
     document.getElementById("artistAlbum").innerHTML = json[songNum].artist + "-" + json[songNum].album;
     soundManager.createSound({
-        id: $scope.songNum + "-" + $scope.pl,
+        //id: $scope.songNum + "-" + $scope.pl,
         url: $scope.path,
         stream: true,
         autoLoad: true,
