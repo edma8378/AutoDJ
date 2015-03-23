@@ -8,6 +8,52 @@ body {
 	background-color: #fff;
 }
 
+#container{
+	width: 100%;
+	/* Firefox */
+	height: -moz-calc(100vh - 30px);
+	/* WebKit */
+	height: -webkit-calc(100vh - 30px);
+	/* Opera */
+	height: -o-calc(100vh - 30px);
+	/* Standard */
+	height: calc(100vh - 30px);
+	background-color: green;
+}
+
+::-webkit-scrollbar { 
+    display: none; 
+}
+
+#leftAlign{
+	width: 65%;
+	/* Firefox */
+	height: -moz-calc(100vh - 30px);
+	/* WebKit */
+	height: -webkit-calc(100vh - 30px);
+	/* Opera */
+	height: -o-calc(100vh - 30px);
+	/* Standard */
+	height: calc(100vh - 30px);
+	float: left;
+	background-color: #ffaabb;
+	overflow: auto;
+}
+
+#rightAlign{
+	width: 35%;
+	/* Firefox */
+	height: -moz-calc(100vh - 30px);
+	/* WebKit */
+	height: -webkit-calc(100vh - 30px);
+	/* Opera */
+	height: -o-calc(100vh - 30px);
+	/* Standard */
+	height: calc(100vh - 30px);
+	float: right;
+	background-color: blue;
+}
+
 /* Top Bar */
 #header {
 	width: 100%;
@@ -31,9 +77,9 @@ body {
 }*/
 
 #right_bar {
-	position: absolute;
+	/*position: absolute;*/
 	right: 0;
-	width: 450px;
+	/*width: 450px;*/
 	height: 1000px;
 }
 
@@ -49,7 +95,7 @@ body {
 #left_in_hour {
 	background-color: #c04931;
 	color: black;
-	position: relative;
+	/*position: relative;*/
 	right: 0px;
 	float: right;
 	height: 200px;
@@ -60,7 +106,7 @@ body {
 	background-color: black;
 	width: 100%;
 	color: white;
-	position: relative;
+	/*position: relative;*/
 	right: 0px;
 	float: right;
 }
@@ -71,7 +117,7 @@ body {
 	outline-style: solid;
 	outline-color: black;
 	outline-width: 2px;
-	position: relative;
+	/*position: relative;*/
 	right:0px;
 	float: right;
 	height: 200px;
@@ -86,23 +132,45 @@ body {
 
 /* Playlist */
 #playlist {
-	position: absolute;
 	left: 0;
-	width: 1200px;
+	font-size: 1.0em;
+}
+
+#playlist ol{
+	list-style-type: none;
 }
 
 #playlist li {
 	background-color: purple;
-	width: 100%;
-	padding: 10px;
-	text-align: center;
+	border: 2px solid black;
+	padding: 5px;
+
+}
+
+#playlist h2{
+	font-size: 1.3em;
+	padding-bottom: 3px;
+}
+
+#playlist .artistInList{
+	font-weight: bold;
+}
+
+#playlist .albumInList{
+	font-weight: bold;
+}
+
+#playlist .timeInSong{
+	float: right;
+	font-size: 1.2em;
+	margin-top: 10px;
 }
 
 /*/* Progress Bar */
 .progress-bar {
     background-color: #1a1a1a;
     height: 10px;
-    width: 100%;
+    width: 90%;
     padding: 2px;
     margin: 5px 0 0 0;         
     border-radius: 5px;
@@ -112,7 +180,7 @@ body {
 
 .progress-bar span {
     display: inline-block;
-    height: 100%;
+    height: 90%;
     border-radius: 3px;
     box-shadow: 0 1px 0 rgba(255, 255, 255, .5) inset;
     transition: width .4s ease-in-out;    

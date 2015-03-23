@@ -6,20 +6,43 @@
     <script src="//code.jquery.com/jquery-2.0.3.min.js"></script>
     <script src="//code.angularjs.org/1.2.20/angular.js"></script>
     <script src="js/libraries/soundmanager2-jsmin.js"></script>
-    <script src="js/controllers.js"></script>>
+    <script src="js/controllers.js"></script>
     <link rel="stylesheet" type="text/css" href="css/reset.css" />
     <link rel="stylesheet" type="text/css" href="css/playlist.css" />
   </head>
   <body ng-app="AutoDJ" ng-controller="musicPlayer">
     <div id="header">
     </div><!-- Close id header-->
+    <!--<img id="logo" src="images/logo.jpg">-->
 
-    <div id="content">
-        <div class="container">
-            <div ng-view></div>
-        </div>
-    </div>
-    
+        <!-- <button id="autoDJButton">AutoDJ</button> -->
+    <div id="container">
+      <div id="rightAlign">
+          <div id="currentlyPlaying">
+            <h2 id="songName"> Insert Current Song Name Here </h2>
+            <h3 id="artistAlbum">Artist Name - Album Name</h3>
+            <div class="progress-bar green stripes">
+              <span id="progBar"></span>
+            </div>
+            <p id ="timeLeft">Loading...</p>
+          </div>
+        </div><!--Close rightAlign-->
+
+    <div id="leftAlign">
+      <div id="playlist"> 
+        <!--<h2 id="playHeader"> Playlist ({{pl}}): </h2>-->
+        <ol>
+          <li ng-repeat="playlist in playlists">
+            <div class="timeInSong">{{playlist.length}}</div>
+            <h2>{{playlist.song}}</h2>
+            <p>By <span class="artistInList">{{playlist.artist}}</span> on <span class="albumInList">{{playlist.album}}</span></p>
+          </li>
+        </ol>
+        <p> {{playlist.length}} </p>
+      </div>
+    </div><!--Close leftAlign-->
+    </div><!--Close container-->
+</div>
   </body>
 
 </html>
