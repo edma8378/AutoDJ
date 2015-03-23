@@ -6,6 +6,7 @@
 
 body {
 	background-color: #fff;
+	font-family: Helvetica Neue, Helvetica, sans-serif;
 }
 
 #container{
@@ -18,7 +19,7 @@ body {
 	height: -o-calc(100vh - 30px);
 	/* Standard */
 	height: calc(100vh - 30px);
-	background-color: green;
+	/*background-color: green; Testing purposes only*/
 }
 
 ::-webkit-scrollbar { 
@@ -36,7 +37,7 @@ body {
 	/* Standard */
 	height: calc(100vh - 30px);
 	float: left;
-	background-color: #ffaabb;
+	/*background-color: #ffaabb; Testing purposes only*/
 	overflow: auto;
 }
 
@@ -51,7 +52,7 @@ body {
 	/* Standard */
 	height: calc(100vh - 30px);
 	float: right;
-	background-color: blue;
+	/*background-color: blue; Testing purposes only*/
 }
 
 /* Top Bar */
@@ -92,42 +93,83 @@ body {
 }
 
 /* left in hour block */
-#left_in_hour {
+#leftInHour {
+	padding: 5px;
+	height: calc(15vh - 10px);
+	width: calc(100% - 10px);
 	background-color: #c04931;
 	color: black;
 	/*position: relative;*/
 	right: 0px;
 	float: right;
-	height: 200px;
+	text-align: center;
+	font-size: 0.9em;
+}
+
+#leftInHour #timeLeftInHour{
+	font-size: 2.0em;
+	text-shadow:
+	   -2px -2px 0 #fff,  
+	    2px -2px 0 #fff,
+	    -2px 2px 0 #fff,
+	     2px 2px 0 #fff;
 }
 
 /* current box */
 #currentlyPlaying {
+	padding: 5px;
+	width: calc(100% - 10px);
+	height: calc(40vh - 10px);
 	background-color: black;
-	width: 100%;
 	color: white;
 	/*position: relative;*/
 	right: 0px;
 	float: right;
+	text-align: center;
+}
+
+#currentlyPlaying #currentlyPlayingHeader{
+	text-align: left;
+	color: #c04931;
+	font-weight: bold;
+}
+
+#currentlyPlaying #songName{
+	padding: 10px;
+}
+
+#currentlyPlaying #artistAlbum{
+	padding: 5px;
+	margin-bottom: 10px;
+}
+
+#currentlyPlaying #timeLeft{
+	padding: 5px;
+	border: 1px solid #c04931;
+	width: 40%;
+	margin: 0 auto;
 }
 
 /* hot buttons */
-#hot_buttons {
+#hotButtons {
+	padding: 3px;
+	border-bottom: 2px solid black;
+	height: calc(10vh - 7px);
+	width: calc(100% - 6px);
 	background-color: white;
-	outline-style: solid;
-	outline-color: black;
-	outline-width: 2px;
 	/*position: relative;*/
 	right:0px;
 	float: right;
-	height: 200px;
 }
 
 /* Notifications */
 #notifications {
-	height: 300px;
-	width: 100%;
-	background-color: blue;
+	padding: 5px;
+	width: calc(100% - 10px);
+	height: calc(30vh - 10px);
+	right: 0px;
+	float: right;
+	background-color: white;
 }
 
 /* Playlist */
@@ -141,10 +183,22 @@ body {
 }
 
 #playlist li {
-	background-color: purple;
-	border: 2px solid black;
+	border-bottom: 2px solid black;
+	border-right: 1px solid black;
+	border-left: 1px solid black;
 	padding: 5px;
+}
 
+#playlist .notYetPlayed{
+	background-color: #35C959;
+}
+
+#playlist .currentlyPlaying{
+	background-color: #62B8F5;
+}
+
+#playlist .alreadyPlayed{
+	background-color: #808080;
 }
 
 #playlist h2{
@@ -172,10 +226,11 @@ body {
     height: 10px;
     width: 90%;
     padding: 2px;
-    margin: 5px 0 0 0;         
+    margin: 0 auto;
+    margin-top: 10px;      
     border-radius: 5px;
     box-shadow: 0 1px 5px #000 inset, 0 1px 0 #444;    
-    text-align: center;       
+    text-align: center;    
 }
 
 .progress-bar span {

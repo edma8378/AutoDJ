@@ -18,13 +18,24 @@
         <!-- <button id="autoDJButton">AutoDJ</button> -->
     <div id="container">
       <div id="rightAlign">
+          <div id="leftInHour">
+            <h1><span id="timeLeftInHour">59:99</span> left in hour</h1>
+            <p>[toggle to live]</p>
+          </div>
           <div id="currentlyPlaying">
+            <h2 id="currentlyPlayingHeader">Current:</h2>
             <h2 id="songName"> Insert Current Song Name Here </h2>
             <h3 id="artistAlbum">Artist Name - Album Name</h3>
+            <p id ="timeLeft">Loading...</p>
             <div class="progress-bar green stripes">
               <span id="progBar"></span>
             </div>
-            <p id ="timeLeft">Loading...</p>
+          </div>
+          <div id="hotButtons">
+            <p>Insert some greyed-out circles here!</p>
+          </div>
+          <div id="notifications">
+            <p>Notifications</p>
           </div>
         </div><!--Close rightAlign-->
 
@@ -32,7 +43,7 @@
       <div id="playlist"> 
         <!--<h2 id="playHeader"> Playlist ({{pl}}): </h2>-->
         <ol>
-          <li ng-repeat="playlist in playlists">
+          <li ng-repeat="playlist in playlists" class="notYetPlayed">
             <div class="timeInSong">{{playlist.length}}</div>
             <h2>{{playlist.song}}</h2>
             <p>By <span class="artistInList">{{playlist.artist}}</span> on <span class="albumInList">{{playlist.album}}</span></p>
