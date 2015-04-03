@@ -34,7 +34,7 @@ angular.module('AutoDJ', [])
     $scope.songId = json[songNum].song;
     document.getElementById("songName").innerHTML = json[songNum].song;
     document.getElementById("artistAlbum").innerHTML = json[songNum].artist + "-" + json[songNum].album;
-    soundManager.createSound({
+    var currentSound = soundManager.createSound({
         url: $scope.path,
         stream: true,
         autoLoad: true,
@@ -61,6 +61,12 @@ angular.module('AutoDJ', [])
           }
         }
       });
+    currentSound._a.addEventListener('stalled', function() {
+      if (!self.currentSound) return;
+      var audio = this;
+      audio.load();
+      audio.play();
+    });
   }
   $scope.makePlaylist = function(date, st) {
       $scope.pl = angular.lowercase(date).toString();
