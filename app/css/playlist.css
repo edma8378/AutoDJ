@@ -1,143 +1,221 @@
+/* overall styles */
+* {
+	padding: 0px;
+	margin: 0px;
+}
+
 body {
-	background-color: #ddd;
+	background-color: #fff;
+	font-family: Helvetica Neue, Helvetica, sans-serif;
 }
 
-#header{
+#container{
 	width: 100%;
-	background-color: black;
-	font-color: #efe;
-	height: 30px;
-	padding: 5px;
+	/* Firefox */
+	height: -moz-calc(100vh - 30px);
+	/* WebKit */
+	height: -webkit-calc(100vh - 30px);
+	/* Opera */
+	height: -o-calc(100vh - 30px);
+	/* Standard */
+	height: calc(100vh - 30px);
+	/*background-color: green; Testing purposes only*/
 }
 
-#content{
+::-webkit-scrollbar { 
+    display: none; 
+}
+
+#leftAlign{
+	width: 65%;
+	/* Firefox */
+	height: -moz-calc(100vh - 30px);
+	/* WebKit */
+	height: -webkit-calc(100vh - 30px);
+	/* Opera */
+	height: -o-calc(100vh - 30px);
+	/* Standard */
+	height: calc(100vh - 30px);
+	float: left;
+	/*background-color: #ffaabb; Testing purposes only*/
+	overflow: auto;
+}
+
+#rightAlign{
+	width: 35%;
+	/* Firefox */
+	height: -moz-calc(100vh - 30px);
+	/* WebKit */
+	height: -webkit-calc(100vh - 30px);
+	/* Opera */
+	height: -o-calc(100vh - 30px);
+	/* Standard */
+	height: calc(100vh - 30px);
+	float: right;
+	/*background-color: blue; Testing purposes only*/
+}
+
+/* Top Bar */
+#header {
+	width: 100%;
+	position: relative;
+	top: 0px;
+	left: 0px;
+	background-color: black;
+	font-color: #fff;
+	height: 30px;
+}
+#logout {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+}
+
+/*a:link, visited, over, active {
+	font-size: 24px;
+    color: white;
+    text-decoration: none;
+}*/
+
+#right_bar {
+	/*position: absolute;*/
+	right: 0;
+	/*width: 450px;*/
+	height: 1000px;
+}
+
+#content {
 	margin: 0 auto;
-	width: 80%;
+	width: 100%;
+	height: 100%;
 	min-height: 500px;
-	padding: 10px;
 	background-color: white;
 }
 
-#logo {
-	position: relative;
-	width: 300px;
+/* left in hour block */
+#leftInHour {
+	padding: 5px;
+	height: calc(25vh - 10px);
+	width: calc(100% - 10px);
+	background-color: #c04931;
+	color: black;
+	/*position: relative;*/
+	right: 0px;
+	float: right;
+	text-align: center;
+	font-size: 0.9em;
 }
 
-div#currentlyPlaying{
-	margin: 0 auto;
-	width: 75%;
-	padding: 10px;
+#leftInHour #timeLeftInHour{
+	font-size: 2.5em;
+	text-shadow:
+	   -2px -2px 0 #fff,  
+	    2px -2px 0 #fff,
+	    -2px 2px 0 #fff,
+	     2px 2px 0 #fff;
+}
+
+/* current box */
+#currentlyPlaying {
+	padding: 5px;
+	width: calc(100% - 10px);
+	height: calc(70vh - 10px);
+	background-color: black;
+	color: white;
+	/*position: relative;*/
+	right: 0px;
+	float: right;
 	text-align: center;
 }
 
-h2#currentlyPlaying{
-	text-align: center;
+#currentlyPlaying #currentlyPlayingHeader{
+	text-align: left;
+	color: #c04931;
 	font-weight: bold;
 }
 
-#playheader {
-
+#currentlyPlaying #songName{
+	padding: 10px;
 }
 
-#playlist {
-	position: relative;
+#currentlyPlaying #artistAlbum{
 	padding: 5px;
+	margin-bottom: 10px;
+}
+
+#currentlyPlaying #timeLeft{
+	padding: 5px;
+	border: 1px solid #c04931;
+	width: 40%;
+	margin: 0 auto;
+	font-size: 2.0em;
+	line-height: 2em;
+}
+
+/* Playlist */
+#playlist {
+	left: 0;
+	font-size: 1.0em;
 }
 
 #playlist ol{
+	list-style-type: none;
+}
+
+#playlist li {
+	border-bottom: 2px solid black;
+	border-right: 1px solid black;
+	border-left: 1px solid black;
 	padding: 5px;
-	padding-left: 50px;
-	list-style-type: lower-number;
 }
 
-#autoDJButton {
-	color: black;
-	border: solid 5px black;
-	font-size: 25px;
-	border-radius: 30px;
-	width: 100px;
-	height: 50px;
-	position: relative; 
-	background-color: red;
+#playlist .notYetPlayed{
+	background-color: #35C959;
 }
 
-#playbutton {
-	display: inline-block;
-	outline: none;
-	cursor: pointer;
-	text-align: center;
-	text-decoration: none;
+#playlist .currentlyPlaying{
+	background-color: #62B8F5;
+}
+
+#playlist .alreadyPlayed{
+	background-color: #808080;
+}
+
+#playlist h2{
+	font-size: 1.3em;
+	padding-bottom: 3px;
+}
+
+#playlist .artistInList{
 	font-weight: bold;
-	padding: .5em 2em .55em;
-	text-shadow: 0 1px 1px rgba(0,0,0,.3);
-	-webkit-border-radius: .5em; 
-	-moz-border-radius: .5em;
-	border-radius: .5em;
-	-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
-	-moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
-	box-shadow: 0 1px 2px rgba(0,0,0,.2);
-}
-#playbutton :hover {
-	text-decoration: none;
-}
-#playbutton :active {
-	position: relative;
-	top: 1px;
 }
 
-.orange{
-	color: #FEF4E9;
-	border: 3px solid #191919;
-	background: #d8422b; /* Old browsers */
-	background: -moz-linear-gradient(top,  #d8422b 0%, #db2000 46%, #262626 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#d8422b), color-stop(46%,#db2000), color-stop(100%,#262626)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top,  #d8422b 0%,#db2000 46%,#262626 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top,  #d8422b 0%,#db2000 46%,#262626 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top,  #d8422b 0%,#db2000 46%,#262626 100%); /* IE10+ */
-	background: linear-gradient(to bottom,  #d8422b 0%,#db2000 46%,#262626 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d8422b', endColorstr='#262626',GradientType=0 ); /* IE6-9 */
+#playlist .albumInList{
+	font-weight: bold;
 }
 
-.orange:hover {
-	background: #d8422b; /* Old browsers */
-	background: -moz-linear-gradient(top,  #d8422b 0%, #961b00 46%, #262626 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#d8422b), color-stop(46%,#961b00), color-stop(100%,#262626)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top,  #d8422b 0%,#961b00 46%,#262626 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top,  #d8422b 0%,#961b00 46%,#262626 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top,  #d8422b 0%,#961b00 46%,#262626 100%); /* IE10+ */
-	background: linear-gradient(to bottom,  #d8422b 0%,#961b00 46%,#262626 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d8422b', endColorstr='#262626',GradientType=0 ); /* IE6-9 */
+#playlist .timeInSong{
+	float: right;
+	font-size: 1.2em;
+	margin-top: 10px;
 }
 
-.orange:active {
-	background: #d8422b; /* Old browsers */
-	background: -moz-linear-gradient(top,  #d8422b 0%, #630b00 46%, #262626 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#d8422b), color-stop(46%,#630b00), color-stop(100%,#262626)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top,  #d8422b 0%,#630b00 46%,#262626 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top,  #d8422b 0%,#630b00 46%,#262626 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top,  #d8422b 0%,#630b00 46%,#262626 100%); /* IE10+ */
-	background: linear-gradient(to bottom,  #d8422b 0%,#630b00 46%,#262626 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d8422b', endColorstr='#262626',GradientType=0 ); /* IE6-9 */
-}
-
-.sm2-bar-ui {
-	font-size: 16px;
-	background-color: black;
-}
+/*/* Progress Bar */
 .progress-bar {
     background-color: #1a1a1a;
     height: 10px;
-    width: 100%;
+    width: 90%;
     padding: 2px;
-    margin: 5px 0 0 0;         
+    margin: 0 auto;
+    margin-top: 10px;      
     border-radius: 5px;
     box-shadow: 0 1px 5px #000 inset, 0 1px 0 #444;    
-    text-align: center;       
+    text-align: center;    
 }
 
 .progress-bar span {
     display: inline-block;
-    height: 100%;
+    height: 90%;
     border-radius: 3px;
     box-shadow: 0 1px 0 rgba(255, 255, 255, .5) inset;
     transition: width .4s ease-in-out;    
@@ -169,50 +247,4 @@ h2#currentlyPlaying{
 @keyframes animate-stripes {
     0% {background-position: 0 0;} 100% {background-position: 60px 0;}
 }
-
-.av-login {
-  border-radius: 3px;
-  border: 1px solid $grayShiny;
-  background-color: white;
-
-  h3 {
-    width: 500px;
-    background-color: $grayDark;
-    color: $brand1190;
-    font-weight: bold;
-    margin: 0;
-    padding: 14px 20px;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-  }
-  .username,
-  .password {
-    margin: 15px;
-  }
-  .username {
-    width: 470px;
-  }
-  .password {
-    width: 387px;
-    margin-top: 0;
-    margin-right: 10px;
-    display: inline;
-  }
-  .submit {
-    position: relative;
-    bottom: 7px;
-  }
-}
-.av-fill-viewport {
-  position: absolute;
-  width: 100vw;
-  height: 100vh;
-  top: 0;
-  left: 0;
-}
-
-.av-center-contents {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+*/

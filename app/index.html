@@ -1,37 +1,54 @@
 <!DOCTYPE html>
-<html ng-app="myApp">
-
+<html>
   <head>
     <meta charset="utf-8" />
     <title>AutoDJ</title>
     <script src="//code.jquery.com/jquery-2.0.3.min.js"></script>
     <script src="//code.angularjs.org/1.2.20/angular.js"></script>
-    <script src="//code.angularjs.org/1.2.20/angular-route.js"></script>
-    <script src="//code.angularjs.org/1.2.13/angular-cookies.js"></script>
     <script src="js/libraries/soundmanager2-jsmin.js"></script>
-    <script src="scripts/app.js"></script>
-    <script src="modules/authentication/services.js"></script>
-    <script src="modules/authentication/controllers.js"></script>
-    <script src="modules/home/controllers.js"></script>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+    <script src="js/controllers.js"></script>
     <link rel="stylesheet" type="text/css" href="css/reset.css" />
     <link rel="stylesheet" type="text/css" href="css/playlist.css" />
   </head>
-  <body>
+  <body ng-app="AutoDJ" ng-controller="musicPlayer">
     <div id="header">
-
     </div><!-- Close id header-->
+    <!--<img id="logo" src="images/logo.jpg">-->
 
-    <div id="content">
-    <img id="logo" src="images/logo.jpg">
-      <div class="jumbotron">
-        <div class="container">
-          <div class="col-xs-offset-2 col-xs-8">
-            <div ng-view></div>
+        <!-- <button id="autoDJButton">AutoDJ</button> -->
+    <div id="container">
+      <div id="rightAlign">
+          <div id="leftInHour">
+            <h1><span id="timeLeftInHour"></span></h1>
+            <h1>left in the hour</h1>
+            <p>[toggle to live]</p>
           </div>
-        </div>
+          <div id="currentlyPlaying">
+            <h2 id="currentlyPlayingHeader">Current:</h2>
+            <h2 id="songName"> Insert Current Song Name Here </h2>
+            <h3 id="artistAlbum">Artist Name - Album Name</h3>
+            <p id ="timeLeft">Loading...</p>
+            <div class="progress-bar green stripes">
+              <span id="progBar"></span>
+            </div>
+          </div>
+        </div><!--Close rightAlign-->
+
+    <div id="leftAlign">
+      <div id="playlist"> 
+        <!--<h2 id="playHeader"> Playlist ({{pl}}): </h2>-->
+        <ol>
+          <li ng-repeat="playlist in playlists" class="notYetPlayed">
+            <div class="timeInSong">{{playlist.length | toSeconds}}</div>
+            <h2>{{playlist.song}}</h2>
+            <p>By <span class="artistInList">{{playlist.artist}}</span> on <span class="albumInList">{{playlist.album}}</span></p>
+          </li>
+        </ol>
+        <p> {{playlist.length}} </p>
       </div>
-    </div>
+    </div><!--Close leftAlign-->
+    </div><!--Close container-->
+</div>
   </body>
 
 </html>

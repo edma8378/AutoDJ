@@ -98,9 +98,9 @@ def Playlist(day):
 def generatePlaylist(hour,day):
     #Variables    
     type = playlistTypeKeys[int(playlistType[int(day.weekday())][hour])]
-    timeTotal = 3600 #target length of the playlist in seconds
-    marginError = 100 
-    maxSongMisses = 20
+    timeTotal = 3720 #target length of the playlist in seconds
+    marginError = 60 
+    maxSongMisses = 30
     addedTime = 0
     songsPerAd = random.randint(2,4)
     songsAdded = 0
@@ -113,7 +113,7 @@ def generatePlaylist(hour,day):
     #global proximity
     proximity = proximityTypes[int(playlistType[int(day.weekday())][hour])]
     while(len(mostRecentArtists) > proximity):
-            mostRecentArtists.pop()    
+        mostRecentArtists.pop()    
 
     song = randomAD("legalID")
     length = int(song[LENGTH_INDEX])
@@ -147,28 +147,28 @@ def generatePlaylist(hour,day):
             songsAdded+=1
             prevSong = song[1]
         else:   #it is time to place an ad in the playlist
-	    songsAdded = 0
-	    continue
-
-            song = randomAD("sweeper")
-            length = int(song[LENGTH_INDEX])
-            if (length + addedTime) > timeTotal:
-                break #selected Ad too long
-            if song == prevAd:
-                misses+=1                
-                if misses < maxSongMisses:                
-                    continue
-                else:
-                    break
-            misses = 0
-            songsAdded = 0
-            prevAd = song
-            songsPerAd = random.randint(2,4)
+	        songsAdded = 0
+	        continue
+            
+            #song = randomAD("sweeper")
+            #length = int(song[LENGTH_INDEX])
+            #if (length + addedTime) > timeTotal:
+            #    break #selected Ad too long
+            #if song == prevAd:
+            #    misses+=1                
+            #    if misses < maxSongMisses:                
+            #        continue
+            #    else:
+            #        break
+            #misses = 0
+            #songsAdded = 0
+            #prevAd = song
+            #songsPerAd = random.randint(2,4)
             
         addedTime += int(song[LENGTH_INDEX])
         playlist.append(list(song))
         #print song
-
+    #print str(hour)+":"+str(addedTime)
     return playlist
 
 def checkArtist(artist):
