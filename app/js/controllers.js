@@ -1,5 +1,20 @@
-
 angular.module('AutoDJ', [])
+
+//Filter for taking the length of the song in seconds and formatting it to be mm:ss
+.filter('toSeconds', function()
+  {
+      return function(input)
+      {
+          var formattedString = "";
+          var minutes = Math.floor(input/60);
+          var seconds = input % 60;
+
+          formattedString += "" + minutes + ":" + (seconds < 10 ? "0" : "");
+          formattedString += "" + seconds;
+          return formattedString;
+  };
+})
+
 .controller('musicPlayer', ['$scope', '$filter', '$http', function ($scope, $filter, $http) {
   soundManager.setup({
     url:'swf/',
@@ -27,6 +42,18 @@ angular.module('AutoDJ', [])
     return this;
     // body...
   }
+
+
+  $scope.updateHour = function() {
+    var now = new Date();
+    var minutes = 60-now.getMinutes();
+    var seconds = 60-now.getSeconds();
+    if(minutes < 10) { minutes = "0" + minutes}
+    if(seconds < 10) { seconds = "0" + seconds}
+    var timeLeftHourFormatted = minutes + ":" + seconds;
+    document.getElementById("timeLeftInHour").innerHTML = timeLeftHourFormatted;
+  }
+
   $scope.makeMusic = function(songNum) {
     $scope.numSong = songNum.toString();
     var json = $scope.playlists;
@@ -45,6 +72,7 @@ angular.module('AutoDJ', [])
               var timeLeftFormatted = $filter('date')(new Date(timeLeft), 'mm:ss');
               document.getElementById("timeLeft").innerHTML = timeLeftFormatted;
               document.getElementById("progBar").style.width = $scope.timeProg +"%";
+              $scope.updateHour(); //update the hour as often as music is playing
           },
         onfinish: function() {
           if(songNum >= $scope.playlists.length - 1)
