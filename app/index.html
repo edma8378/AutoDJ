@@ -19,7 +19,8 @@
     <div id="container">
       <div id="rightAlign">
           <div id="leftInHour">
-            <h1><span id="timeLeftInHour">59:99</span> left in hour</h1>
+            <h1><span id="timeLeftInHour"></span></h1>
+            <h1>left in the hour</h1>
             <p>[toggle to live]</p>
           </div>
           <div id="currentlyPlaying">
@@ -31,12 +32,6 @@
               <span id="progBar"></span>
             </div>
           </div>
-          <div id="hotButtons">
-            <p>Insert some greyed-out circles here!</p>
-          </div>
-          <div id="notifications">
-            <p>Notifications</p>
-          </div>
         </div><!--Close rightAlign-->
 
     <div id="leftAlign">
@@ -44,7 +39,7 @@
         <!--<h2 id="playHeader"> Playlist ({{pl}}): </h2>-->
         <ol>
           <li ng-repeat="playlist in playlists" class="notYetPlayed">
-            <div class="timeInSong">{{playlist.length}}</div>
+            <div class="timeInSong">{{playlist.length | toSeconds}}</div>
             <h2>{{playlist.song}}</h2>
             <p>By <span class="artistInList">{{playlist.artist}}</span> on <span class="albumInList">{{playlist.album}}</span></p>
           </li>
