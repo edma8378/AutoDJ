@@ -84,7 +84,7 @@ angular.module('AutoDJ', [])
                 console.log($scope.songTime);
                 if($scope.songTime > $scope.curTime)
                 {
-                  $scope.songNum = i + 1;
+                  $scope.songNum = i;
                   break;
                 }
               };
@@ -96,6 +96,17 @@ angular.module('AutoDJ', [])
               }
 
               else{
+              	console.log("Hello, the time in the hour is" + $scope.curTime);
+              	$scope.leftInHour = 0;
+              	for(i = $scope.songNum; i <= $scope.playlists.length - 1; i++) {
+              		$scope.leftInHour = $scope.leftInHour + parseInt($scope.playlists[i].length);
+              	}
+              	console.log("The time left in the playlist is" + $scope.leftInHour);
+              	$scope.totes = $scope.leftInHour + $scope.curTime;
+              	if($scope.totes > 3600){
+              		$scope.diffTime = $scope.totes - 3600;
+              	}
+              	console.log("The difference is" + $scope.diffTime);
                 $scope.makeMusic($scope.songNum);
               }
             }
