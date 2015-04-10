@@ -107,6 +107,11 @@ def updateTable(table,path,type):
         if result:
             #given file was in the db so we ignore it            
             #print result
+            #index of typeName if not same type then add it anyway
+            if result[typeIndex] != type:
+                add = [path[path.find("music"):].decode('utf8'),artist,album,title,genre,length,type]
+                #print add
+                insertions.append(add)
             skipped+=1
         else:
             #this is a new song so we add it to a list of lists that will all be inserted at once

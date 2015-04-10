@@ -13,10 +13,10 @@ PLAYLIST_DIR = "../app/playlists" #path for playlist objects
 PROXIMITY_DIR = "../proximity"
 DIGITAL_TABLE = "digital" #name of digital table name in database
 AD_TABLE = "advertisments" #name of advertisements table name in database
-keys = ["path","artist","album","song","genre","length","typeName"]  
-LENGTH_INDEX = 5 #index into a song that give the time length of the song
-ARTIST_INDEX = 1
-TYPE_INDEX = 6
+keys = ["path","artist","album","song","genre","length","typeName","isSong","index"]  
+LENGTH_INDEX = keys.index("length") #index into a song that give the time length of the song
+ARTIST_INDEX = keys.index("artist")
+TYPE_INDEX = keys.index("typeName")
 mostRecentArtists = [] # list of the most recent artist put into the playlist
 percentage = 0.6
 playlistType = [[1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0], #monday
@@ -113,6 +113,7 @@ def generatePlaylist(hour,day):
     prevSong = ""
     prevAd = []    
     misses = 0
+    index = 0
     #formattedHour = 
     legalIDType = "legalID_"+type if checkType("legalID_"+type) else defaultLegal
     sweeperType = "sweeper_"+type if checkType("sweeper_"+type) else defaultSweeper
@@ -126,8 +127,11 @@ def generatePlaylist(hour,day):
         mostRecentArtists.pop()    
 
     song = randomAD(legalIDType)
+    song.append("yes")
+    song.append(str(index))
     length = int(song[LENGTH_INDEX])
     addedTime+=length
+    index+=1
     playlist.append(list(song))
     while addedTime < (timeTotal - marginError) :
         song = []    
@@ -152,7 +156,7 @@ def generatePlaylist(hour,day):
                 else:
                     break
            
-                
+            song.append("yes")
             misses = 0
             songsAdded+=1
             prevSong = song[1]
@@ -169,12 +173,15 @@ def generatePlaylist(hour,day):
                     continue
                 else:
                     break
+            song.append("no")
             misses = 0
             songsAdded = 0
             prevAd = song
             songsPerAd = random.randint(2,4)
-            
+        
         addedTime += int(song[LENGTH_INDEX])
+        song.append(index)
+        index+=1
         playlist.append(list(song))
         #print song
     #print str(hour)+":"+str(addedTime)
@@ -231,7 +238,8 @@ def randomSong(type):
     #or blues overnight song
     conn = sqlite3.connect(os.getcwd()+"/../db/music.db")
     c = conn.cursor() 
-    c.execute('SELECT * FROM '+DIGITAL_TABLE+' WHERE typeName=? ORDER BY RANDOM() LIMIT 1',(type,))
+    #c.execute('SELECT * FROM '+DIGITAL_TABLE+' WHERE typeName=? ORDER BY RANDOM() LIMIT 1',(type,))
+    c.execute('SELECT * FROM '+DIGITAL_TABLE+' WHERE typeName=? AND artist NOT IN ('+ '\'{}\''.format('\', \''.join(mostRecentArtists))+') ORDER BY RANDOM() LIMIT 1',(type,))
     song = c.fetchone()
      
     if( not song):
