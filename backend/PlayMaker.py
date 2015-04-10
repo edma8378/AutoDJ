@@ -29,6 +29,10 @@ playlistType = [[1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0], #monday
                 #KEY: 0 = ambient overnight, 1 = blues overnight, 2 = rotation
 playlistTypeKeys = ["ambient","blues","rotation"]
 proximityTypes = []
+days = ["1mon","2tue","3wed","4thur","5fri","6sat","7sun",]
+defaultLegal = "legalID_rotation"
+defaultSweeper = "sweeper_rotation"
+defaultAd = "ad_rotation"
 #--
 
 
@@ -84,6 +88,7 @@ def Playlist(day):
     dayOfPls = []
     for hour in range(24):
         pl = generatePlaylist(hour,day)
+        print str(hour)+" ",
         dayOfPls.append(pl)
     outputPlaylists(day.strftime('%Y-%m-%d'),dayOfPls)
     outputProximity(day)
@@ -107,15 +112,20 @@ def generatePlaylist(hour,day):
     playlist = []
     prevSong = ""
     prevAd = []    
-    misses  = 0
-
+    misses = 0
+    #formattedHour = 
+    legalIDType = "legalID_"+type if checkType("legalID_"+type) else defaultLegal
+    sweeperType = "sweeper_"+type if checkType("sweeper_"+type) else defaultSweeper
+    adType = "ad_"+type if checkType("ad_"+type) else defaultAd
+    type = days[day.weekday()]+"show_"+hour if(checkType(days[day.weekday()]+"show_"+str(hour))) else type
+    
 
     #global proximity
     proximity = proximityTypes[int(playlistType[int(day.weekday())][hour])]
     while(len(mostRecentArtists) > proximity):
         mostRecentArtists.pop()    
 
-    song = randomAD("legalID")
+    song = randomAD(legalIDType)
     length = int(song[LENGTH_INDEX])
     addedTime+=length
     playlist.append(list(song))
@@ -147,23 +157,22 @@ def generatePlaylist(hour,day):
             songsAdded+=1
             prevSong = song[1]
         else:   #it is time to place an ad in the playlist
-	        songsAdded = 0
-	        continue
-            
-            #song = randomAD("sweeper")
-            #length = int(song[LENGTH_INDEX])
-            #if (length + addedTime) > timeTotal:
-            #    break #selected Ad too long
-            #if song == prevAd:
-            #    misses+=1                
-            #    if misses < maxSongMisses:                
-            #        continue
-            #    else:
-            #        break
-            #misses = 0
-            #songsAdded = 0
-            #prevAd = song
-            #songsPerAd = random.randint(2,4)
+	        #songsAdded = 0
+	        #continue
+            song = randomAD(sweeperType)
+            length = int(song[LENGTH_INDEX])
+            if (length + addedTime) > timeTotal:
+                break #selected Ad too long
+            if song == prevAd:
+                misses+=1                
+                if misses < maxSongMisses:                
+                    continue
+                else:
+                    break
+            misses = 0
+            songsAdded = 0
+            prevAd = song
+            songsPerAd = random.randint(2,4)
             
         addedTime += int(song[LENGTH_INDEX])
         playlist.append(list(song))
@@ -176,6 +185,18 @@ def checkArtist(artist):
         return False
     else:
         return True
+
+def checkType(type):
+    #returns a random entry from the ads table
+    conn = sqlite3.connect(os.getcwd()+"/../db/music.db")
+    c = conn.cursor() 
+    c.execute('SELECT * FROM '+AD_TABLE+' WHERE typeName=? ORDER BY RANDOM() LIMIT 1',(type,))
+    song = c.fetchone()
+    conn.close()
+    if(song):
+        return True
+    else:
+        return False
 
 def outputProximity(day):
     with open(PROXIMITY_DIR+"/"+str(day),'w') as outfile:
@@ -243,10 +264,10 @@ def countArtists(type):
 
 #--Main
 def main():
-    if len(sys.argv) != 2:
+    if len(sys.argv) < 2:
         printUsages()
         exit()
-    command = sys.argv[1];
+    command = sys.argv[1]
     i = 0
     for t in playlistTypeKeys:
         proximityTypes.append(int(countArtists(t) * percentage))
