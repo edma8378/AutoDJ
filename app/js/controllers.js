@@ -36,9 +36,11 @@ angular.module('AutoDJ', ['toaster'])
 
 //Start off with no music.
 $scope.playing = 0;
+$scope.disableButton = 0;
 
 //stop and start sound
   $scope.startStop = function() {
+   if($scope.disableButton == 0){
     console.log("stop button hit");
     $scope.playing = ($scope.playing + 1)%2;
  
@@ -50,7 +52,9 @@ $scope.playing = 0;
     }
    else{
     toaster.pop('warning1', "Normal", "The current song will finish playing, AutoDJ is now off.");
+       $scope.disableButton = 1;
     }
+	}
   }
 
 //Stop and switch to DJ pro when song finishes
@@ -112,7 +116,11 @@ $scope.stop = function(){
               $scope.makeMusic(songNum)
           }
         }
-	else console.log("Should be stopped now");
+	else{
+		$scope.disableButton = 0;
+ 		console.log("Should be stopped now");
+	}
+
 	}
       });
     $scope.currentSound._a.addEventListener('stalled', function() {
