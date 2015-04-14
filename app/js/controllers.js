@@ -1,4 +1,4 @@
-angular.module('AutoDJ', [])
+angular.module('AutoDJ', ['toaster'])
 
 //Filter for taking the length of the song in seconds and formatting it to be mm:ss
 .filter('toSeconds', function()
@@ -15,7 +15,7 @@ angular.module('AutoDJ', [])
   };
 })
 
-.controller('musicPlayer', ['$scope', '$filter', '$http', function ($scope, $filter, $http) {
+.controller('musicPlayer', ['$scope', '$filter', '$http', '$window', 'toaster', function ($scope, $filter, $http, $window, toaster) {
   soundManager.setup({
     url:'swf/',
     preferFlash: 'false',
@@ -33,16 +33,43 @@ angular.module('AutoDJ', [])
     //  soundManager.play('swing', {volume:50});
     // },
   });
-  $scope.pauseMusic = function() {
-    console.log($scope.numSong);
-    soundManager.togglePause($scope.numSong);
+
+//Start off with no music.
+$scope.playing = 0;
+$scope.disableButton = 0;
+
+//stop and start sound
+  $scope.startStop = function() {
+   if($scope.disableButton == 0){
+    console.log("stop button hit");
+    $scope.playing = ($scope.playing + 1)%2;
+ 
+    if($scope.playing){	
+    $scope.date = new Date();
+    console.log($scope.date);
+    $scope.filt = $filter('date')($scope.date, "yyyy-MM-dd/H");
+    $scope.makePlaylist($scope.filt, 0);
+    }
+   else{
+    toaster.pop('warning1', "Normal", "The current song will finish playing, AutoDJ is now off.");
+       $scope.disableButton = 1;
+    }
+	}
   }
+
+//Stop and switch to DJ pro when song finishes
+$scope.stop = function(){
+	console.log("Switched to DJPro, current song will finish and then switch will happen.");
+	$scope.playing = 0;
+	$window.open('https://radio1190.colorado.edu/djpro', '_blank');
+	  toaster.pop('warning2', "DJPro", "The current song will finish playing, AutoDJ is now off.");
+}
+
   Date.prototype.addHours = function (h) {
     this.setHours(this.getHours()+h);
     return this;
     // body...
   }
-
 
   $scope.updateHour = function() {
     var now = new Date();
@@ -70,7 +97,7 @@ angular.module('AutoDJ', [])
     $scope.currentIndex = "currentSong" + json[songNum].index;
     document.getElementById("songName").innerHTML = json[songNum].song;
     document.getElementById("artistAlbum").innerHTML = json[songNum].artist + "-" + json[songNum].album;
-    var currentSound = soundManager.createSound({
+    $scope.currentSound = soundManager.createSound({
         url: $scope.path,
         stream: true,
         autoLoad: true,
@@ -84,6 +111,7 @@ angular.module('AutoDJ', [])
               $scope.updateHour(); //update the hour as often as music is playing
           },
         onfinish: function() {
+	  if($scope.playing){
           if(songNum >= $scope.playlists.length - 1)
           {
             $scope.date.addHours(1);
@@ -97,14 +125,21 @@ angular.module('AutoDJ', [])
               $scope.makeMusic(songNum)
           }
         }
+	else{
+		$scope.disableButton = 0;
+ 		console.log("Should be stopped now");
+	}
+
+	}
       });
-    currentSound._a.addEventListener('stalled', function() {
+    $scope.currentSound._a.addEventListener('stalled', function() {
       if (!self.currentSound) return;
       var audio = this;
       audio.load();
       audio.play();
     });
   }
+
   $scope.makePlaylist = function(date, st) {
       $scope.pl = angular.lowercase(date).toString();
       console.log($scope.pl);
@@ -153,6 +188,6 @@ angular.module('AutoDJ', [])
     console.log($scope.date);
     $scope.filt = $filter('date')($scope.date, "yyyy-MM-dd/H");
     $scope.makePlaylist($scope.filt, 0);
-    $scope.updateCurrentlyPlaying($scope.currentIndex);
-  });
+    //$scope.updateCurrentlyPlaying($scope.currentIndex);
+  }); 
 }]);
