@@ -142,7 +142,7 @@ def generatePlaylist(hour,day):
             #check if its artist has been played recently
             #print song
             artist = song[ARTIST_INDEX].replace("'","")
-            print artist
+            #print artist
 	    valid = checkArtist(artist)
             length = int(song[LENGTH_INDEX])
             if not valid:
@@ -241,7 +241,6 @@ def randomSong(type):
     conn = sqlite3.connect(os.getcwd()+"/../db/music.db")
     c = conn.cursor() 
     #c.execute('SELECT * FROM '+DIGITAL_TABLE+' WHERE typeName=? ORDER BY RANDOM() LIMIT 1',(type,))
-    print mostRecentArtists
     c.execute('SELECT * FROM '+DIGITAL_TABLE+' WHERE typeName=? AND artist NOT IN ('+ '\'{}\''.format('\', \''.join(mostRecentArtists))+') ORDER BY RANDOM() LIMIT 1',(type,))
     song = c.fetchone()
      
