@@ -114,6 +114,7 @@ def generatePlaylist(hour,day):
     prevAd = []    
     misses = 0
     index = 0
+    song = []
     #formattedHour = 
     legalIDType = "legalID_"+type if checkType("legalID_"+type) else defaultLegal
     sweeperType = "sweeper_"+type if checkType("sweeper_"+type) else defaultSweeper
@@ -126,7 +127,7 @@ def generatePlaylist(hour,day):
     while(len(mostRecentArtists) > proximity):
         mostRecentArtists.pop()    
 
-    song = randomAD(legalIDType)
+    song = list(randomAD(legalIDType))
     song.append("yes")
     song.append(str(index))
     length = int(song[LENGTH_INDEX])
@@ -137,7 +138,7 @@ def generatePlaylist(hour,day):
         song = []    
         length = 0    
         if songsAdded < songsPerAd : #a song needs to be added to the playlist
-            song = randomSong(type)
+            song = list(randomSong(type))
             #check if its artist has been played recently
             #print song
             artist = song[ARTIST_INDEX]
@@ -162,7 +163,7 @@ def generatePlaylist(hour,day):
         else:   #it is time to place an ad in the playlist
 	        #songsAdded = 0
 	        #continue
-            song = randomAD(sweeperType)
+            song = list(randomAD(sweeperType))
             length = int(song[LENGTH_INDEX])
             if (length + addedTime) > timeTotal:
                 break #selected Ad too long
