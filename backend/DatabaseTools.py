@@ -31,9 +31,14 @@ DB_PATH = "/../db/music.db"
 DIGITAL_TABLE = "digital"
 ADS_TABLE = "advertisments"
 approved_tables = ["all",DIGITAL_TABLE,ADS_TABLE]
+approved_types =["rotation","ambient","blues","ad_rotation","ad_ambient","ad_blues","legalID_rotation","legalID_ambient","legalID_blues","sweeper_rotation","sweeper_ambient","sweeper_blues"]
 
 def printUsages():
-    print "Valid arguments: create [all|"+DIGITAL_TABLE+"|"+ADS_TABLE+"], destroy [all|"+DIGITAL_TABLE+"|"+ADS_TABLE+"], update ["+DIGITAL_TABLE+"|"+ADS_TABLE+"] [rotation|ambient|blues|ad|legalID|sweeper] [location], status ["+DIGITAL_TABLE+"|"+ADS_TABLE+"]"
+    print "Valid arguments: create ["+"|".join(approved_tables)+"]" 
+    print "                 destroy ["+"|".join(approved_tables)+"]"
+    print "                 update ["+DIGITAL_TABLE+"|"+ADS_TABLE+"] ["+"|".join(approved_types)+"] " 
+    print "                 status ["+DIGITAL_TABLE+"|"+ADS_TABLE+"]"
+    print "                 clean"
 
 def statusDatabase(table):
     conn = sqlite3.connect(os.getcwd()+DB_PATH)
@@ -50,6 +55,7 @@ def statusDatabase(table):
         print ""
         for column in row[0:len(row)]:
            print (str(column.encode('utf-8')) if row[1] else "unknown")+"\t\t",
+    print ""
     conn.close()
 
 
@@ -101,7 +107,13 @@ def updateTable(table,path,type):
         if result:
             #given file was in the db so we ignore it            
             #print result
-            skipped+=1
+            #index of typeName if not same type then add it anyway
+            if result[6] != type:
+                add = [path[path.find("music"):].decode('utf8'),artist,album,title,genre,length,type]
+                #print add
+                insertions.append(add)
+            else:
+                skipped+=1
         else:
             #this is a new song so we add it to a list of lists that will all be inserted at once
             add = [path[path.find("music"):].decode('utf8'),artist,album,title,genre,length,type]
@@ -189,7 +201,7 @@ def main():
     #proper folder stucture. If not then clone the git repository and run it from there.
     if len(sys.argv) < 3:
         printUsages()
-        exit()
+        exit(1)
 
     command = sys.argv[1];
     table = sys.argv[2];
@@ -204,6 +216,7 @@ def main():
             createTable(table)
         else:
             printUsages()
+            exit(1)
             
         exit()                 
         
@@ -215,6 +228,7 @@ def main():
                 destroyTable(table)
             else:
                 printUsages()
+                exit(1)
             
         elif temp=="n":
             print "Database perserved, exiting."
@@ -228,9 +242,14 @@ def main():
             exit()
         location = sys.argv[4]
         type = sys.argv[3]
+        if not type in approved_types:
+            if not re.match("show_?\d+",type): 
+                print type+" is not a valid type"
+                printUsages()
+                exit(1)
         if(not os.path.isdir(location)):
             print "[location] must be a folder"
-            exit()
+            exit(1)
         if(table == DIGITAL_TABLE):
             print "Searching "+location+" for new "+type+" music..."
             updateTable(table,location,type)
@@ -249,8 +268,6 @@ def main():
         cleanTable(table)
         exit()
 
-    printUsages()
-    exit()
 
 if __name__ =="__main__":
     main()

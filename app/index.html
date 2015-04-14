@@ -7,6 +7,7 @@
     <script src="//code.angularjs.org/1.2.20/angular.js"></script>
     <script src="js/libraries/soundmanager2-jsmin.js"></script>
     <script src="js/controllers.js"></script>
+    <script src="js/toaster.js"></script>  
     <link rel="stylesheet" type="text/css" href="css/reset.css" />
     <link rel="stylesheet" type="text/css" href="css/playlist.css" />
   </head>
@@ -15,14 +16,14 @@
     </div><!-- Close id header-->
     <!--<img id="logo" src="images/logo.jpg">-->
 
-        <!-- <button id="autoDJButton">AutoDJ</button> -->
     <div id="container">
       <div id="rightAlign">
           <div id="leftInHour">
             <h1><span id="timeLeftInHour"></span></h1>
             <h1>left in the hour</h1>
-            <p>[toggle to live]</p>
+            <p>[toggle to live]<button id="DJPro" ng-click = "stop()" >DJPro</button></p>
           </div>
+	    <toaster-container toaster-options="{'time-out': 3000}"></toaster-container>
           <div id="currentlyPlaying">
             <h2 id="currentlyPlayingHeader">Current:</h2>
             <h2 id="songName"> Insert Current Song Name Here </h2>
@@ -31,6 +32,7 @@
             <div class="progress-bar green stripes">
               <span id="progBar"></span>
             </div>
+	     <button id="stopstart" ng-click = "startStop()" >Stop/Start</button>
           </div>
         </div><!--Close rightAlign-->
 
