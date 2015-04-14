@@ -70,8 +70,6 @@ angular.module('AutoDJ', [])
   }
   $scope.makePlaylist = function(date, st) {
       $scope.pl = angular.lowercase(date).toString();
-      console.log($scope.pl);
-      name = "2014-12-19/8am";
       $http.get('playlists/' + $scope.pl + '.playlist')
          .then(function(res){
             $scope.playlists = res.data;
@@ -102,22 +100,59 @@ angular.module('AutoDJ', [])
               }
 
               else{
-              	console.log("Hello, the time in the hour is" + $scope.curTime);
-              	$scope.leftInHour = 0;
-              	for(i = $scope.songNum; i <= $scope.playlists.length - 1; i++) {
-              		$scope.leftInHour = $scope.leftInHour + parseInt($scope.playlists[i].length);
+              	for(i = $scope.playlists.length - 1; i >= 0; i--){
+              	    console.log("Hello, the time in the hour is" + $scope.curTime);
+              	    $scope.leftInHour = 0;
+              	    for(j = $scope.songNum; j <= $scope.playlists.length - 1; j++) {
+              		    $scope.leftInHour = $scope.leftInHour + parseInt($scope.playlists[j].length);
+              	    }
+              	    console.log("The time left in the playlist is" + $scope.leftInHour);
+              	    $scope.totes = $scope.leftInHour + $scope.curTime;
+              	    console.log($scope.totes/60);
+              	    if($scope.totes > 3600){
+              	    	if($scope.playlists[i].typeName !== 'ad'){
+              	    		if(($scope.totes - parseInt($scope.playlists[i].length)) > 3300){
+              	    			console.log("Splicing")
+              	    			$scope.playlists.splice(i, 1);
+
+              	    		}
+              	    		else{
+              	    		}
+              	    	}
+              	    }
               	}
-              	console.log("The time left in the playlist is" + $scope.leftInHour);
-              	$scope.totes = $scope.leftInHour + $scope.curTime;
-              	if($scope.totes > 3600){
-              		$scope.diffTime = $scope.totes - 3600;
-              	}
-              	console.log("The difference is" + $scope.diffTime);
                 $scope.makeMusic($scope.songNum);
               }
             }
             else{
               $scope.songNum = 0;
+              for(i = $scope.playlists.length - 1; i >= 0; i--){
+                  console.log("Hello, the time in the hour is" + $scope.curTime);
+                  $scope.leftInHour = 0;
+                  for(j = $scope.songNum; j <= $scope.playlists.length - 1; j++) {
+              	    $scope.leftInHour = $scope.leftInHour + parseInt($scope.playlists[j].length);
+                  }
+                  console.log("The time left in the playlist is" + $scope.leftInHour);
+                  $scope.totes = $scope.leftInHour + 0;
+                  console.log($scope.totes/60);
+                  $scope.minute = parseInt($filter('date')(new Date(), "mm"));
+                  console.log($scope.minute);
+                  $scope.second = parseInt($filter('date')(new Date(), "ss"));
+                  console.log($scope.second);
+                  $scope.curTime = ($scope.minute * 60) + $scope.second;
+                  $scope.diffTime = 3600 - $scope.curTime;
+                  $scope.diffTime = $scope.diffTime + 3600;
+                  if($scope.totes > $scope.diffTime){
+              	     if($scope.playlists[i].typeName !== 'ad'){
+              	 	    if(($scope.totes - parseInt($scope.playlists[i].length)) > 3300){
+              	    	console.log("Splicing")
+              	    	$scope.playlists.splice(i, 1);
+              	        }
+              	        else{
+              	        }
+              	   }
+                }
+             }
               $scope.makeMusic($scope.songNum);
             }
           });
