@@ -63,7 +63,7 @@ def updateTable(table,path,type):
     #grab all mp3 in the specified folder
     #path = raw_input("Please enter the absolute path to the top level music folder to add to the db:")
     matches = []
-    charBanlist = ["#"] # hashtags are evil
+    charBanlist = ["#","'"] # hashtags are evil
     for root, dirnames, filenames in os.walk(path):
         for filename in fnmatch.filter(filenames, '*.mp3'):
             filenameNew = filename
