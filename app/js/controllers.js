@@ -54,11 +54,20 @@ angular.module('AutoDJ', [])
     document.getElementById("timeLeftInHour").innerHTML = timeLeftHourFormatted;
   }
 
+  $scope.updateCurrentlyPlaying = function(myIndex) {
+    document.getElementById(myIndex).className = "currentlyPlaying";
+  }
+
+  $scope.updateNotPlaying = function(myIndex) {
+    document.getElementById(myIndex).className = "notYetPlayed";
+  }
+
   $scope.makeMusic = function(songNum) {
     $scope.numSong = songNum.toString();
     var json = $scope.playlists;
     $scope.path = json[songNum].path;
     $scope.songId = json[songNum].song;
+    $scope.currentIndex = "currentSong" + json[songNum].index;
     document.getElementById("songName").innerHTML = json[songNum].song;
     document.getElementById("artistAlbum").innerHTML = json[songNum].artist + "-" + json[songNum].album;
     var currentSound = soundManager.createSound({
@@ -144,5 +153,6 @@ angular.module('AutoDJ', [])
     console.log($scope.date);
     $scope.filt = $filter('date')($scope.date, "yyyy-MM-dd/H");
     $scope.makePlaylist($scope.filt, 0);
+    $scope.updateCurrentlyPlaying($scope.currentIndex);
   });
 }]);

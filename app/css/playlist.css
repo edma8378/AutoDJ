@@ -115,6 +115,11 @@ body {
 	     2px 2px 0 #fff;
 }
 
+#leftInHour a{
+	color: white;
+	font-weight: bold;
+}
+
 /* current box */
 #currentlyPlaying {
 	padding: 5px;
@@ -150,6 +155,17 @@ body {
 	margin: 0 auto;
 	font-size: 2.0em;
 	line-height: 2em;
+}
+
+/*Show Logos*/
+#showLogos{
+	text-align: center;
+	position: absolute;
+	bottom: 5px;
+}
+
+#showLogos img{
+	width: 95%;
 }
 
 /* Playlist */
