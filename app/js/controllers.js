@@ -169,10 +169,10 @@ angular.module('AutoDJ', [])
                   console.log($scope.second);
                   $scope.curTime = ($scope.minute * 60) + $scope.second;
                   $scope.diffTime = 3600 - $scope.curTime;
-                  $scope.diffTime = $scope.diffTime + 3600;
-                  if($scope.totes > $scope.diffTime){
-              	     if($scope.playlists[i].typeName !== 'ad'){
-              	 	    if(($scope.totes - parseInt($scope.playlists[i].length)) > 3300){
+                  $scope.extraTime = $scope.diffTime + 3600;
+                  if($scope.totes > $scope.extraTime){
+              	     if($scope.playlists[i].isSong === 'yes'){
+              	 	    if(($scope.totes - parseInt($scope.playlists[i].length)) > (3300 + $scope.diffTime)){
               	    	console.log("Splicing")
               	    	$scope.playlists.splice(i, 1);
               	        }
