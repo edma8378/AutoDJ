@@ -90,6 +90,91 @@ $scope.stop = function(){
   $scope.updateNotPlaying = function(myIndex) {
     document.getElementById(myIndex).className = "notYetPlayed";
   }
+    $scope.makePlaylist = function(date, st) {
+      $scope.pl = angular.lowercase(date).toString();
+      $http.get('playlists/' + $scope.pl + '.playlist')
+         .then(function(res){
+            $scope.playlists = res.data;
+            if(!st)
+            {
+              $scope.minute = parseInt($filter('date')(new Date(), "mm"));
+              console.log($scope.minute);
+              $scope.second = parseInt($filter('date')(new Date(), "ss"));
+              console.log($scope.second);
+              $scope.curTime = ($scope.minute * 60) + $scope.second;
+              console.log($scope.curTime);
+              $scope.songTime = 0;
+              $scope.songNum;
+              for (var i = 0; i <= $scope.playlists.length - 1; i++) {
+                $scope.songTime = $scope.songTime + parseInt($scope.playlists[i].length);
+                console.log($scope.songTime);
+                if($scope.songTime > $scope.curTime)
+                {
+                  $scope.songNum = i;
+                  break;
+                }
+              };
+              if($scope.songNum > $scope.playlists.length - 1){
+                $scope.date.addHours(1);
+                $scope.filt = $filter('date')($scope.date, "yyyy-MM-dd/H");
+                console.log($scope.filt);
+                $scope.makePlaylist($scope.filt, 1);
+              }
+
+              else{
+              	for(i = $scope.playlists.length - 1; i >= 0; i--){
+              	    $scope.leftInHour = 0;
+              	    for(j = $scope.songNum; j <= $scope.playlists.length - 1; j++) {
+              		    $scope.leftInHour = $scope.leftInHour + parseInt($scope.playlists[j].length);
+              	    }
+              	    $scope.totes = $scope.leftInHour + $scope.curTime;
+              	    console.log($scope.totes/60);
+              	    if($scope.totes > 3600){
+              	    	if($scope.playlists[i].isSong === 'yes'){
+              	    		if(($scope.totes - parseInt($scope.playlists[i].length)) > 3300){
+              	    			console.debug("Cutting: " + $scope.playlists[i].song);
+              	    			$scope.playlists.splice(i, 1);
+
+              	    		}
+              	    		else{
+              	    		}
+              	    	}
+              	    }
+              	}
+                $scope.makeMusic($scope.songNum);
+              }
+            }
+            else{
+              $scope.songNum = 0;
+              for(i = $scope.playlists.length - 1; i >= 0; i--){
+                  $scope.leftInHour = 0;
+                  for(j = $scope.songNum; j <= $scope.playlists.length - 1; j++) {
+              	    $scope.leftInHour = $scope.leftInHour + parseInt($scope.playlists[j].length);
+                  }
+                  $scope.totes = $scope.leftInHour + 0;
+                  console.log($scope.totes/60);
+                  $scope.minute = parseInt($filter('date')(new Date(), "mm"));
+                  console.log($scope.minute);
+                  $scope.second = parseInt($filter('date')(new Date(), "ss"));
+                  console.log($scope.second);
+                  $scope.curTime = ($scope.minute * 60) + $scope.second;
+                  $scope.diffTime = 3600 - $scope.curTime;
+                  $scope.extraTime = $scope.diffTime + 3600;
+                  if($scope.totes > $scope.extraTime){
+              	     if($scope.playlists[i].isSong === 'yes'){
+              	 	    if(($scope.totes - parseInt($scope.playlists[i].length)) > (3300 + $scope.diffTime)){
+              	 	   	console.debug("Cutting: " + $scope.playlists[i].song);
+              	    	$scope.playlists.splice(i, 1);
+              	        }
+              	        else{
+              	        }
+              	   }
+                }
+             }
+              $scope.makeMusic($scope.songNum);
+            }
+          });
+  }
 
   $scope.makeMusic = function(songNum) {
     $scope.numSong = songNum.toString();
@@ -146,52 +231,7 @@ $scope.stop = function(){
     });
   }
 
-  $scope.makePlaylist = function(date, st) {
-      $scope.pl = angular.lowercase(date).toString();
-      console.log($scope.pl);
-      name = "2014-12-19/8am";
-      $http.get('playlists/' + $scope.pl + '.playlist')
-         .then(function(res){
-            $scope.playlists = res.data;
-            if(!st)
-            {
-              $scope.minute = parseInt($filter('date')(new Date(), "mm"));
-              console.log($scope.minute);
-              $scope.second = parseInt($filter('date')(new Date(), "ss"));
-              console.log($scope.second);
-              $scope.curTime = ($scope.minute * 60) + $scope.second;
-              console.log($scope.curTime);
-              $scope.songTime = 0;
-              $scope.songNum;
-              for (var i = 0; i <= $scope.playlists.length - 1; i++) {
-                $scope.songTime = $scope.songTime + parseInt($scope.playlists[i].length);
-                console.log($scope.songTime);
-                if($scope.songTime > $scope.curTime)
-                {
-                  $scope.songNum = i + 1;
-                  break;
-                }
-              };
-              if($scope.songNum > $scope.playlists.length - 1){
-                $scope.date.addHours(1);
-                $scope.filt = $filter('date')($scope.date, "yyyy-MM-dd/H");
-                console.log($scope.filt);
-                $scope.makePlaylist($scope.filt, 1);
-              }
-
-              else{
-                $scope.makeMusic($scope.songNum);
-              }
-            }
-            else{
-              $scope.songNum = 0;
-              $scope.makeMusic($scope.songNum);
-            }
-          });
-  }
-
   $( document ).ready(function() {
     $scope.updateHour();
   });
-
 }]);
