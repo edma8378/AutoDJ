@@ -141,8 +141,9 @@ def generatePlaylist(hour,day):
             song = list(randomSong(type))
             #check if its artist has been played recently
             #print song
-            artist = song[ARTIST_INDEX]
-            valid = checkArtist(artist)
+            artist = song[ARTIST_INDEX].replace("'","")
+            #print artist
+	    valid = checkArtist(artist)
             length = int(song[LENGTH_INDEX])
             if not valid:
                 continue
