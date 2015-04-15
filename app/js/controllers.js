@@ -190,6 +190,16 @@ $scope.stop = function(){
         stream: true,
         autoLoad: true,
         autoPlay: true,
+        $.ajax({
+            url: "test.py",
+            type: "post",
+            datatype:"json",
+            data: {'key':json[songNum].song,'key2':json[songNum].artist, 'key3':json[songNum].album},
+            success: function(response){
+                alert(response.message);
+                alert(response.keys);
+            }
+        });
         onload: function() {
           $scope.updateCurrentlyPlaying(currentIndex);
         },
