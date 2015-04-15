@@ -45,10 +45,10 @@ $scope.disableButton = 0;
     $scope.playing = ($scope.playing + 1)%2;
  
     if($scope.playing){	
-    $scope.date = new Date();
-    console.log($scope.date);
-    $scope.filt = $filter('date')($scope.date, "yyyy-MM-dd/H");
-    $scope.makePlaylist($scope.filt, 0);
+      $scope.date = new Date();
+      console.log($scope.date);
+      $scope.filt = $filter('date')($scope.date, "yyyy-MM-dd/H");
+      $scope.makePlaylist($scope.filt, 0);
     }
    else{
     toaster.pop('warning1', "Normal", "The current song will finish playing, AutoDJ is now off.");
@@ -79,9 +79,11 @@ $scope.stop = function(){
     if(seconds < 10) { seconds = "0" + seconds}
     var timeLeftHourFormatted = minutes + ":" + seconds;
     document.getElementById("timeLeftInHour").innerHTML = timeLeftHourFormatted;
+    var t = setTimeout(function(){$scope.updateHour()},500);
   }
 
   $scope.updateCurrentlyPlaying = function(myIndex) {
+    console.log(myIndex + " IS MY INDEX");
     document.getElementById(myIndex).className = "currentlyPlaying";
   }
 
@@ -94,7 +96,8 @@ $scope.stop = function(){
     var json = $scope.playlists;
     $scope.path = json[songNum].path;
     $scope.songId = json[songNum].song;
-    $scope.currentIndex = "currentSong" + json[songNum].index;
+    var currentIndex = "currentSong" + json[songNum].index;
+    console.log(currentIndex);
     document.getElementById("songName").innerHTML = json[songNum].song;
     document.getElementById("artistAlbum").innerHTML = json[songNum].artist + "-" + json[songNum].album;
     $scope.currentSound = soundManager.createSound({
@@ -102,13 +105,15 @@ $scope.stop = function(){
         stream: true,
         autoLoad: true,
         autoPlay: true,
+        onload: function() {
+          $scope.updateCurrentlyPlaying(currentIndex);
+        },
         whileplaying: function() {
               var timeLeft = this.duration - this.position;
               $scope.timeProg = (this.position/this.duration) * 100;
               var timeLeftFormatted = $filter('date')(new Date(timeLeft), 'mm:ss');
               document.getElementById("timeLeft").innerHTML = timeLeftFormatted;
               document.getElementById("progBar").style.width = $scope.timeProg +"%";
-              $scope.updateHour(); //update the hour as often as music is playing
           },
         onfinish: function() {
 	  if($scope.playing){
@@ -124,6 +129,7 @@ $scope.stop = function(){
               songNum++;
               $scope.makeMusic(songNum)
           }
+          $scope.updateNotPlaying(currentIndex);
         }
 	else{
 		$scope.disableButton = 0;
@@ -183,11 +189,9 @@ $scope.stop = function(){
             }
           });
   }
-  soundManager.onready(function (){
-    $scope.date = new Date();
-    console.log($scope.date);
-    $scope.filt = $filter('date')($scope.date, "yyyy-MM-dd/H");
-    $scope.makePlaylist($scope.filt, 0);
-    //$scope.updateCurrentlyPlaying($scope.currentIndex);
-  }); 
+
+  $( document ).ready(function() {
+    $scope.updateHour();
+  });
+
 }]);
