@@ -157,7 +157,6 @@ def generatePlaylist(hour,day):
                     continue
                 else:
                     break
-           
             song.append("yes")
             misses = 0
             songsAdded+=1
