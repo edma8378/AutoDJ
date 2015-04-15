@@ -66,6 +66,15 @@ angular.module('AutoDJ', [])
         stream: true,
         autoLoad: true,
         autoPlay: true,
+        $.ajax({
+          method: "POST",
+          url: "test.py",
+          datatype:"json",
+          data: { 'name': json[songNum].artist, 'song': json[songNum].song }
+        })
+          .done(function( msg ) {
+            alert( "Data Saved: " + msg );
+          });
         whileplaying: function() {
               var timeLeft = this.duration - this.position;
               $scope.timeProg = (this.position/this.duration) * 100;
