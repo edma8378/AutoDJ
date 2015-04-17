@@ -49,10 +49,14 @@ $scope.disableButton = 0;
       console.log($scope.date);
       $scope.filt = $filter('date')($scope.date, "yyyy-MM-dd/H");
       $scope.makePlaylist($scope.filt, 0);
+      document.getElementById("stopstart").innerHTML = "Stop";
+      document.getElementById("stopstart").className = "orange";
     }
    else{
-    toaster.pop('warning1', "Normal", "The current song will finish playing, AutoDJ is now off.");
+    toaster.pop('warning1', "OFF", "The current song will finish playing, Noize Machine is now off.");
        $scope.disableButton = 1;
+       document.getElementById("stopstart").innerHTML = "Play";
+       document.getElementById("stopstart").className = "gray";      
     }
 	}
   }
@@ -219,6 +223,7 @@ $scope.stop = function(){
 	else{
 		$scope.disableButton = 0;
  		console.log("Should be stopped now");
+    document.getElementById("stopstart").className = "orange";
 	}
 
 	}

@@ -21,9 +21,9 @@
           <div id="leftInHour">
             <h1><span id="timeLeftInHour"></span></h1>
             <h1>left in the hour</h1>
-            <p><a href="#" id="DJPro" ng-click = "stop()">[Close Noize Machine]</a></p>
+            <p><a href="https://radio1190.colorado.edu/djpro" target="_blank" id="DJPro">[Open DJ Pro]</a></p>
           </div>
-	    <toaster-container toaster-options="{'time-out': 3000}"></toaster-container>
+	    <toaster-container toaster-options="{'time-out': 4000}"></toaster-container>
           <div id="currentlyPlaying">
             <h2 id="currentlyPlayingHeader">Current:</h2>
             <h2 id="songName"> Insert Current Song Name Here </h2>
@@ -33,7 +33,7 @@
               <span id="progBar"></span>
             </div>
             <div id="showLogos"><img src="images/weblogo2.png"></div>
-	     <button id="stopstart" ng-click = "startStop()" >Stop/Start</button>
+	     <button id="stopstart" class="orange" ng-click = "startStop()" >Play</button>
           </div>
         </div><!--Close rightAlign-->
 
