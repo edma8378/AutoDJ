@@ -53,7 +53,7 @@ $scope.disableButton = 0;
       document.getElementById("stopstart").className = "orange";
     }
    else{
-    toaster.pop('warning1', "Normal", "The current song will finish playing, AutoDJ is now off.");
+    toaster.pop('warning1', "OFF", "The current song will finish playing, Noize Machine is now off.");
        $scope.disableButton = 1;
        document.getElementById("stopstart").innerHTML = "Play";
        document.getElementById("stopstart").className = "gray";      
