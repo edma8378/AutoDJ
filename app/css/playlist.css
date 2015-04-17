@@ -39,6 +39,11 @@ body {
 	float: left;
 	/*background-color: #ffaabb; Testing purposes only*/
 	overflow: auto;
+	background-color: black;
+	background-image: url("../images/playlistBG.png");
+	background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: left; 
 }
 
 #rightAlign{
@@ -71,19 +76,6 @@ body {
 	right: 0px;
 }
 
-/*a:link, visited, over, active {
-	font-size: 24px;
-    color: white;
-    text-decoration: none;
-}*/
-
-#right_bar {
-	/*position: absolute;*/
-	right: 0;
-	/*width: 450px;*/
-	height: 1000px;
-}
-
 #content {
 	margin: 0 auto;
 	width: 100%;
@@ -99,7 +91,6 @@ body {
 	width: calc(100% - 10px);
 	background-color: #c04931;
 	color: black;
-	/*position: relative;*/
 	right: 0px;
 	float: right;
 	text-align: center;
@@ -123,11 +114,10 @@ body {
 /* current box */
 #currentlyPlaying {
 	padding: 5px;
+	height: calc(75vh - 40px);
 	width: calc(100% - 10px);
-	height: calc(70vh - 10px);
 	background-color: black;
 	color: white;
-	/*position: relative;*/
 	right: 0px;
 	float: right;
 	text-align: center;
@@ -155,6 +145,70 @@ body {
 	margin: 0 auto;
 	font-size: 2.0em;
 	line-height: 2em;
+}
+
+
+#stopstart {
+	display: inline-block;
+	outline: none;
+	text-align: center;
+	text-decoration: none;
+	font-weight: bold;
+	padding: .5em 2em .55em;
+	text-shadow: 0 1px 1px rgba(0,0,0,.3);
+	-webkit-border-radius: .5em;
+	-moz-border-radius: .5em;
+	border-radius: .5em;
+	-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+	-moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+	box-shadow: 0 1px 2px rgba(0,0,0,.2);
+	margin-top: 5px;
+}
+#stopstart :hover {
+	text-decoration: none;
+}
+#stopstart :active {
+	position: relative;
+	top: 1px;
+}
+
+
+.orange{
+	cursor: pointer;
+	color: #FEF4E9;
+	border: 3px solid #191919;
+	background: #d8422b; /* Old browsers */
+	background: -moz-linear-gradient(top, #d8422b 0%, #db2000 46%, #6C2116 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#d8422b), color-stop(46%,#db2000), color-stop(100%,#6C2116)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #d8422b 0%,#db2000 46%,#6C2116 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #d8422b 0%,#db2000 46%,#6C2116 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #d8422b 0%,#db2000 46%,#6C2116 100%); /* IE10+ */
+	background: linear-gradient(to bottom, #d8422b 0%,#db2000 46%,#6C2116 100%); /* W3C */
+}
+.orange:hover {
+	background: #d8422b; /* Old browsers */
+	background: -moz-linear-gradient(top, #d8422b 0%, #961b00 46%, #6C2116 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#d8422b), color-stop(46%,#961b00), color-stop(100%,#6C2116)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #d8422b 0%,#961b00 46%,#6C2116 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #d8422b 0%,#961b00 46%,#6C2116 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #d8422b 0%,#961b00 46%,#6C2116 100%); /* IE10+ */
+	background: linear-gradient(to bottom, #d8422b 0%,#961b00 46%,#6C2116 100%); /* W3C */
+}
+.orange:active {
+	background: #d8422b; /* Old browsers */
+	background: -moz-linear-gradient(top, #d8422b 0%, #630b00 46%, #6C2116 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#d8422b), color-stop(46%,#630b00), color-stop(100%,#6C2116)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #d8422b 0%,#630b00 46%,#6C2116 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #d8422b 0%,#630b00 46%,#6C2116 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #d8422b 0%,#630b00 46%,#6C2116 100%); /* IE10+ */
+	background: linear-gradient(to bottom, #d8422b 0%,#630b00 46%,#6C2116 100%); /* W3C */
+}
+
+.gray{
+	color: #FEF4E9;
+	border: 3px solid #191919;
+	background: #ccc; /* Old browsers */
+	cursor: default;
 }
 
 /*Show Logos*/
