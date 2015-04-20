@@ -15,17 +15,25 @@ angular.module('AutoDJ', ['toaster'])
   };
 })
 
-// Iniitialize the soundManager. Do not default to flash
 
+// Iniitialize the soundManager. Do not default to flash
 .controller('musicPlayer', ['$scope', '$filter', '$http', '$window', 'toaster', function ($scope, $filter, $http, $window, toaster) {
   soundManager.setup({
     url:'swf/',
     preferFlash: 'false',
+    onready: function() {
+          $scope.disableButton = 0;
+	  document.getElementById("stopstart").className = "orange";
+	  console.log("Start/Stop button should now be enabled");
+        },
   });
+
+//Start off with start button disabled until soundmanager loads
+$scope.disableButton = 1;
+document.getElementById("stopstart").className = "gray";
 
 //Start off with no music.
 $scope.playing = 0;
-$scope.disableButton = 0;
 
 //stop and start sound
 $scope.startStop = function() {
