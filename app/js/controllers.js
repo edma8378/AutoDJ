@@ -153,8 +153,6 @@ $scope.makePlaylist = function(date, st) {
             $scope.makeMusic($scope.songNum);
           }
         }
-
-        // Start the playlist from the beginning
         else{
           $scope.songNum = 0;
           for(i = $scope.playlists.length - 1; i >= 0; i--){
@@ -178,14 +176,19 @@ $scope.makePlaylist = function(date, st) {
           	   }
             }
          }
+         $scope.isPlaying = 0;
           $scope.makeMusic($scope.songNum);
         }
     });
 }
-
-// Creates music based off of the song number given by the makePlaylist function
-$scope.makeMusic = function(songNum) {
-	// Set the proper fields in the page to the correct song
+  $scope.makeMusic = function(songNum) {
+  	if(songNum > $scope.playlists.length - 1){
+  		$scope.date.addHours(1);
+        $scope.filt = $filter('date')($scope.date, "yyyy-MM-dd/H");
+        console.log($scope.filt);
+        $scope.makePlaylist($scope.filt, 1);
+  	}
+  	else{
     $scope.numSong = songNum.toString();
     var json = $scope.playlists;
     $scope.path = json[songNum].path;
@@ -217,36 +220,71 @@ $scope.makeMusic = function(songNum) {
 
         // Check the state of the button. If play, play the next song, if not, stop.
         onfinish: function() {
-	  		if($scope.playing){
-          		if(songNum >= $scope.playlists.length - 1){
-            		$scope.date.addHours(1);
-            		$scope.filt = $filter('date')($scope.date, "yyyy-MM-dd/H");
-            		$scope.makePlaylist($scope.filt, 1);
-          		}
-          		else{
-              		songNum++;
-              		$scope.makeMusic(songNum)
-            	}
-            	$scope.updateNotPlaying(currentIndex);
+        	if(!$scope.isPlaying){
+        		$scope.isPlaying = 1;
         	}
-			else{
-				$scope.disableButton = 0;
-    			document.getElementById("stopstart").className = "orange";
-			}
+	  if($scope.playing){
+          if(songNum >= $scope.playlists.length - 1)
+          {
+            $scope.date.addHours(1);
+            $scope.filt = $filter('date')($scope.date, "yyyy-MM-dd/H");
+            console.log($scope.filt);
+            $scope.makePlaylist($scope.filt, 1);
+          }
+          else{
+              console.log($scope.playlists.length);
+              songNum++;
+              $scope.makeMusic(songNum)
+          }
+          $scope.updateNotPlaying(currentIndex);
+        }
+	else{
+		$scope.disableButton = 0;
+ 		console.log("Should be stopped now");
+    document.getElementById("stopstart").className = "orange";
+	}
 
-		}
+	}
 	});
+    $scope.currentSound._a.addEventListener('stalled', function() {
+      if (!self.currentSound) return;
+      var audio = this;
+      audio.load();
+      audio.play();
+    });
 
-	// Check to see if it got stalled for some reason
-	$scope.currentSound._a.addEventListener('stalled', function() {
-	    if (!self.currentSound) return;
-	    var audio = this;
-	    audio.load();
-	    audio.play();
-	});
-
+    $scope.currentSound._a.addEventListener('error', function failed(e){
+    	switch (e.target.error.code) {
+     case e.target.error.MEDIA_ERR_ABORTED:
+       console.debug('You aborted the video playback.');
+       break;
+     case e.target.error.MEDIA_ERR_NETWORK:
+       console.debug('A network error caused the audio download to fail.');
+       break;
+     case e.target.error.MEDIA_ERR_DECODE:
+       console.debug('The audio playback was aborted due to a corruption problem or because the video used features your browser did not support.');
+       break;
+     case e.target.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
+     	if($scope.isPlaying){
+       		$scope.updateNotPlaying(currentIndex);
+       		console.log($scope.songNum);
+       		$scope.songNum = $scope.songNum + 2;
+       		$scope.makeMusic($scope.songNum);
+     	}
+     	else{
+       		$scope.updateNotPlaying(currentIndex);
+       		console.log($scope.songNum);
+       		$scope.songNum = $scope.songNum + 1;
+       		$scope.makeMusic($scope.songNum);
+   		}
+       	break;
+     default:
+       alert('An unknown error occurred.');
+       break;
+   }
+}, true);
 }
-
+  }
 // Call update hour
 $( document ).ready(function() {
 	$scope.updateHour();
