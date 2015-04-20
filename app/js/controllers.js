@@ -153,8 +153,6 @@ $scope.makePlaylist = function(date, st) {
             $scope.makeMusic($scope.songNum);
           }
         }
-
-        // Start the playlist from the beginning
         else{
           $scope.songNum = 0;
           for(i = $scope.playlists.length - 1; i >= 0; i--){
@@ -167,80 +165,6 @@ $scope.makePlaylist = function(date, st) {
               $scope.minute = parseInt($filter('date')(new Date(), "mm"));
               $scope.second = parseInt($filter('date')(new Date(), "ss"));
               $scope.curTime = ($scope.minute * 60) + $scope.second;
-<<<<<<< HEAD
-              console.log($scope.curTime);
-              $scope.songTime = 0;
-              $scope.songNum;
-              for (var i = 0; i <= $scope.playlists.length - 1; i++) {
-                $scope.songTime = $scope.songTime + parseInt($scope.playlists[i].length);
-                console.log($scope.songTime);
-                if($scope.songTime > $scope.curTime)
-                {
-                  $scope.songNum = i;
-                  break;
-                }
-              };
-              if($scope.songNum > $scope.playlists.length - 1){
-                $scope.date.addHours(1);
-                $scope.filt = $filter('date')($scope.date, "yyyy-MM-dd/H");
-                console.log($scope.filt);
-                $scope.makePlaylist($scope.filt, 1);
-              }
-
-              else{
-              	for(i = $scope.playlists.length - 1; i >= 0; i--){
-              	    $scope.leftInHour = 0;
-              	    for(j = $scope.songNum; j <= $scope.playlists.length - 1; j++) {
-              		    $scope.leftInHour = $scope.leftInHour + parseInt($scope.playlists[j].length);
-              	    }
-              	    $scope.totes = $scope.leftInHour + $scope.curTime;
-              	    console.log($scope.totes/60);
-              	    if($scope.totes > 3600){
-              	    	if($scope.playlists[i].isSong === 'yes'){
-              	    		if(($scope.totes - parseInt($scope.playlists[i].length)) > 3300){
-              	    			console.debug("Cutting: " + $scope.playlists[i].song);
-              	    			$scope.playlists.splice(i, 1);
-
-              	    		}
-              	    		else{
-              	    		}
-              	    	}
-              	    }
-              	}
-              	$scope.isPlaying = 0;
-                $scope.makeMusic($scope.songNum);
-              }
-            }
-            else{
-              $scope.songNum = 0;
-              for(i = $scope.playlists.length - 1; i >= 0; i--){
-                  $scope.leftInHour = 0;
-                  for(j = $scope.songNum; j <= $scope.playlists.length - 1; j++) {
-              	    $scope.leftInHour = $scope.leftInHour + parseInt($scope.playlists[j].length);
-                  }
-                  $scope.totes = $scope.leftInHour + 0;
-                  console.log($scope.totes/60);
-                  $scope.minute = parseInt($filter('date')(new Date(), "mm"));
-                  console.log($scope.minute);
-                  $scope.second = parseInt($filter('date')(new Date(), "ss"));
-                  console.log($scope.second);
-                  $scope.curTime = ($scope.minute * 60) + $scope.second;
-                  $scope.diffTime = 3600 - $scope.curTime;
-                  $scope.extraTime = $scope.diffTime + 3600;
-                  if($scope.totes > $scope.extraTime){
-              	     if($scope.playlists[i].isSong === 'yes'){
-              	 	    if(($scope.totes - parseInt($scope.playlists[i].length)) > (3300 + $scope.diffTime)){
-              	 	   	console.debug("Cutting: " + $scope.playlists[i].song);
-              	    	$scope.playlists.splice(i, 1);
-              	        }
-              	        else{
-              	        }
-              	   }
-                }
-             }
-             $scope.isPlaying = 0;
-              $scope.makeMusic($scope.songNum);
-=======
               $scope.diffTime = 3600 - $scope.curTime;
               $scope.extraTime = $scope.diffTime + 3600;
               if($scope.totes > $scope.extraTime){
@@ -250,14 +174,13 @@ $scope.makePlaylist = function(date, st) {
           	    		$scope.playlists.splice(i, 1);
           	        }
           	   }
->>>>>>> 33f8627be69c52d6b0417abeaf54e4083c8cc02e
             }
          }
+         $scope.isPlaying = 0;
           $scope.makeMusic($scope.songNum);
         }
     });
 }
-
   $scope.makeMusic = function(songNum) {
   	if(songNum > $scope.playlists.length - 1){
   		$scope.date.addHours(1);
@@ -333,13 +256,13 @@ $scope.makePlaylist = function(date, st) {
     $scope.currentSound._a.addEventListener('error', function failed(e){
     	switch (e.target.error.code) {
      case e.target.error.MEDIA_ERR_ABORTED:
-       alert('You aborted the video playback.');
+       console.debug('You aborted the video playback.');
        break;
      case e.target.error.MEDIA_ERR_NETWORK:
-       alert('A network error caused the audio download to fail.');
+       console.debug('A network error caused the audio download to fail.');
        break;
      case e.target.error.MEDIA_ERR_DECODE:
-       alert('The audio playback was aborted due to a corruption problem or because the video used features your browser did not support.');
+       console.debug('The audio playback was aborted due to a corruption problem or because the video used features your browser did not support.');
        break;
      case e.target.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
      	if($scope.isPlaying){
