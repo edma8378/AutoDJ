@@ -145,6 +145,7 @@ $scope.stop = function(){
               	    	}
               	    }
               	}
+              	$scope.isPlaying = 0;
                 $scope.makeMusic($scope.songNum);
               }
             }
@@ -175,12 +176,20 @@ $scope.stop = function(){
               	   }
                 }
              }
+             $scope.isPlaying = 0;
               $scope.makeMusic($scope.songNum);
             }
           });
   }
 
   $scope.makeMusic = function(songNum) {
+  	if(songNum > $scope.playlists.length - 1){
+  		$scope.date.addHours(1);
+        $scope.filt = $filter('date')($scope.date, "yyyy-MM-dd/H");
+        console.log($scope.filt);
+        $scope.makePlaylist($scope.filt, 1);
+  	}
+  	else{
     $scope.numSong = songNum.toString();
     var json = $scope.playlists;
     $scope.path = json[songNum].path;
@@ -205,6 +214,9 @@ $scope.stop = function(){
               document.getElementById("progBar").style.width = $scope.timeProg +"%";
           },
         onfinish: function() {
+        	if(!$scope.isPlaying){
+        		$scope.isPlaying = 1;
+        	}
 	  if($scope.playing){
           if(songNum >= $scope.playlists.length - 1)
           {
@@ -227,13 +239,45 @@ $scope.stop = function(){
 	}
 
 	}
-      });
+	});
     $scope.currentSound._a.addEventListener('stalled', function() {
       if (!self.currentSound) return;
       var audio = this;
       audio.load();
       audio.play();
     });
+
+    $scope.currentSound._a.addEventListener('error', function failed(e){
+    	switch (e.target.error.code) {
+     case e.target.error.MEDIA_ERR_ABORTED:
+       alert('You aborted the video playback.');
+       break;
+     case e.target.error.MEDIA_ERR_NETWORK:
+       alert('A network error caused the audio download to fail.');
+       break;
+     case e.target.error.MEDIA_ERR_DECODE:
+       alert('The audio playback was aborted due to a corruption problem or because the video used features your browser did not support.');
+       break;
+     case e.target.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
+     if($scope.isPlaying){
+       $scope.updateNotPlaying(currentIndex);
+       console.log($scope.songNum);
+       $scope.songNum = $scope.songNum + 2;
+       $scope.makeMusic($scope.songNum);
+     }
+     else{
+       $scope.updateNotPlaying(currentIndex);
+       console.log($scope.songNum);
+       $scope.songNum = $scope.songNum + 1;
+       $scope.makeMusic($scope.songNum);
+   }
+       break;
+     default:
+       alert('An unknown error occurred.');
+       break;
+   }
+}, true);
+}
   }
 
   $( document ).ready(function() {
