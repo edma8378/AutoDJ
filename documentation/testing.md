@@ -13,10 +13,9 @@ If in dire need contact kren7615@colorado.edu
 ## Back end tests
 #Setup for local machines:
 If you are on a local machine or server, setup databases and server.
-1. Create databases
-	in the directory backend, run DatabaseTools.py to set up databases:
-	$ ./DatabaseTools.py create all music rotation
-	$ ./DatabaseTools.py create advertisements 
+1. Create databases in the directory backend, run DatabaseTools.py to set up databases and add at the very minimum add rotation music to the database:
+	$ ./DatabaseTools.py create all
+	$ ./DatabaseTools.py update digital rotation [folder/to/music]
 
 
 #To run: 	
