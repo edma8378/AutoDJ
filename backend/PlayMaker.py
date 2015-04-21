@@ -153,7 +153,9 @@ def generatePlaylist(hour,day):
             #check if its artist has been played recently
             #print song
             artist = song[ARTIST_INDEX].replace("'","")
-            #print artist
+	    artist = artist.encode('ascii','ignore')
+            #artist = song[ARTIST_INDEX]
+            print artist
 	    valid = checkArtist(artist)
             length = int(song[LENGTH_INDEX])
             if not valid:
@@ -174,11 +176,14 @@ def generatePlaylist(hour,day):
             prevSong = song[1]
         else:   #it is time to place an ad in the playlist
             if adsAdded == 2:
-                song = list(randomAD(adType))
+                song = randomAD(adType)
             else:
-                song = list(randomAD(sweeperType))
+                song = randomAD(sweeperType)
             if not song:
+                songsAdded = 0
                 continue
+            else:
+                song = list(song)
             length = int(song[LENGTH_INDEX])
             if (length + addedTime) > timeTotal:
                 break #selected Ad too long
