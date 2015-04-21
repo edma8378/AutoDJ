@@ -1,0 +1,6 @@
+./Watchdog.py:231: SyntaxWarning: name 'counter' is assigned to before global declaration
+  global counter
+./Watchdog.py:236: SyntaxWarning: name 'signal' is assigned to before global declaration
+  global signal
+Cleaning database
+Cleaning database
