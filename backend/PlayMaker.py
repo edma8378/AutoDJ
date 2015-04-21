@@ -178,7 +178,7 @@ def generatePlaylist(hour,day):
             else:
                 song = randomAD(sweeperType)
             if not song:
-                songsPerAd = 0
+                songsAdded = 0
                 continue
             else:
                 song = list(song)
