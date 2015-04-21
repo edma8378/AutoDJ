@@ -36,7 +36,7 @@ from watchdog.events import PatternMatchingEventHandler
 ##NEEDS CONFIG FILE FOR THIS INFO
 
 dig = "digital"
-ads = "advertisments"
+ads = "ads"
 MUSIC_FOLDER = "../app/music/"
 ROTATION = "rotation/"
 AMBIENT = "overnight/ambient/"
@@ -87,13 +87,13 @@ def ResolverThread():
                 break
             if counter > 30 and (addPaths or cleanDB):
                 break
-        print "executing commands"
-        print addPaths 
+        #print "executing commands"
+        #print addPaths 
         temp = addPaths
         for (table,path,type) in temp:
             rc = subprocess.call(["python","DatabaseTools.py", "update", table, type, path])
             arr = ["python","DatabaseTools", "update", table, type, path]
-            print arr
+            #print arr
         
         for item in temp:
             addPaths.remove(item)
@@ -103,20 +103,20 @@ def ResolverThread():
             rc = subprocess.check_call(["python","DatabaseTools.py", "clean", dig])
             rc = subprocess.check_call(["python","DatabaseTools.py", "clean", ads])            
             cleanDB = False
-            print "db cleaned"
+            #print "db cleaned"
         counter = 0        
 
     if addPaths:
         for (path,type) in addPaths:
             rc = subprocess.check_call(["python","DatabaseTools.py", "update", table, type, path])
             arr = ["./DatabaseTools", "update", table, type, path]
-            print arr
+            #print arr
 
         if cleanDB:
             rc = subprocess.check_call(["python","DatabaseTools.py", "clean", dig])
             rc = subprocess.check_call(["python","DatabaseTools.py", "clean", ads])            
             cleanDB = False
-            print "db cleaned"
+            #print "db cleaned"
     return
 
 class MyHandler(PatternMatchingEventHandler):
@@ -131,7 +131,7 @@ class MyHandler(PatternMatchingEventHandler):
         path/to/observed/file
     """
     
-    def matchDayWeek(self,event)    
+    def matchDayWeek(self,event):  
         path = str(event.src_path)
         global days
         for day in days:
@@ -173,7 +173,7 @@ class MyHandler(PatternMatchingEventHandler):
         elif re.match(MUSIC_FOLDER+LID_BLUES,path): 
             addValue = (ads,MUSIC_FOLDER+LID_BLUES,lid_blu)
         #shows
-        elif re.match(MUSIC_FOLDER+SHOWS,path)
+        elif re.match(MUSIC_FOLDER+SHOWS,path):
             addValue = self.matchDayWeek(event)
         return addValue
 
@@ -222,19 +222,22 @@ if __name__ == '__main__':
     t = threading.Thread(target=ResolverThread)
     # Sticks the thread in a list so that it remains accessible
     t.start()
-    
+    #clean DB on startup
+    rc = subprocess.check_call(["python","DatabaseTools.py", "clean", dig])
+    rc = subprocess.check_call(["python","DatabaseTools.py", "clean", ads])
     try:
         while True:
             time.sleep(1)
             global counter            
             counter+=1
             counter = counter%100
-            print counter
+            #print counter
     except KeyboardInterrupt:
         global signal        
         observer.stop()
         signal = True
-        print "\n"
-
-    t.join()
-    observer.join()
+        #print "\n"
+        t.join()
+        observer.join()
+        exit()
+    

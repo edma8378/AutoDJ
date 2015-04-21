@@ -1,4 +1,12 @@
 #!/usr/bin/python
+#  ,   Satan cow   .
+# ('.   ,.---.,   .')
+#  \ `-'       `-' / 
+# __\;   O   O   `/__
+#(__/     ___     \__)
+#   (    /, ,\    )
+#    \   \___/   /    
+#     `~~~~~~~~~'
 import sys                
 import sqlite3
 import os
@@ -12,13 +20,13 @@ import random
 PLAYLIST_DIR = "../app/playlists" #path for playlist objects
 PROXIMITY_DIR = "../proximity"
 DIGITAL_TABLE = "digital" #name of digital table name in database
-AD_TABLE = "advertisments" #name of advertisements table name in database
+AD_TABLE = "ads" #name of advertisements table name in database
 keys = ["path","artist","album","song","genre","length","typeName","isSong","index"]  
 LENGTH_INDEX = keys.index("length") #index into a song that give the time length of the song
 ARTIST_INDEX = keys.index("artist")
 TYPE_INDEX = keys.index("typeName")
 mostRecentArtists = [] # list of the most recent artist put into the playlist
-percentage = 0.6
+percentage = 0.7
 playlistType = [[1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0], #monday
                 [0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0], #tuesday
                 [0,0,0,0,0,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0], #wednesday
@@ -61,6 +69,7 @@ def outputPlaylists(day,listOfPlaylists):
                 dict1 = dict(zip(keys,song))
                 pl.append(dict1)
             json.dump(pl, outfile)
+            outfile.write("\n")
             curHour += 1 
             outfile.close()           
     return;
@@ -109,6 +118,7 @@ def generatePlaylist(hour,day):
     addedTime = 0
     songsPerAd = random.randint(2,4)
     songsAdded = 0
+    adsAdded = 0
     playlist = []
     prevSong = ""
     prevAd = []    
@@ -128,12 +138,13 @@ def generatePlaylist(hour,day):
         mostRecentArtists.pop()    
 
     song = list(randomAD(legalIDType))
-    song.append("yes")
-    song.append(str(index))
-    length = int(song[LENGTH_INDEX])
-    addedTime+=length
-    index+=1
-    playlist.append(list(song))
+    if song:
+        song.append("yes")
+        song.append(str(index))
+        length = int(song[LENGTH_INDEX])
+        addedTime+=length
+        index+=1
+        playlist.append(list(song))
     while addedTime < (timeTotal - marginError) :
         song = []    
         length = 0    
@@ -162,9 +173,12 @@ def generatePlaylist(hour,day):
             songsAdded+=1
             prevSong = song[1]
         else:   #it is time to place an ad in the playlist
-	        #songsAdded = 0
-	        #continue
-            song = list(randomAD(sweeperType))
+            if adsAdded == 2:
+                song = list(randomAD(adType))
+            else:
+                song = list(randomAD(sweeperType))
+            if not song:
+                continue
             length = int(song[LENGTH_INDEX])
             if (length + addedTime) > timeTotal:
                 break #selected Ad too long
@@ -175,6 +189,7 @@ def generatePlaylist(hour,day):
                 else:
                     break
             song.append("no")
+            adsAdded += 1 
             misses = 0
             songsAdded = 0
             prevAd = song
@@ -209,6 +224,7 @@ def checkType(type):
 def outputProximity(day):
     with open(PROXIMITY_DIR+"/"+str(day),'w') as outfile:
         outfile.write("\n".join(mostRecentArtists))
+        outfile.write("\n")
         outfile.close()
     return
 
@@ -219,15 +235,15 @@ def randomAD(type):
     c.execute('SELECT * FROM '+AD_TABLE+' WHERE typeName=? ORDER BY RANDOM() LIMIT 1',(type,))
     ad = c.fetchone()
     
-    if( not ad):
-        #grabbing the type might have failed, try again without type
-        c.execute('SELECT * FROM '+AD_TABLE+' ORDER BY RANDOM() LIMIT 1')
-        song = c.fetchone()
-        conn.close()
-        if song:
-            return song
-        print "Table not present. Please run \"./DatabaseTools.py create "+AD_TABLE+"\"\n"
-        return None;
+    #if( not ad):
+    #    grabbing the type might have failed, try again without type
+    #    c.execute('SELECT * FROM '+AD_TABLE+' ORDER BY RANDOM() LIMIT 1')
+    #    song = c.fetchone()
+    #    conn.close()
+    #    if song:
+    #        return song
+    #    print "Table not present. Please run \"./DatabaseTools.py create "+AD_TABLE+"\"\n"
+    #    return None;
 
     conn.close()
     return ad    
