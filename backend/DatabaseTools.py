@@ -29,14 +29,14 @@ import re
 DB_PATH = "/../db/music.db"
 
 DIGITAL_TABLE = "digital"
-ADS_TABLE = "advertisments"
+ADS_TABLE = "ads"
 approved_tables = ["all",DIGITAL_TABLE,ADS_TABLE]
 approved_types =["rotation","ambient","blues","ad_rotation","ad_ambient","ad_blues","legalID_rotation","legalID_ambient","legalID_blues","sweeper_rotation","sweeper_ambient","sweeper_blues"]
 
 def printUsages():
     print "Valid arguments: create ["+"|".join(approved_tables)+"]" 
     print "                 destroy ["+"|".join(approved_tables)+"]"
-    print "                 update ["+DIGITAL_TABLE+"|"+ADS_TABLE+"] ["+"|".join(approved_types)+"] " 
+    print "                 update ["+DIGITAL_TABLE+"|"+ADS_TABLE+"] ["+"|".join(approved_types)+"] [location]" 
     print "                 status ["+DIGITAL_TABLE+"|"+ADS_TABLE+"]"
     print "                 clean"
 
