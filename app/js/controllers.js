@@ -82,9 +82,15 @@ $scope.stop = function(){
     var t = setTimeout(function(){$scope.updateHour()},500);
   }
 
-  $scope.updateCurrentlyPlaying = function(myIndex) {
+  $scope.updateCurrentlyPlaying = function(myIndex,jason) {
     console.log(myIndex + " IS MY INDEX");
     document.getElementById(myIndex).className = "currentlyPlaying";
+    $http.post('/AutoDJ/app/test.py', jason, function(res){
+      response.setEncoding('utf8');
+      res.on('data', function(chunk) {
+          console.log(chunk);
+      });
+    });
   }
 
   $scope.updateNotPlaying = function(myIndex) {
@@ -190,18 +196,8 @@ $scope.stop = function(){
         stream: true,
         autoLoad: true,
         autoPlay: true,
-        $.ajax({
-            url: "test.py",
-            type: "post",
-            datatype:"json",
-            data: {'key':json[songNum].song,'key2':json[songNum].artist, 'key3':json[songNum].album},
-            success: function(response){
-                alert(response.message);
-                alert(response.keys);
-            }
-        });
         onload: function() {
-          $scope.updateCurrentlyPlaying(currentIndex);
+          $scope.updateCurrentlyPlaying(currentIndex,json[songNum]);
         },
         whileplaying: function() {
               var timeLeft = this.duration - this.position;
