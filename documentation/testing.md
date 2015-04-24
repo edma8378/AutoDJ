@@ -2,10 +2,9 @@
 Order of proper testsing and github pushes located in testingCrunkstep.md
 Backend testing is using python unittest. Instructions below.
 
-Front end tests were never done. Dependencies were installed and ready, so protractor tests are ready to be written. Currently the protractor test just checks it is the correct webpage. Due to very limited functionality of the webpage, we found protractor tests to be unnecessary. 
-Instead, front end behavior can be checked by running the page and looking for the correct result on the page and printed to the 
-javascript console.
-The expected behavior will be documented in frontEndCheck.md, please go there to do sanity checks/tests for the webpage.
+Front end tests were never done. It proved to be much more trouble to figue out how to write than it would be worth. Manually testing was much easier for this project. Dependencies were installed and ready, so protractor tests are ready to be written if you want. Currently the protractor test just checks it is the correct webpage. 
+
+The expected behavior is documented in frontEndCheck.md, please go there to do sanity checks/tests for the webpage.
 
 If a future team or person decides to implement protractor tests see below for Installation instructions and common problems. Thank you.
 If in dire need contact kren7615@colorado.edu
@@ -14,9 +13,17 @@ If in dire need contact kren7615@colorado.edu
 #Setup for local machines:
 If you are on a local machine or server, setup databases and server.
 1. Create databases in the directory backend, run DatabaseTools.py to set up databases and add at the very minimum add rotation music to the database:
-	$ ./DatabaseTools.py create all
-	$ ./DatabaseTools.py update digital rotation [folder/to/music]
 
+
+
+		$ ./DatabaseTools.py create all
+		$ ./DatabaseTools.py update digital rotation [folder/to/music]
+
+2. Create Playlists
+	in the backend directory, run:
+
+		$ ./PlayMaker.py today
+		today can be substitued with tomorrow or next week. The playlists will be generated and placed in app/music so they may be accessed by the webpage.
 
 #To run: 	
 	Go to the test directory and run UnitTest.py 
