@@ -1,4 +1,8 @@
 #!/usr/bin/python
+#Written by Edward Maton 2014-2015, edward.maton@gmail.com
+#Allowed for use by all Radio1190 teams
+#
+#There be dragons in these parts...
 #                     .     _///_,
 #                     .      / ` ' '>
 #                       )   o'  __/_'>
