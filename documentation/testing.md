@@ -1,15 +1,51 @@
-###To Run Tests:  
-	RUN SERVER:   $ webdriver-manager start
-	RUN TESTS:    $ protractor conf.js
+#Intro -please read-
+Order of proper testsing and github pushes located in testingCrunkstep.md
+Backend testing is using python unittest. Instructions below.
+
+Front end tests were never done. It proved to be much more trouble to figue out how to write than it would be worth. Manually testing was much easier for this project. Dependencies were installed and ready, so protractor tests are ready to be written if you want. Currently the protractor test just checks it is the correct webpage. 
+
+The expected behavior is documented in frontEndCheck.md, please go there to do sanity checks/tests for the webpage.
+
+If a future team or person decides to implement protractor tests see below for Installation instructions and common problems. Thank you.
+If in dire need contact kren7615@colorado.edu
+
+## Back end tests
+#Setup for local machines:
+If you are on a local machine or server, setup databases and server.
+1. Create databases in the directory backend, run DatabaseTools.py to set up databases and add at the very minimum add rotation music to the database:
+
+
+
+		$ ./DatabaseTools.py create all
+		$ ./DatabaseTools.py update digital rotation [folder/to/music]
+
+2. Create Playlists
+	in the backend directory, run:
+
+		$ ./PlayMaker.py today
+		today can be substitued with tomorrow or next week. The playlists will be generated and placed in app/music so they may be accessed by the webpage.
+
+#To run: 	
+	Go to the test directory and run UnitTest.py 
+ 	$ ./UnitTest.py
 
 ###Common Errors
-  - python module problems
-    - export PYTHONPATH=$PYTHONPATH:/my/other/path
+  - python module problems, python doesn't recognize your modules because you didn't put them in your path, did you? Put them in your path.
 
+    $ export PYTHONPATH=$PYTHONPATH:/my/other/path
+
+
+#Protractor Test Stuff (not in use currently)
 ###Dependencies:
  - node.js          
  - java jdk
  - webdriver/selenium ~~OR chromedriver~~
+
+
+###To Run Tests:  
+	RUN SERVER:   $ webdriver-manager start
+	RUN TESTS:    $ protractor conf.js
+
 
 ###Install Protractor
 	$ npm install -g protractor
@@ -37,7 +73,7 @@ Guide: http://angular.github.io/protractor/#/tutorial
 	protractor_conf.js and 	protractor_test.js and change the baseURL and 
 	browser.get()  respectively.
 
->Leave this bullshit below here in case Alex or Mitchell can't use the selenium server or something and need to make chromedriver bullshit to work.
+>Leave this below here in case Alex or Mitchell can't use the selenium server or something and need to make chromedriver bullshit to work. (They don't use linux, so no selenium server)
 
 ###To install chromedriver: 
 ####Dependencies
@@ -55,7 +91,7 @@ Guide: http://angular.github.io/protractor/#/tutorial
 ##Architecture
  - http://www.thoughtworks.com/insights/blog/testing-angularjs-apps-protractor
  - Conclusion:  use combo of seleniumdriver and webdriver
- - No longer supporting chromedriver because I can't get the path to recognize it unles it's 	in node_modules in your app directly and that's fucking bullshit fuck that.
+ - No longer supporting chromedriver because I can't get the path to recognize it unles it's 	in node_modules in your app directly and it's not worth the agony.
 
 ###More:
  - http://angular.github.io/protractor/#/browser-setup
