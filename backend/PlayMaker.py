@@ -1,4 +1,9 @@
 #!/usr/bin/python
+#Written by Edward Maton 2014-2015, edward.maton@gmail.com
+#Allowed for use by all Radio1190 teams
+#
+#He is watching you..
+#
 #  ,   Satan cow   .
 # ('.   ,.---.,   .')
 #  \ `-'       `-' / 
@@ -7,6 +12,8 @@
 #   (    /, ,\    )
 #    \   \___/   /    
 #     `~~~~~~~~~'
+
+
 import sys                
 import sqlite3
 import os
@@ -129,7 +136,7 @@ def generatePlaylist(hour,day):
     legalIDType = "legalID_"+type if checkType("legalID_"+type) else defaultLegal
     sweeperType = "sweeper_"+type if checkType("sweeper_"+type) else defaultSweeper
     adType = "ad_"+type if checkType("ad_"+type) else defaultAd
-    type = days[day.weekday()]+"show_"+hour if(checkType(days[day.weekday()]+"show_"+str(hour))) else type
+    type = days[day.weekday()]+"_show_"+hour if(checkType(days[day.weekday()]+"show_"+str(hour))) else type
     
 
     #global proximity
@@ -155,7 +162,7 @@ def generatePlaylist(hour,day):
             artist = song[ARTIST_INDEX].replace("'","")
 	    artist = artist.encode('ascii','ignore')
             #artist = song[ARTIST_INDEX]
-            print artist
+            #print artist
 	    valid = checkArtist(artist)
             length = int(song[LENGTH_INDEX])
             if not valid:
